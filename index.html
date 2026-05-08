@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="theme-color" content="#c4748a">
+  <title>Sisters Quran Club</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Nunito:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    *{box-sizing:border-box;margin:0;padding:0}
+    :root{
+      --rose:#c4748a;--rose-light:#e8a0b0;--rose-pale:#fce8ee;--rose-deep:#9a4a62;
+      --cream:#fdf6f0;--warm:#fff0f3;--gold:#c8a96e;--leaf:#5a7a5a;
+      --text:#3a2a2a;--text-soft:#7a5a60;
+    }
+    html{scroll-behavior:smooth}
+    body{font-family:'Nunito',sans-serif;background:var(--cream);color:var(--text);overflow-x:hidden}
+
+    /* ── FLORAL DECORATIONS ── */
+    .floral-bg{position:fixed;top:0;left:0;right:0;bottom:0;pointer-events:none;z-index:0;overflow:hidden}
+    .petal{position:absolute;opacity:0.06;font-size:80px;animation:float 20s infinite ease-in-out}
+    .petal:nth-child(1){top:5%;left:2%;animation-delay:0s;font-size:100px}
+    .petal:nth-child(2){top:15%;right:3%;animation-delay:3s;font-size:60px}
+    .petal:nth-child(3){top:40%;left:1%;animation-delay:6s;font-size:90px}
+    .petal:nth-child(4){top:60%;right:2%;animation-delay:9s;font-size:70px}
+    .petal:nth-child(5){top:80%;left:3%;animation-delay:12s;font-size:80px}
+    .petal:nth-child(6){bottom:5%;right:4%;animation-delay:15s;font-size:65px}
+    @keyframes float{0%,100%{transform:translateY(0) rotate(0deg)}50%{transform:translateY(-20px) rotate(10deg)}}
+
+    /* ── NAV ── */
+    nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:14px 24px;display:flex;justify-content:space-between;align-items:center;background:rgba(253,246,240,0.92);backdrop-filter:blur(12px);border-bottom:1px solid rgba(196,116,138,0.15)}
+    .nav-logo{display:flex;align-items:center;gap:10px}
+    .nav-logo-mark{width:36px;height:36px}
+    .nav-logo-text{font-family:'Cormorant Garamond',serif;font-size:18px;font-weight:600;color:var(--rose-deep);letter-spacing:0.3px}
+    .nav-links{display:flex;gap:6px}
+    .nav-link{padding:7px 14px;border-radius:20px;font-size:12px;font-weight:700;color:var(--text-soft);cursor:pointer;border:none;background:transparent;font-family:'Nunito',sans-serif;transition:all 0.2s;text-decoration:none}
+    .nav-link:hover,.nav-link.active{background:var(--rose-pale);color:var(--rose-deep)}
+    .nav-link.cta{background:var(--rose);color:white}
+    .nav-link.cta:hover{background:var(--rose-deep)}
+
+    /* ── PAGES ── */
+    .page{display:none;min-height:100vh;padding-top:70px;position:relative;z-index:1}
+    .page.active{display:block}
+
+    /* ── HOME PAGE ── */
+    .hero{min-height:calc(100vh - 70px);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:40px 24px;text-align:center;position:relative}
+    .hero-logo{width:160px;height:160px;margin:0 auto 28px;animation:fadeUp 0.8s ease both}
+    @keyframes fadeUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
+    .hero-bismillah{font-family:'Cormorant Garamond',serif;font-size:28px;color:var(--gold);margin-bottom:16px;animation:fadeUp 0.8s 0.1s ease both;letter-spacing:2px}
+    .hero-title{font-family:'Cormorant Garamond',serif;font-size:clamp(36px,8vw,56px);font-weight:600;color:var(--rose-deep);line-height:1.1;margin-bottom:12px;animation:fadeUp 0.8s 0.2s ease both}
+    .hero-verse{font-family:'Cormorant Garamond',serif;font-size:16px;color:var(--text-soft);font-style:italic;margin-bottom:6px;animation:fadeUp 0.8s 0.3s ease both;max-width:420px;line-height:1.7}
+    .hero-ref{font-size:12px;color:var(--rose-light);font-weight:700;letter-spacing:1px;margin-bottom:28px;animation:fadeUp 0.8s 0.35s ease both}
+    .hero-tagline{font-size:15px;color:var(--text-soft);margin-bottom:36px;animation:fadeUp 0.8s 0.4s ease both;max-width:360px;line-height:1.7}
+    .hero-btns{display:flex;gap:12px;flex-wrap:wrap;justify-content:center;animation:fadeUp 0.8s 0.5s ease both}
+    .btn-primary{padding:13px 28px;background:var(--rose);color:white;border:none;border-radius:30px;font-family:'Nunito',sans-serif;font-size:14px;font-weight:700;cursor:pointer;transition:all 0.2s;letter-spacing:0.3px}
+    .btn-primary:hover{background:var(--rose-deep);transform:translateY(-2px)}
+    .btn-secondary{padding:13px 28px;background:white;color:var(--rose);border:2px solid var(--rose-pale);border-radius:30px;font-family:'Nunito',sans-serif;font-size:14px;font-weight:700;cursor:pointer;transition:all 0.2s}
+    .btn-secondary:hover{border-color:var(--rose);transform:translateY(-2px)}
+
+    /* About section */
+    .about-section{padding:60px 24px;max-width:800px;margin:0 auto}
+    .section-header{text-align:center;margin-bottom:40px}
+    .section-label{font-size:11px;font-weight:700;letter-spacing:2px;color:var(--rose);text-transform:uppercase;margin-bottom:8px}
+    .section-title{font-family:'Cormorant Garamond',serif;font-size:clamp(28px,5vw,40px);color:var(--rose-deep);line-height:1.2}
+    .about-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+    @media(max-width:600px){.about-grid{grid-template-columns:1fr}}
+    .about-card{background:white;border-radius:20px;padding:24px;border:1px solid var(--rose-pale);position:relative;overflow:hidden}
+    .about-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--rose-light),var(--rose))}
+    .about-card-icon{font-size:28px;margin-bottom:12px}
+    .about-card-title{font-family:'Cormorant Garamond',serif;font-size:18px;font-weight:600;color:var(--rose-deep);margin-bottom:8px}
+    .about-card-text{font-size:13px;color:var(--text-soft);line-height:1.7}
+
+    /* Divider */
+    .floral-divider{text-align:center;padding:20px 0;font-size:20px;color:var(--rose-light);letter-spacing:8px}
+
+    /* ── RESOURCES PAGE ── */
+    .resources-wrap{max-width:700px;margin:0 auto;padding:40px 24px 60px}
+    .resources-hero{text-align:center;margin-bottom:40px}
+    .resource-category{margin-bottom:32px}
+    .category-title{font-family:'Cormorant Garamond',serif;font-size:22px;color:var(--rose-deep);margin-bottom:14px;display:flex;align-items:center;gap:8px;padding-bottom:8px;border-bottom:1px solid var(--rose-pale)}
+    .resource-card{background:white;border-radius:16px;border:1px solid var(--rose-pale);padding:16px 20px;margin-bottom:10px;display:flex;align-items:center;gap:14px;text-decoration:none;color:var(--text);transition:all 0.2s;cursor:pointer}
+    .resource-card:hover{border-color:var(--rose-light);transform:translateX(4px);box-shadow:0 4px 20px rgba(196,116,138,0.1)}
+    .resource-icon{width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}
+    .resource-icon.pink{background:#fce8ee}
+    .resource-icon.gold{background:#fdf3e3}
+    .resource-icon.green{background:#e8f5e9}
+    .resource-icon.blue{background:#e3f2fd}
+    .resource-icon.purple{background:#f3e5f5}
+    .resource-info{flex:1}
+    .resource-title{font-size:14px;font-weight:700;color:var(--text);margin-bottom:2px}
+    .resource-sub{font-size:12px;color:var(--text-soft)}
+    .resource-arrow{font-size:16px;color:var(--rose-light)}
+
+    /* ── TRACKER PAGE ── */
+    .tracker-wrap{width:100%;height:calc(100vh - 70px)}
+    .tracker-wrap iframe{width:100%;height:100%;border:none}
+    .tracker-placeholder{display:flex;flex-direction:column;align-items:center;justify-content:center;height:calc(100vh - 70px);text-align:center;padding:40px}
+    .tracker-placeholder .big-icon{font-size:60px;margin-bottom:20px}
+    .tracker-placeholder h2{font-family:'Cormorant Garamond',serif;font-size:32px;color:var(--rose-deep);margin-bottom:12px}
+    .tracker-placeholder p{font-size:14px;color:var(--text-soft);max-width:320px;line-height:1.7;margin-bottom:24px}
+
+    /* ── FOOTER ── */
+    footer{background:var(--rose-deep);color:white;text-align:center;padding:32px 24px;position:relative;z-index:1}
+    footer .footer-logo{font-family:'Cormorant Garamond',serif;font-size:22px;margin-bottom:8px;opacity:0.9}
+    footer .footer-verse{font-size:12px;opacity:0.6;font-style:italic;margin-bottom:16px}
+    footer .footer-links{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;margin-bottom:16px}
+    footer .footer-link{color:rgba(255,255,255,0.7);font-size:12px;font-weight:600;cursor:pointer;text-decoration:none;transition:color 0.2s}
+    footer .footer-link:hover{color:white}
+    footer .footer-copy{font-size:11px;opacity:0.4}
+
+    /* ── MOBILE ── */
+    @media(max-width:480px){
+      .nav-logo-text{display:none}
+      .nav-link{padding:6px 10px;font-size:11px}
+      .hero-bismillah{font-size:22px}
+    }
+  </style>
+</head>
+<body>
+
+<!-- Floating petals -->
+<div class="floral-bg">
+  <div class="petal">🌸</div>
+  <div class="petal">🌺</div>
+  <div class="petal">🌷</div>
+  <div class="petal">🌸</div>
+  <div class="petal">🌹</div>
+  <div class="petal">🌸</div>
+</div>
+
+<!-- Nav -->
+<nav>
+  <div class="nav-logo">
+    <svg class="nav-logo-mark" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="18" cy="18" r="17" stroke="#c4748a" stroke-width="1.5"/>
+      <!-- Hijab silhouette -->
+      <path d="M18 6 C12 6 8 11 8 17 C8 23 12 27 18 28 C24 27 28 23 28 17 C28 11 24 6 18 6Z" fill="#c4748a" opacity="0.15"/>
+      <path d="M14 10 Q18 7 22 10 Q26 13 26 19 Q26 25 18 28 Q10 25 10 19 Q10 13 14 10Z" fill="#c4748a" opacity="0.3"/>
+      <path d="M16 8 Q18 6 20 8 L22 14 Q20 12 18 12 Q16 12 14 14Z" fill="#9a4a62"/>
+      <!-- Floral bottom -->
+      <path d="M12 28 Q15 31 18 32 Q21 31 24 28" stroke="#c4748a" stroke-width="1.2" fill="none"/>
+      <circle cx="18" cy="32" r="1.5" fill="#c4748a" opacity="0.5"/>
+      <circle cx="13" cy="29" r="1" fill="#c4748a" opacity="0.4"/>
+      <circle cx="23" cy="29" r="1" fill="#c4748a" opacity="0.4"/>
+    </svg>
+    <span class="nav-logo-text">Sisters Quran Club</span>
+  </div>
+  <div class="nav-links">
+    <button class="nav-link active" onclick="showPage('home')">Home</button>
+    <button class="nav-link" onclick="showPage('resources')">Resources</button>
+    <button class="nav-link cta" onclick="showPage('tracker')">🌿 Garden</button>
+  </div>
+</nav>
+
+<!-- HOME PAGE -->
+<div class="page active" id="page-home">
+  <div class="hero">
+
+    <!-- Recreated Logo SVG -->
+    <svg class="hero-logo" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+      <!-- Outer circle -->
+      <circle cx="100" cy="100" r="95" fill="none" stroke="#c4748a" stroke-width="1.5" opacity="0.4"/>
+      <!-- Background soft circle -->
+      <circle cx="100" cy="100" r="90" fill="#fce8ee" opacity="0.4"/>
+      <!-- Hijab shape -->
+      <ellipse cx="100" cy="75" rx="35" ry="40" fill="#c4748a" opacity="0.2"/>
+      <path d="M70 65 Q100 45 130 65 Q145 80 140 105 Q130 130 100 138 Q70 130 60 105 Q55 80 70 65Z" fill="#c4748a" opacity="0.25"/>
+      <!-- Head -->
+      <circle cx="100" cy="62" r="18" fill="#9a4a62" opacity="0.7"/>
+      <!-- Hijab flow -->
+      <path d="M82 62 Q75 70 72 85 Q68 105 75 120 Q85 135 100 138" stroke="#9a4a62" stroke-width="2.5" fill="none" stroke-linecap="round" opacity="0.8"/>
+      <path d="M118 62 Q125 70 128 85 Q132 105 125 120 Q115 135 100 138" stroke="#9a4a62" stroke-width="2.5" fill="none" stroke-linecap="round" opacity="0.8"/>
+      <!-- Floral branch at bottom -->
+      <path d="M75 148 Q100 155 125 148" stroke="#c4748a" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+      <path d="M85 152 Q100 158 115 152" stroke="#c4748a" stroke-width="1" fill="none" stroke-linecap="round" opacity="0.6"/>
+      <!-- Small leaves -->
+      <ellipse cx="78" cy="147" rx="5" ry="3" fill="#5a7a5a" opacity="0.5" transform="rotate(-30 78 147)"/>
+      <ellipse cx="122" cy="147" rx="5" ry="3" fill="#5a7a5a" opacity="0.5" transform="rotate(30 122 147)"/>
+      <ellipse cx="92" cy="153" rx="4" ry="2.5" fill="#5a7a5a" opacity="0.4" transform="rotate(-15 92 153)"/>
+      <ellipse cx="108" cy="153" rx="4" ry="2.5" fill="#5a7a5a" opacity="0.4" transform="rotate(15 108 153)"/>
+      <!-- Script text -->
+      <text x="100" y="175" text-anchor="middle" font-family="Cormorant Garamond, serif" font-size="11" fill="#9a4a62" opacity="0.8" font-style="italic">Sisters Quran Club</text>
+      <text x="100" y="188" text-anchor="middle" font-family="Nunito, sans-serif" font-size="7" fill="#c4748a" opacity="0.6" letter-spacing="1">THIS IS THE BOOK — AL-QURAN 2:2</text>
+    </svg>
+
+    <div class="hero-bismillah">بِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيمِ</div>
+    <h1 class="hero-title">Sisters<br>Quran Club</h1>
+    <p class="hero-verse">"This is the Book about which there is no doubt, a guidance for those conscious of Allah"</p>
+    <p class="hero-ref">AL-QURAN 2:2</p>
+    <p class="hero-tagline">Sisters coming together to talk about the wonderful words of Allah ✨</p>
+    <div class="hero-btns">
+      <button class="btn-primary" onclick="showPage('resources')">📚 Explore Resources</button>
+      <button class="btn-secondary" onclick="showPage('tracker')">🌿 My Ibadah Garden</button>
+    </div>
+  </div>
+
+  <div class="floral-divider">🌸 ✦ 🌸 ✦ 🌸</div>
+
+  <!-- About Section -->
+  <div class="about-section">
+    <div class="section-header">
+      <div class="section-label">About Us</div>
+      <h2 class="section-title">Welcome to The Sisters Quran Club</h2>
+    </div>
+    <div class="about-grid">
+      <div class="about-card">
+        <div class="about-card-icon">📖</div>
+        <div class="about-card-title">Who We Are</div>
+        <div class="about-card-text">A group of sisters coming together to talk about the wonderful Book of Allah ✨ and various topics around it such as the sunnah, hadith and helpful duas.</div>
+      </div>
+      <div class="about-card">
+        <div class="about-card-icon">🌸</div>
+        <div class="about-card-title">What Makes Us Special</div>
+        <div class="about-card-text">This is a club where anyone is free to share their opinions, inspirational quotes and ask questions. It is interactive and welcoming to all sisters 🙌</div>
+      </div>
+      <div class="about-card">
+        <div class="about-card-icon">🤝</div>
+        <div class="about-card-title">Team Challenges</div>
+        <div class="about-card-text">We believe we can achieve more by working together. From Ramadan challenges to Trivia Tuesdays — teamwork makes the dream work! 🌸</div>
+      </div>
+      <div class="about-card">
+        <div class="about-card-icon">📅</div>
+        <div class="about-card-title">Monthly Topics</div>
+        <div class="about-card-text">Each month we cover topics voted by members — from Tafsir to Tajweed to holy months on the Hijri calendar. We teach each other new things!</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="floral-divider">🌷 ✦ 🌷 ✦ 🌷</div>
+
+  <footer>
+    <div class="footer-logo">Sisters Quran Club 🌸</div>
+    <div class="footer-verse">"This is the Book about which there is no doubt" — Al-Quran 2:2</div>
+    <div class="footer-links">
+      <a class="footer-link" onclick="showPage('home')">Home</a>
+      <a class="footer-link" onclick="showPage('resources')">Resources</a>
+      <a class="footer-link" onclick="showPage('tracker')">Ibadah Garden</a>
+      <a class="footer-link" href="mailto:gardenofquran@gmail.com">Contact Us</a>
+    </div>
+    <div class="footer-copy">© 2025 Sisters Quran Club · gardenofquran@gmail.com</div>
+  </footer>
+</div>
+
+<!-- RESOURCES PAGE -->
+<div class="page" id="page-resources">
+  <div class="resources-wrap">
+    <div class="resources-hero">
+      <div class="section-label">Knowledge is Light</div>
+      <h2 class="section-title">SQC Resources</h2>
+      <p style="font-size:14px;color:var(--text-soft);margin-top:10px;line-height:1.7">Everything you need in one place — slides, recordings, duas and more 🌿</p>
+    </div>
+
+    <!-- Darasa & Recordings -->
+    <div class="resource-category">
+      <div class="category-title">📚 Darasa & Meetings</div>
+      <a class="resource-card" href="https://drive.google.com/drive/folders/1Agn5YBcJOYv0_YNjSxwIVXUPzTCf_1FM" target="_blank">
+        <div class="resource-icon pink">📑</div>
+        <div class="resource-info">
+          <div class="resource-title">Darasa Slides</div>
+          <div class="resource-sub">All past meeting presentation slides</div>
+        </div>
+        <div class="resource-arrow">→</div>
+      </a>
+      <a class="resource-card" href="https://drive.google.com/drive/folders/1Agruoj7W8LEpqhag5XJ0DXRWtHssNxYw" target="_blank">
+        <div class="resource-icon purple">🎙️</div>
+        <div class="resource-info">
+          <div class="resource-title">Recordings</div>
+          <div class="resource-sub">Past meeting recordings and sessions</div>
+        </div>
+        <div class="resource-arrow">→</div>
+      </a>
+    </div>
+
+    <!-- Quran -->
+    <div class="resource-category">
+      <div class="category-title">📖 Quran</div>
+      <a class="resource-card" href="https://drive.google.com/drive/folders/1Ay9NWbDvLAWJlxV5Xkm_GhowJyQLuT-V" target="_blank">
+        <div class="resource-icon gold">📿</div>
+        <div class="resource-info">
+          <div class="resource-title">Quran (Digital)</div>
+          <div class="resource-sub">Digital Quran resources and references</div>
+        </div>
+        <div class="resource-arrow">→</div>
+      </a>
+      <a class="resource-card" href="https://drive.google.com/drive/folders/1CyB6pOWe8z3KFrHKs43MTlAhEhyv9NVQ" target="_blank">
+        <div class="resource-icon pink">🎧</div>
+        <div class="resource-info">
+          <div class="resource-title">Podcasts</div>
+          <div class="resource-sub">Islamic podcasts and audio content</div>
+        </div>
+        <div class="resource-arrow">→</div>
+      </a>
+    </div>
+
+    <!-- Duas & Help -->
+    <div class="resource-category">
+      <div class="category-title">🤲 Duas & Support</div>
+      <a class="resource-card" href="https://docs.google.com/document/d/1QFWAlRZqpc_6DVTvVJbl6F3zhtMr9sVX59WOUoESt2w/edit" target="_blank">
+        <div class="resource-icon green">🌿</div>
+        <div class="resource-info">
+          <div class="resource-title">Dua Collection</div>
+          <div class="resource-sub">A curated collection of duas for all occasions</div>
+        </div>
+        <div class="resource-arrow">→</div>
+      </a>
+      <a class="resource-card" href="https://docs.google.com/forms/d/e/1FAIpQLSfiuL9c9qgydAtQcCbnzCdXCj-GcMAI6sMJozXkkkUTCqjYBw/viewform" target="_blank">
+        <div class="resource-icon blue">💬</div>
+        <div class="resource-info">
+          <div class="resource-title">Help Center / Queries</div>
+          <div class="resource-sub">Have a question? Submit it here</div>
+        </div>
+        <div class="resource-arrow">→</div>
+      </a>
+    </div>
+
+  </div>
+
+  <footer>
+    <div class="footer-logo">Sisters Quran Club 🌸</div>
+    <div class="footer-verse">"This is the Book about which there is no doubt" — Al-Quran 2:2</div>
+    <div class="footer-links">
+      <a class="footer-link" onclick="showPage('home')">Home</a>
+      <a class="footer-link" onclick="showPage('resources')">Resources</a>
+      <a class="footer-link" onclick="showPage('tracker')">Ibadah Garden</a>
+      <a class="footer-link" href="mailto:gardenofquran@gmail.com">Contact Us</a>
+    </div>
+    <div class="footer-copy">© 2025 Sisters Quran Club · gardenofquran@gmail.com</div>
+  </footer>
+</div>
+
+<!-- TRACKER PAGE -->
+<div class="page" id="page-tracker">
+  <div class="tracker-wrap">
+    <iframe src="https://tazcodez.github.io/sqcgardens/" title="SQC Ibadah Garden Tracker" allow="same-origin"></iframe>
+  </div>
+</div>
+
+<script>
+  function showPage(name) {
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.nav-link').forEach(b => b.classList.remove('active'));
+    document.getElementById('page-' + name).classList.add('active');
+    document.querySelectorAll('.nav-link').forEach(b => {
+      if (b.textContent.toLowerCase().includes(name) ||
+         (name === 'tracker' && b.textContent.includes('Garden')) ||
+         (name === 'home' && b.textContent === 'Home')) {
+        b.classList.add('active');
+      }
+    });
+    window.scrollTo(0, 0);
+  }
+</script>
+</body>
+</html>
