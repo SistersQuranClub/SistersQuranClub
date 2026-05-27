@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="theme-color" content="#c4748a">
+  <link rel="manifest" href="manifest.json">
   <title>Sisters Quran Club</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Nunito:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -469,6 +470,15 @@
   function toggleRecordings(btn) {
     btn.classList.toggle('open');
     document.getElementById('recordingsPanel').classList.toggle('open');
+  }
+
+  // Register service worker for offline support
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('/SistersQuranClub/sw.js')
+        .then(reg => console.log('SQC service worker registered:', reg.scope))
+        .catch(err => console.log('Service worker error:', err));
+    });
   }
 </script>
 </body>
