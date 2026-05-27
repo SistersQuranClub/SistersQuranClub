@@ -176,6 +176,7 @@
   <div class="nav-links">
     <button class="nav-link active" onclick="showPage('home')">Home</button>
     <button class="nav-link" onclick="showPage('resources')">Resources</button>
+    <button class="nav-link" onclick="showPage('dua')">🤲 Duas</button>
     <button class="nav-link cta" onclick="showPage('tracker')">🌿 Garden</button>
   </div>
 </nav>
@@ -218,6 +219,7 @@
     <p class="hero-tagline">Sisters coming together to talk about the wonderful words of Allah ✨</p>
     <div class="hero-btns">
       <button class="btn-primary" onclick="showPage('resources')">📚 Explore Resources</button>
+      <button class="btn-secondary" onclick="showPage('dua')">🤲 Dua Blueprint</button>
       <button class="btn-secondary" onclick="showPage('tracker')">🌿 My Ibadah Garden</button>
     </div>
   </div>
@@ -262,14 +264,13 @@
     <div class="footer-links">
       <a class="footer-link" onclick="showPage('home')">Home</a>
       <a class="footer-link" onclick="showPage('resources')">Resources</a>
+      <a class="footer-link" onclick="showPage('dua')">Dua Blueprint</a>
       <a class="footer-link" onclick="showPage('tracker')">Ibadah Garden</a>
       <a class="footer-link" href="mailto:gardenofquran@gmail.com">Contact Us</a>
     </div>
     <div class="footer-copy">© 2025 Sisters Quran Club · gardenofquran@gmail.com</div>
   </footer>
 </div>
-
-<!-- RESOURCES PAGE -->
 <div class="page" id="page-resources">
   <div class="resources-wrap">
     <div class="resources-hero">
@@ -369,6 +370,24 @@
   </div>
 </div>
 
+<!-- DUA BLUEPRINT PAGE -->
+<div class="page" id="page-dua">
+  <div class="tracker-wrap" style="display:flex;flex-direction:column;align-items:center;justify-content:center;background:linear-gradient(180deg,#b8d4e8,#ddeaf4);min-height:calc(100vh - 70px)">
+    <div style="text-align:center;padding:40px 24px;max-width:420px">
+      <div style="font-size:60px;margin-bottom:20px">🤲</div>
+      <h2 style="font-family:'Cormorant Garamond',serif;font-size:32px;color:#2a3f5c;margin-bottom:12px">The Dua Blueprint</h2>
+      <p style="font-size:14px;color:#3d6b8a;line-height:1.7;margin-bottom:28px">A sanctuary for sacred supplication — build personalised duas, take the dua quiz, explore heritage duas from the Quran and Sunnah, and save your favourites.</p>
+      <a href="https://sistersquranclub.github.io/SistersQuranClub/dua-blueprint.html" target="_blank"
+         style="display:inline-block;padding:14px 32px;background:#3d6b8a;color:white;border-radius:30px;font-family:'Nunito',sans-serif;font-size:15px;font-weight:700;text-decoration:none;letter-spacing:0.3px;transition:background 0.2s"
+         onmouseover="this.style.background='#2a4a68'"
+         onmouseout="this.style.background='#3d6b8a'">
+        ✦ Open The Dua Blueprint
+      </a>
+      <p style="font-size:11px;color:#6a9bb8;margin-top:14px">Opens in a new tab for the full experience</p>
+    </div>
+  </div>
+</div>
+
 <script>
   function showPage(name) {
     document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
@@ -377,6 +396,7 @@
     document.querySelectorAll('.nav-link').forEach(b => {
       if (b.textContent.toLowerCase().includes(name) ||
          (name === 'tracker' && b.textContent.includes('Garden')) ||
+         (name === 'dua' && b.textContent.includes('Duas')) ||
          (name === 'home' && b.textContent === 'Home')) {
         b.classList.add('active');
       }
