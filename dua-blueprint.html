@@ -1,0 +1,5125 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>The Dua Blueprint</title>
+
+  <!-- Google Fonts: Cormorant Garamond (elegant serif) + DM Sans (clean functional) + Amiri (Arabic) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&family=Amiri:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet" />
+
+  <style>
+/* =============================================================
+   THE DUA BLUEPRINT — Stylesheet
+   Aesthetic: Claude Monet · Water Lilies Series
+   Palette: watery deep blues, lily-pad greens, morning
+   periwinkle, hazy lilac, blush petal pink
+============================================================= */
+
+
+/* ─────────────────────────────────────────────────────────────
+   0. DESIGN TOKENS
+───────────────────────────────────────────────────────────── */
+:root {
+  /* ── Pond Palette ── */
+  --pond-deep:        #2a3f5c;   /* deep water shadow */
+  --pond-mid:         #3d6b8a;   /* mid-water blue */
+  --pond-surface:     #6a9bb8;   /* light reflected water */
+  --pond-sky:         #b8d4e8;   /* sky-water haze */
+  --pond-mist:        #ddeaf4;   /* morning mist */
+
+  --lily-green-deep:  #3a5c40;   /* dark lily-pad */
+  --lily-green:       #6b9a6e;   /* lily-pad green */
+  --lily-green-light: #a8c9a4;   /* young lily */
+
+  --periwinkle:       #8fa8cc;   /* hazy periwinkle blue */
+  --periwinkle-light: #c4d3e8;   /* soft periwinkle haze */
+
+  --lilac:            #b09ec0;   /* dusky lilac */
+  --lilac-light:      #d8cfe8;   /* pale lilac mist */
+
+  --blush:            #d4a8b0;   /* water lily petal */
+  --blush-light:      #ecdde0;   /* pale blush */
+  --cream:            #f5f0e8;   /* aged parchment */
+  --warm-white:       #faf8f4;   /* warm canvas */
+
+  /* ── Text ── */
+  --text-deep:        #1e2e3a;   /* deep ink */
+  --text-mid:         #3d5068;   /* body text */
+  --text-soft:        #6a7f96;   /* muted text */
+  --text-ghost:       #9fb3c4;   /* placeholder */
+  --text-arabic:      #2a3f5c;   /* Arabic script */
+  --text-on-dark:     #eef4f8;   /* text on dark bg */
+
+  /* ── Glass / Frosted Surface ── */
+  --glass-bg:         rgba(250, 248, 244, 0.72);
+  --glass-bg-strong:  rgba(250, 248, 244, 0.88);
+  --glass-border:     rgba(255, 255, 255, 0.55);
+  --glass-shadow:     0 8px 40px rgba(42, 63, 92, 0.13),
+                      0 2px 12px rgba(42, 63, 92, 0.08);
+  --glass-shadow-hover: 0 16px 60px rgba(42, 63, 92, 0.20),
+                        0 4px 20px rgba(42, 63, 92, 0.12);
+  --glass-shadow-deep:  0 24px 80px rgba(42, 63, 92, 0.26),
+                        0 8px 30px rgba(42, 63, 92, 0.14);
+
+  /* ── Pond Shadow (colored) ── */
+  --shadow-blue:      0 12px 40px rgba(61, 107, 138, 0.22);
+  --shadow-lilac:     0 12px 40px rgba(176, 158, 192, 0.25);
+  --shadow-green:     0 12px 40px rgba(107, 154, 110, 0.20);
+
+  /* ── Typography ── */
+  --font-serif:       'Cormorant Garamond', Georgia, serif;
+  --font-sans:        'DM Sans', system-ui, sans-serif;
+  --font-arabic:      'Amiri', 'Traditional Arabic', serif;
+
+  /* ── Sizing ── */
+  --radius-sm:        8px;
+  --radius-md:        16px;
+  --radius-lg:        24px;
+  --radius-xl:        36px;
+  --radius-pill:      100px;
+
+  --header-h:         120px;
+  --content-max:      900px;
+  --step-gap:         32px;
+
+  /* ── Transitions ── */
+  --ease-pond:        cubic-bezier(0.34, 1.10, 0.64, 1);
+  --ease-smooth:      cubic-bezier(0.4, 0, 0.2, 1);
+  --t-fast:           180ms;
+  --t-mid:            320ms;
+  --t-slow:           520ms;
+  --t-flip:           680ms;
+}
+
+
+/* ─────────────────────────────────────────────────────────────
+   1. RESET & BASE
+───────────────────────────────────────────────────────────── */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-size: 16px;
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  font-family: var(--font-sans);
+  font-weight: 300;
+  color: var(--text-mid);
+  background-color: #c8dce8;
+  min-height: 100vh;
+  overflow-x: hidden;
+  line-height: 1.7;
+}
+
+/* Accessibility: visually hidden but available to screen readers */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Focus styles — clear but beautiful */
+:focus-visible {
+  outline: 2.5px solid var(--periwinkle);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+/* Arabic text direction */
+[lang="ar"],
+.flashcard__arabic,
+.salawat-option__arabic,
+.seal-option__arabic,
+.brand__ornament,
+.name-card__arabic,
+.dua-output__text,
+.site-footer__text [lang="ar"] {
+  font-family: var(--font-arabic);
+  direction: rtl;
+  unicode-bidi: embed;
+}
+
+
+/* ─────────────────────────────────────────────────────────────
+   2. POND BACKGROUND — Animated Monet Layers
+───────────────────────────────────────────────────────────── */
+.pond-bg {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.pond-layer {
+  position: absolute;
+  inset: -20%;
+  width: 140%;
+  height: 140%;
+  border-radius: 60% 40% 55% 45% / 45% 55% 40% 60%;
+  will-change: transform, opacity;
+}
+
+/* Layer 1: Deep water base */
+.pond-layer--deep {
+  background: radial-gradient(
+    ellipse 80% 60% at 30% 60%,
+    #2a4a68 0%,
+    #3d6b8a 35%,
+    #5b8fa8 65%,
+    #7aafc8 100%
+  );
+  animation: pondDrift1 28s ease-in-out infinite alternate;
+  opacity: 1;
+}
+
+/* Layer 2: Mid water — greens and teals */
+.pond-layer--mid {
+  background: radial-gradient(
+    ellipse 70% 50% at 65% 40%,
+    rgba(58, 92, 64, 0.55) 0%,
+    rgba(107, 154, 110, 0.30) 40%,
+    transparent 75%
+  ),
+  radial-gradient(
+    ellipse 60% 70% at 20% 70%,
+    rgba(61, 107, 138, 0.45) 0%,
+    rgba(106, 155, 184, 0.20) 50%,
+    transparent 80%
+  );
+  animation: pondDrift2 22s ease-in-out infinite alternate;
+  opacity: 0.9;
+}
+
+/* Layer 3: Ripple highlights — periwinkle & lilac */
+.pond-layer--ripple {
+  background:
+    radial-gradient(ellipse 40% 25% at 70% 25%, rgba(143, 168, 204, 0.40) 0%, transparent 60%),
+    radial-gradient(ellipse 35% 20% at 15% 55%, rgba(176, 158, 192, 0.30) 0%, transparent 55%),
+    radial-gradient(ellipse 50% 30% at 50% 80%, rgba(106, 155, 184, 0.25) 0%, transparent 60%);
+  animation: pondDrift3 18s ease-in-out infinite alternate;
+  opacity: 0.85;
+}
+
+/* Layer 4: Lily surface blooms — blush and cream */
+.pond-layer--lily {
+  background:
+    radial-gradient(ellipse 20% 12% at 80% 70%, rgba(212, 168, 176, 0.45) 0%, transparent 55%),
+    radial-gradient(ellipse 15% 10% at 25% 30%, rgba(245, 240, 232, 0.30) 0%, transparent 50%),
+    radial-gradient(ellipse 18% 11% at 55% 15%, rgba(212, 168, 176, 0.30) 0%, transparent 50%),
+    radial-gradient(ellipse 12% 8%  at 10% 85%, rgba(245, 240, 232, 0.25) 0%, transparent 50%);
+  animation: pondDrift4 35s ease-in-out infinite alternate;
+  opacity: 0.7;
+}
+
+@keyframes pondDrift1 {
+  0%   { transform: translate(0%, 0%)    rotate(0deg)   scale(1.00); }
+  33%  { transform: translate(2%, -1%)   rotate(1.5deg) scale(1.03); }
+  66%  { transform: translate(-1%, 2%)   rotate(-1deg)  scale(1.01); }
+  100% { transform: translate(1%, -2%)   rotate(2deg)   scale(1.04); }
+}
+@keyframes pondDrift2 {
+  0%   { transform: translate(0%, 0%)    rotate(0deg)   scale(1.00); }
+  50%  { transform: translate(-3%, 1.5%) rotate(-2deg)  scale(1.05); }
+  100% { transform: translate(2%, -1%)   rotate(1deg)   scale(0.98); }
+}
+@keyframes pondDrift3 {
+  0%   { transform: translate(0%, 0%)    rotate(0deg); }
+  40%  { transform: translate(1%, 2%)    rotate(1deg); }
+  100% { transform: translate(-2%, -1%)  rotate(-1.5deg); }
+}
+@keyframes pondDrift4 {
+  0%   { transform: translate(0%,  0%)  scale(1.0); }
+  50%  { transform: translate(1%, -1%) scale(1.06); }
+  100% { transform: translate(-1%, 1%) scale(0.97); }
+}
+
+
+/* ─────────────────────────────────────────────────────────────
+   3. SITE HEADER
+───────────────────────────────────────────────────────────── */
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  backdrop-filter: blur(18px) saturate(1.4);
+  -webkit-backdrop-filter: blur(18px) saturate(1.4);
+  background: rgba(220, 235, 245, 0.60);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.45);
+  box-shadow: 0 4px 30px rgba(42, 63, 92, 0.12);
+}
+
+.header-inner {
+  max-width: calc(var(--content-max) + 80px);
+  margin: 0 auto;
+  padding: 18px 40px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+}
+
+/* ── Brand ── */
+.brand {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.brand__ornament {
+  font-family: var(--font-arabic);
+  font-size: 0.95rem;
+  color: var(--pond-mid);
+  opacity: 0.75;
+  letter-spacing: 0.02em;
+  line-height: 1.2;
+}
+
+.brand__title {
+  font-family: var(--font-serif);
+  font-size: 1.75rem;
+  font-weight: 500;
+  color: var(--text-deep);
+  letter-spacing: 0.01em;
+  line-height: 1.1;
+}
+
+.brand__subtitle {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: 0.82rem;
+  color: var(--text-soft);
+  letter-spacing: 0.04em;
+  margin-top: 1px;
+}
+
+/* ── Navigation Tabs ── */
+.main-nav {
+  display: flex;
+  gap: 8px;
+  background: rgba(255, 255, 255, 0.30);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-xl);
+  padding: 6px;
+  backdrop-filter: blur(8px);
+}
+
+.nav-tab {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1px;
+  padding: 10px 22px;
+  border: 1.5px solid transparent;
+  border-radius: var(--radius-lg);
+  background: transparent;
+  cursor: pointer;
+  transition:
+    background var(--t-mid) var(--ease-smooth),
+    border-color var(--t-mid) var(--ease-smooth),
+    box-shadow var(--t-mid) var(--ease-smooth),
+    transform var(--t-fast) var(--ease-pond);
+}
+
+.nav-tab:hover {
+  background: rgba(255, 255, 255, 0.45);
+  transform: translateY(-1px);
+}
+
+.nav-tab--active {
+  background: var(--glass-bg-strong);
+  border-color: var(--glass-border);
+  box-shadow: 0 4px 18px rgba(42, 63, 92, 0.14);
+}
+
+.nav-tab__icon {
+  font-size: 0.85rem;
+  color: var(--pond-mid);
+  line-height: 1;
+}
+
+.nav-tab__label {
+  font-family: var(--font-serif);
+  font-size: 1.0rem;
+  font-weight: 500;
+  color: var(--text-deep);
+  line-height: 1.2;
+  white-space: nowrap;
+}
+
+.nav-tab__sublabel {
+  font-size: 0.68rem;
+  font-weight: 400;
+  color: var(--text-soft);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  white-space: nowrap;
+}
+
+.nav-tab--active .nav-tab__icon { color: var(--lily-green); }
+.nav-tab--active .nav-tab__label { color: var(--text-deep); }
+.nav-tab--active .nav-tab__sublabel { color: var(--pond-mid); }
+
+
+/* ─────────────────────────────────────────────────────────────
+   4. MAIN CONTENT & VIEW SYSTEM
+───────────────────────────────────────────────────────────── */
+.main-content {
+  position: relative;
+  z-index: 1;
+  max-width: calc(var(--content-max) + 80px);
+  margin: 0 auto;
+  padding: 40px 40px 80px;
+}
+
+.view {
+  animation: viewFadeIn var(--t-slow) var(--ease-smooth) both;
+}
+
+.view[hidden] {
+  display: none;
+}
+
+@keyframes viewFadeIn {
+  from { opacity: 0; transform: translateY(18px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+
+/* ─────────────────────────────────────────────────────────────
+   5. SAVED NAMES BAR (cross-view notification)
+───────────────────────────────────────────────────────────── */
+.saved-names-bar {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  padding: 14px 20px;
+  margin-bottom: 28px;
+  background: linear-gradient(135deg,
+    rgba(168, 201, 164, 0.35) 0%,
+    rgba(196, 211, 232, 0.35) 100%
+  );
+  border: 1px solid rgba(168, 201, 164, 0.55);
+  border-radius: var(--radius-lg);
+  backdrop-filter: blur(10px);
+  box-shadow: var(--shadow-green);
+  animation: slideDown var(--t-mid) var(--ease-pond) both;
+}
+
+@keyframes slideDown {
+  from { opacity: 0; transform: translateY(-12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.saved-names-bar__label {
+  font-family: var(--font-serif);
+  font-size: 0.88rem;
+  font-style: italic;
+  color: var(--lily-green-deep);
+  white-space: nowrap;
+}
+
+.saved-names-bar__chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  flex: 1;
+}
+
+/* Chip items rendered by JS */
+.saved-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 3px 12px;
+  background: rgba(255, 255, 255, 0.60);
+  border: 1px solid rgba(168, 201, 164, 0.55);
+  border-radius: var(--radius-pill);
+  font-size: 0.75rem;
+  color: var(--lily-green-deep);
+  font-family: var(--font-arabic);
+  direction: rtl;
+  animation: chipPop var(--t-fast) var(--ease-pond) both;
+}
+
+@keyframes chipPop {
+  from { opacity: 0; transform: scale(0.80); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+.saved-names-bar__clear {
+  font-size: 0.72rem;
+  color: var(--text-soft);
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px 8px;
+  border-radius: var(--radius-sm);
+  transition: color var(--t-fast), background var(--t-fast);
+}
+.saved-names-bar__clear:hover {
+  color: var(--blush);
+  background: rgba(212, 168, 176, 0.15);
+}
+
+
+/* ─────────────────────────────────────────────────────────────
+   6. STEP CARDS — Frosted "Painted" Surfaces
+───────────────────────────────────────────────────────────── */
+.blueprint-steps {
+  display: flex;
+  flex-direction: column;
+  gap: var(--step-gap);
+}
+
+.step-card {
+  position: relative;
+  background: var(--glass-bg);
+  backdrop-filter: blur(20px) saturate(1.3);
+  -webkit-backdrop-filter: blur(20px) saturate(1.3);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--glass-shadow);
+  overflow: hidden;
+  transition: box-shadow var(--t-mid) var(--ease-smooth),
+              transform var(--t-mid) var(--ease-smooth);
+  animation: cardRise 0.6s var(--ease-pond) both;
+}
+
+/* Stagger each card's entrance */
+.step-card:nth-child(1) { animation-delay: 0.08s; }
+.step-card:nth-child(2) { animation-delay: 0.16s; }
+.step-card:nth-child(3) { animation-delay: 0.24s; }
+.step-card:nth-child(4) { animation-delay: 0.32s; }
+
+@keyframes cardRise {
+  from { opacity: 0; transform: translateY(24px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.step-card:hover {
+  box-shadow: var(--glass-shadow-hover);
+  transform: translateY(-2px);
+}
+
+/* Decorative left-edge water-colour stroke */
+.step-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 5px;
+  height: 100%;
+  border-radius: var(--radius-xl) 0 0 var(--radius-xl);
+}
+
+#step-foundation::before { background: linear-gradient(180deg, var(--periwinkle) 0%, var(--pond-mid) 100%); }
+#step-pillars::before    { background: linear-gradient(180deg, var(--lilac) 0%, var(--periwinkle) 100%); }
+#step-heart::before      { background: linear-gradient(180deg, var(--blush) 0%, var(--lilac) 100%); }
+#step-seal::before       { background: linear-gradient(180deg, var(--lily-green) 0%, var(--pond-mid) 100%); }
+
+/* ── Card Header ── */
+.step-card__header {
+  display: flex;
+  align-items: flex-start;
+  gap: 18px;
+  padding: 28px 32px 20px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.40);
+}
+
+.step-card__number {
+  font-family: var(--font-arabic);
+  font-size: 2.6rem;
+  font-weight: 700;
+  line-height: 1;
+  color: var(--pond-sky);
+  opacity: 0.60;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.step-card__title {
+  font-family: var(--font-serif);
+  font-size: 1.55rem;
+  font-weight: 500;
+  color: var(--text-deep);
+  letter-spacing: 0.01em;
+  line-height: 1.2;
+}
+
+.step-card__subtitle {
+  font-size: 0.83rem;
+  color: var(--text-soft);
+  margin-top: 3px;
+  font-style: italic;
+  font-family: var(--font-serif);
+}
+
+/* ── Card Body ── */
+.step-card__body {
+  padding: 24px 32px 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+
+/* ─────────────────────────────────────────────────────────────
+   7. STEP 1 — NAMES GRID
+───────────────────────────────────────────────────────────── */
+
+/* Search Bar */
+.names-search-bar {
+  position: relative;
+  max-width: 380px;
+}
+
+.names-search-input {
+  width: 100%;
+  padding: 11px 44px 11px 18px;
+  background: rgba(255, 255, 255, 0.60);
+  border: 1.5px solid rgba(255, 255, 255, 0.70);
+  border-radius: var(--radius-pill);
+  font-family: var(--font-sans);
+  font-size: 0.88rem;
+  color: var(--text-deep);
+  outline: none;
+  box-shadow: inset 0 2px 6px rgba(42, 63, 92, 0.06);
+  transition: border-color var(--t-fast), box-shadow var(--t-fast),
+              background var(--t-fast);
+  appearance: none;
+  -webkit-appearance: none;
+}
+
+.names-search-input::placeholder { color: var(--text-ghost); }
+
+.names-search-input:focus {
+  background: rgba(255, 255, 255, 0.80);
+  border-color: var(--periwinkle);
+  box-shadow: inset 0 2px 6px rgba(42, 63, 92, 0.06),
+              0 0 0 3px rgba(143, 168, 204, 0.22);
+}
+
+/* Remove default search input X on webkit */
+.names-search-input::-webkit-search-cancel-button { -webkit-appearance: none; }
+
+.names-search-bar__icon {
+  position: absolute;
+  right: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--text-ghost);
+  font-size: 1.1rem;
+  pointer-events: none;
+}
+
+/* Names Grid */
+.names-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+  gap: 8px;
+  max-height: 360px;
+  overflow-y: auto;
+  padding-right: 4px;
+  scrollbar-width: thin;
+  scrollbar-color: var(--periwinkle-light) transparent;
+}
+
+.names-grid::-webkit-scrollbar { width: 5px; }
+.names-grid::-webkit-scrollbar-track { background: transparent; }
+.names-grid::-webkit-scrollbar-thumb {
+  background: var(--periwinkle-light);
+  border-radius: 10px;
+}
+
+/* Individual Name Card (rendered by JS) */
+.name-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding: 12px 8px 10px;
+  background: rgba(255, 255, 255, 0.50);
+  border: 1.5px solid rgba(255, 255, 255, 0.60);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  text-align: center;
+  transition:
+    background var(--t-fast) var(--ease-smooth),
+    border-color var(--t-fast) var(--ease-smooth),
+    box-shadow var(--t-fast) var(--ease-smooth),
+    transform var(--t-fast) var(--ease-pond);
+  will-change: transform;
+}
+
+.name-card:hover {
+  background: rgba(255, 255, 255, 0.80);
+  border-color: var(--periwinkle);
+  box-shadow: 0 4px 18px rgba(143, 168, 204, 0.30);
+  transform: translateY(-2px) scale(1.02);
+}
+
+.name-card--selected {
+  background: linear-gradient(135deg,
+    rgba(143, 168, 204, 0.30) 0%,
+    rgba(168, 201, 164, 0.25) 100%
+  );
+  border-color: var(--periwinkle);
+  box-shadow: 0 4px 18px rgba(143, 168, 204, 0.28);
+}
+
+.name-card__arabic {
+  font-family: var(--font-arabic);
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--text-arabic);
+  line-height: 1.4;
+  direction: rtl;
+}
+
+.name-card__transliteration {
+  font-size: 0.64rem;
+  color: var(--pond-mid);
+  font-style: italic;
+  font-family: var(--font-serif);
+  letter-spacing: 0.02em;
+}
+
+.name-card__english {
+  font-size: 0.68rem;
+  color: var(--text-soft);
+  font-weight: 400;
+  line-height: 1.3;
+  font-family: var(--font-sans);
+}
+
+.name-card--hidden {
+  display: none;
+}
+
+/* Foundation Preview */
+.inserted-names-preview {
+  background: rgba(255, 255, 255, 0.40);
+  border: 1px dashed rgba(143, 168, 204, 0.55);
+  border-radius: var(--radius-md);
+  padding: 14px 18px;
+  min-height: 60px;
+}
+
+.inserted-names-preview__label {
+  font-size: 0.72rem;
+  color: var(--text-ghost);
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  margin-bottom: 8px;
+}
+
+.inserted-names-preview__content {
+  font-family: var(--font-arabic);
+  font-size: 1.15rem;
+  color: var(--text-arabic);
+  direction: rtl;
+  text-align: right;
+  line-height: 1.9;
+  min-height: 30px;
+}
+
+.placeholder-text {
+  font-family: var(--font-sans);
+  font-size: 0.80rem;
+  color: var(--text-ghost);
+  font-style: italic;
+  direction: ltr;
+}
+
+
+/* ─────────────────────────────────────────────────────────────
+   8. STEP 2 — SALAWAT OPTIONS
+───────────────────────────────────────────────────────────── */
+.salawat-options__label,
+.seal-options__label {
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-soft);
+  margin-bottom: 4px;
+}
+
+.salawat-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 12px;
+}
+
+/* Hide native radio */
+.salawat-option__radio {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+  pointer-events: none;
+}
+
+.salawat-option {
+  cursor: pointer;
+  display: block;
+}
+
+.salawat-option__card {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 6px;
+  padding: 16px 18px;
+  background: rgba(255, 255, 255, 0.45);
+  border: 1.5px solid rgba(255, 255, 255, 0.55);
+  border-radius: var(--radius-md);
+  transition:
+    background var(--t-fast),
+    border-color var(--t-fast),
+    box-shadow var(--t-fast),
+    transform var(--t-fast) var(--ease-pond);
+  text-align: right;
+}
+
+.salawat-option:hover .salawat-option__card {
+  background: rgba(255, 255, 255, 0.70);
+  border-color: var(--lilac);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-lilac);
+}
+
+.salawat-option__radio:checked + .salawat-option__card {
+  background: linear-gradient(135deg,
+    rgba(176, 158, 192, 0.25) 0%,
+    rgba(196, 211, 232, 0.25) 100%
+  );
+  border-color: var(--lilac);
+  box-shadow: var(--shadow-lilac);
+}
+
+.salawat-option__arabic {
+  font-family: var(--font-arabic);
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--text-arabic);
+  line-height: 1.6;
+  direction: rtl;
+}
+
+.salawat-option__label {
+  font-family: var(--font-serif);
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--text-mid);
+}
+
+.salawat-option__transliteration {
+  font-size: 0.72rem;
+  font-style: italic;
+  color: var(--text-soft);
+  font-family: var(--font-serif);
+}
+
+
+/* ─────────────────────────────────────────────────────────────
+   9. STEP 3 — TEXTAREA (The Heart)
+───────────────────────────────────────────────────────────── */
+.textarea-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.dua-textarea {
+  width: 100%;
+  padding: 18px 20px;
+  background: rgba(255, 255, 255, 0.55);
+  border: 1.5px solid rgba(255, 255, 255, 0.65);
+  border-radius: var(--radius-md);
+  font-family: var(--font-serif);
+  font-size: 1.05rem;
+  font-weight: 300;
+  color: var(--text-deep);
+  line-height: 1.8;
+  resize: vertical;
+  min-height: 150px;
+  outline: none;
+  transition: border-color var(--t-fast), box-shadow var(--t-fast), background var(--t-fast);
+  box-shadow: inset 0 2px 8px rgba(42, 63, 92, 0.05);
+}
+
+.dua-textarea::placeholder {
+  color: var(--text-ghost);
+  font-style: italic;
+  font-family: var(--font-serif);
+}
+
+.dua-textarea:focus {
+  background: rgba(255, 255, 255, 0.80);
+  border-color: var(--blush);
+  box-shadow: inset 0 2px 8px rgba(42, 63, 92, 0.05),
+              0 0 0 3px rgba(212, 168, 176, 0.22);
+}
+
+.textarea-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 4px;
+}
+
+.char-count {
+  font-size: 0.72rem;
+  color: var(--text-ghost);
+}
+
+
+/* ─────────────────────────────────────────────────────────────
+   10. STEP 4 — SEAL OPTIONS (Checkboxes)
+───────────────────────────────────────────────────────────── */
+.seal-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 12px;
+}
+
+.seal-option__check {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+  pointer-events: none;
+}
+
+.seal-option {
+  cursor: pointer;
+  display: block;
+}
+
+.seal-option__card {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 6px;
+  padding: 16px 18px;
+  background: rgba(255, 255, 255, 0.45);
+  border: 1.5px solid rgba(255, 255, 255, 0.55);
+  border-radius: var(--radius-md);
+  transition: background var(--t-fast), border-color var(--t-fast),
+              box-shadow var(--t-fast), transform var(--t-fast) var(--ease-pond);
+  text-align: right;
+  position: relative;
+}
+
+/* Checkmark indicator */
+.seal-option__card::after {
+  content: '';
+  position: absolute;
+  top: 12px;
+  left: 14px;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  border: 2px solid rgba(168, 201, 164, 0.50);
+  background: transparent;
+  transition: background var(--t-fast), border-color var(--t-fast);
+}
+
+.seal-option:hover .seal-option__card {
+  background: rgba(255, 255, 255, 0.70);
+  border-color: var(--lily-green-light);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-green);
+}
+
+.seal-option__check:checked + .seal-option__card {
+  background: linear-gradient(135deg,
+    rgba(168, 201, 164, 0.28) 0%,
+    rgba(245, 240, 232, 0.28) 100%
+  );
+  border-color: var(--lily-green);
+  box-shadow: var(--shadow-green);
+}
+
+.seal-option__check:checked + .seal-option__card::after {
+  background: var(--lily-green);
+  border-color: var(--lily-green);
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 10 8' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 4l2.5 2.5L9 1' stroke='white' stroke-width='1.5' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 10px;
+}
+
+.seal-option__arabic {
+  font-family: var(--font-arabic);
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: var(--text-arabic);
+  direction: rtl;
+  line-height: 1.6;
+}
+
+.seal-option__label {
+  font-family: var(--font-serif);
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--text-mid);
+}
+
+.seal-option__meaning {
+  font-size: 0.72rem;
+  color: var(--text-soft);
+  font-style: italic;
+  font-family: var(--font-serif);
+  text-align: right;
+}
+
+
+/* ─────────────────────────────────────────────────────────────
+   11. BUTTONS — Unified System
+───────────────────────────────────────────────────────────── */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  font-family: var(--font-sans);
+  font-weight: 400;
+  letter-spacing: 0.02em;
+  cursor: pointer;
+  border: none;
+  border-radius: var(--radius-pill);
+  transition:
+    background var(--t-fast) var(--ease-smooth),
+    box-shadow var(--t-fast) var(--ease-smooth),
+    transform var(--t-fast) var(--ease-pond),
+    opacity var(--t-fast);
+  will-change: transform;
+  white-space: nowrap;
+}
+
+.btn:hover { transform: translateY(-2px); }
+.btn:active { transform: translateY(0) scale(0.97); }
+.btn:disabled {
+  opacity: 0.40;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.btn__icon {
+  font-size: 0.9em;
+  line-height: 1;
+}
+
+/* Primary — Generate button */
+.btn--primary {
+  padding: 15px 36px;
+  background: linear-gradient(135deg, var(--pond-mid) 0%, var(--periwinkle) 100%);
+  color: #fff;
+  font-size: 1.0rem;
+  font-family: var(--font-serif);
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  box-shadow: 0 6px 28px rgba(61, 107, 138, 0.35), 0 2px 8px rgba(61, 107, 138, 0.20);
+}
+
+.btn--primary:hover {
+  box-shadow: 0 10px 36px rgba(61, 107, 138, 0.45), 0 4px 14px rgba(61, 107, 138, 0.25);
+}
+
+/* Ghost */
+.btn--ghost {
+  padding: 8px 18px;
+  background: rgba(255, 255, 255, 0.45);
+  color: var(--text-mid);
+  font-size: 0.82rem;
+  border: 1px solid rgba(255, 255, 255, 0.60);
+  box-shadow: 0 2px 10px rgba(42, 63, 92, 0.08);
+}
+.btn--ghost:hover {
+  background: rgba(255, 255, 255, 0.75);
+  box-shadow: 0 4px 16px rgba(42, 63, 92, 0.12);
+}
+
+/* Small */
+.btn--small {
+  padding: 6px 14px;
+  font-size: 0.76rem;
+}
+
+/* Generate (large, centered) */
+.btn--generate {
+  display: block;
+  width: 100%;
+  max-width: 320px;
+  margin: 0 auto;
+  font-size: 1.1rem;
+  padding: 18px 48px;
+}
+
+/* Nav buttons (Prev/Next) */
+.btn--nav {
+  padding: 12px 24px;
+  background: rgba(255, 255, 255, 0.50);
+  color: var(--text-mid);
+  font-size: 0.88rem;
+  border: 1.5px solid rgba(255, 255, 255, 0.65);
+  box-shadow: 0 4px 16px rgba(42, 63, 92, 0.10);
+  border-radius: var(--radius-pill);
+  font-family: var(--font-sans);
+}
+.btn--nav:hover {
+  background: rgba(255, 255, 255, 0.80);
+  box-shadow: 0 6px 24px rgba(42, 63, 92, 0.15);
+}
+.btn--nav:disabled {
+  opacity: 0.30;
+  pointer-events: none;
+}
+
+/* Flip */
+.btn--flip {
+  padding: 13px 30px;
+  background: linear-gradient(135deg, var(--lilac) 0%, var(--periwinkle) 100%);
+  color: #fff;
+  font-size: 0.92rem;
+  font-family: var(--font-serif);
+  font-weight: 500;
+  box-shadow: 0 6px 24px rgba(176, 158, 192, 0.38);
+}
+.btn--flip:hover {
+  box-shadow: 0 10px 32px rgba(176, 158, 192, 0.50);
+}
+
+/* Add to Blueprint (on card back) */
+.btn--add-to-blueprint {
+  padding: 10px 22px;
+  background: linear-gradient(135deg,
+    rgba(168, 201, 164, 0.80) 0%,
+    rgba(107, 154, 110, 0.80) 100%
+  );
+  color: #fff;
+  font-size: 0.82rem;
+  font-family: var(--font-serif);
+  font-weight: 500;
+  border-radius: var(--radius-pill);
+  box-shadow: 0 4px 18px rgba(107, 154, 110, 0.35);
+  margin-top: 8px;
+  border: none;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition:
+    background var(--t-fast),
+    box-shadow var(--t-fast),
+    transform var(--t-fast) var(--ease-pond);
+}
+.btn--add-to-blueprint:hover {
+  box-shadow: 0 8px 28px rgba(107, 154, 110, 0.50);
+  transform: translateY(-2px);
+}
+
+
+/* ─────────────────────────────────────────────────────────────
+   12. OUTPUT SECTION
+───────────────────────────────────────────────────────────── */
+.output-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 28px;
+  padding-top: 8px;
+  animation: cardRise 0.6s var(--ease-pond) 0.40s both;
+}
+
+.dua-output {
+  width: 100%;
+  background: linear-gradient(160deg,
+    rgba(250, 248, 244, 0.90) 0%,
+    rgba(235, 245, 250, 0.85) 100%
+  );
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--glass-shadow-deep);
+  overflow: hidden;
+  animation: cardRise var(--t-slow) var(--ease-pond) both;
+}
+
+.dua-output__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 18px 28px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.50);
+  background: rgba(255, 255, 255, 0.30);
+}
+
+.dua-output__title {
+  font-family: var(--font-serif);
+  font-size: 1.25rem;
+  font-weight: 500;
+  color: var(--text-deep);
+  font-style: italic;
+}
+
+.dua-output__actions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.dua-output__text {
+  padding: 32px 36px;
+  font-family: var(--font-arabic);
+  font-size: 1.35rem;
+  line-height: 2.2;
+  color: var(--text-arabic);
+  direction: rtl;
+  text-align: right;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.dua-output__toast {
+  margin: 0 28px 18px;
+  padding: 10px 16px;
+  background: rgba(168, 201, 164, 0.30);
+  border: 1px solid rgba(168, 201, 164, 0.55);
+  border-radius: var(--radius-md);
+  font-size: 0.82rem;
+  color: var(--lily-green-deep);
+  text-align: center;
+  animation: toastPop var(--t-mid) var(--ease-pond) both;
+}
+
+@keyframes toastPop {
+  from { opacity: 0; transform: scale(0.95) translateY(4px); }
+  to   { opacity: 1; transform: scale(1)    translateY(0); }
+}
+
+
+/* ─────────────────────────────────────────────────────────────
+   13. VIEW 2: THE QUIZ
+───────────────────────────────────────────────────────────── */
+
+/* Quiz Header */
+.quiz-header {
+  text-align: center;
+  margin-bottom: 36px;
+}
+
+.quiz-header__title {
+  font-family: var(--font-serif);
+  font-size: 2.4rem;
+  font-weight: 300;
+  color: var(--warm-white);
+  text-shadow: 0 2px 16px rgba(42, 63, 92, 0.30);
+  letter-spacing: 0.04em;
+  margin-bottom: 6px;
+}
+
+.quiz-header__desc {
+  font-size: 0.88rem;
+  color: rgba(240, 248, 255, 0.75);
+  font-style: italic;
+  font-family: var(--font-serif);
+  margin-bottom: 20px;
+}
+
+/* Progress Bar */
+.quiz-progress {
+  position: relative;
+  height: 6px;
+  background: rgba(255, 255, 255, 0.20);
+  border-radius: var(--radius-pill);
+  max-width: 480px;
+  margin: 0 auto;
+  overflow: visible;
+}
+
+.quiz-progress__bar {
+  height: 100%;
+  background: linear-gradient(90deg, var(--lily-green-light) 0%, var(--periwinkle-light) 100%);
+  border-radius: var(--radius-pill);
+  transition: width var(--t-slow) var(--ease-smooth);
+  box-shadow: 0 0 12px rgba(168, 201, 164, 0.60);
+  min-width: 6px;
+}
+
+.quiz-progress__label {
+  position: absolute;
+  right: 0;
+  top: -22px;
+  font-size: 0.72rem;
+  color: rgba(240, 248, 255, 0.70);
+  letter-spacing: 0.06em;
+  white-space: nowrap;
+}
+
+
+/* ─────────────────────────────────────────────────────────────
+   14. FLASHCARD — 3D Flip System
+───────────────────────────────────────────────────────────── */
+.flashcard-stage {
+  perspective: 1400px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 32px;
+}
+
+.flashcard {
+  width: 100%;
+  max-width: 560px;
+  height: 340px;
+  cursor: pointer;
+  position: relative;
+  /* The perspective is on the stage; the card is the transform target */
+}
+
+.flashcard__inner {
+  position: absolute;
+  inset: 0;
+  transform-style: preserve-3d;
+  transition: transform var(--t-flip) var(--ease-pond);
+  border-radius: var(--radius-xl);
+}
+
+/* Flipped state */
+.flashcard--flipped .flashcard__inner {
+  transform: rotateY(180deg);
+}
+
+/* Both faces share these base styles */
+.flashcard__face {
+  position: absolute;
+  inset: 0;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  border-radius: var(--radius-xl);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.flashcard__face-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  padding: 36px 40px;
+  text-align: center;
+  width: 100%;
+}
+
+/* ── Front Face ── */
+.flashcard__face--front {
+  background: linear-gradient(160deg,
+    rgba(250, 248, 244, 0.88) 0%,
+    rgba(220, 235, 248, 0.82) 100%
+  );
+  border: 1.5px solid rgba(255, 255, 255, 0.65);
+  box-shadow: var(--glass-shadow-deep),
+              inset 0 1px 0 rgba(255, 255, 255, 0.70);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+}
+
+/* Watercolour wash on front */
+.flashcard__face--front::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 50% 40% at 80% 20%, rgba(143, 168, 204, 0.18) 0%, transparent 65%),
+    radial-gradient(ellipse 40% 50% at 10% 80%, rgba(176, 158, 192, 0.12) 0%, transparent 60%);
+  pointer-events: none;
+  border-radius: inherit;
+}
+
+/* ── Back Face ── */
+.flashcard__face--back {
+  background: linear-gradient(160deg,
+    rgba(235, 245, 250, 0.90) 0%,
+    rgba(220, 240, 235, 0.85) 100%
+  );
+  border: 1.5px solid rgba(255, 255, 255, 0.65);
+  box-shadow: var(--glass-shadow-deep),
+              inset 0 1px 0 rgba(255, 255, 255, 0.70);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  transform: rotateY(180deg);
+}
+
+.flashcard__face--back::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 50% 35% at 20% 20%, rgba(168, 201, 164, 0.18) 0%, transparent 60%),
+    radial-gradient(ellipse 45% 40% at 85% 75%, rgba(212, 168, 176, 0.15) 0%, transparent 60%);
+  pointer-events: none;
+  border-radius: inherit;
+}
+
+/* Card Content Elements */
+.flashcard__hint {
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--text-ghost);
+  font-family: var(--font-sans);
+}
+
+.flashcard__arabic {
+  font-family: var(--font-arabic);
+  font-size: 3.2rem;
+  font-weight: 700;
+  color: var(--text-arabic);
+  direction: rtl;
+  line-height: 1.3;
+  text-shadow: 0 2px 12px rgba(42, 63, 92, 0.10);
+}
+
+.flashcard__arabic--back {
+  font-size: 1.8rem;
+  opacity: 0.50;
+  font-weight: 400;
+}
+
+.flashcard__transliteration {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: 1.1rem;
+  color: var(--pond-mid);
+  letter-spacing: 0.02em;
+}
+
+.flashcard__number {
+  position: absolute;
+  bottom: 16px;
+  right: 22px;
+  font-family: var(--font-arabic);
+  font-size: 1.4rem;
+  color: var(--text-ghost);
+  opacity: 0.50;
+  line-height: 1;
+}
+
+.flashcard__meaning {
+  font-family: var(--font-serif);
+  font-size: 1.75rem;
+  font-weight: 500;
+  color: var(--text-deep);
+  line-height: 1.3;
+  letter-spacing: 0.01em;
+}
+
+.flashcard__detail {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: 0.88rem;
+  color: var(--text-soft);
+  line-height: 1.6;
+  max-width: 360px;
+}
+
+/* Add confirmation inline text */
+.add-confirmation {
+  font-size: 0.78rem;
+  color: var(--lily-green);
+  font-style: italic;
+  font-family: var(--font-serif);
+  animation: toastPop var(--t-fast) var(--ease-pond) both;
+}
+
+/* Flip hint */
+.flip-hint {
+  font-size: 0.76rem;
+  color: rgba(240, 248, 255, 0.60);
+  font-style: italic;
+  font-family: var(--font-serif);
+  letter-spacing: 0.03em;
+  text-align: center;
+  transition: opacity var(--t-mid);
+}
+
+.flip-hint--hidden {
+  opacity: 0;
+}
+
+
+/* ─────────────────────────────────────────────────────────────
+   15. QUIZ CONTROLS
+───────────────────────────────────────────────────────────── */
+.quiz-controls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  margin-bottom: 20px;
+}
+
+.quiz-footer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.quiz-footer__note {
+  font-size: 0.75rem;
+  color: rgba(240, 248, 255, 0.60);
+  font-style: italic;
+  font-family: var(--font-serif);
+}
+
+
+/* ─────────────────────────────────────────────────────────────
+   16. SITE FOOTER
+───────────────────────────────────────────────────────────── */
+.site-footer {
+  position: relative;
+  z-index: 1;
+  text-align: center;
+  padding: 24px 40px 32px;
+  border-top: 1px solid rgba(255, 255, 255, 0.18);
+}
+
+.site-footer__text {
+  font-family: var(--font-serif);
+  font-size: 1.05rem;
+  color: rgba(240, 248, 255, 0.65);
+  font-style: italic;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.site-footer__translation {
+  font-size: 0.85rem;
+  opacity: 0.80;
+}
+
+
+/* ─────────────────────────────────────────────────────────────
+   17. HOVER POLISH — subtle card shimmer
+───────────────────────────────────────────────────────────── */
+.step-card::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.12) 0%,
+    transparent 50%,
+    rgba(255, 255, 255, 0.04) 100%
+  );
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity var(--t-mid);
+}
+
+.step-card:hover::after { opacity: 1; }
+
+
+/* ─────────────────────────────────────────────────────────────
+   18. RESPONSIVE — Mobile Adjustments
+───────────────────────────────────────────────────────────── */
+@media (max-width: 680px) {
+  :root {
+    --header-h: auto;
+    --step-gap: 20px;
+    --content-max: 100%;
+  }
+
+  .header-inner {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 16px 20px;
+    gap: 14px;
+  }
+
+  .brand__title { font-size: 1.45rem; }
+  .main-nav { width: 100%; justify-content: center; }
+  .nav-tab { flex: 1; }
+
+  .main-content { padding: 24px 16px 60px; }
+
+  .step-card__header { padding: 20px 20px 14px; }
+  .step-card__body   { padding: 18px 20px 22px; }
+  .step-card__number { font-size: 2.0rem; }
+  .step-card__title  { font-size: 1.30rem; }
+
+  .names-grid {
+    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+    max-height: 280px;
+  }
+
+  .salawat-grid,
+  .seal-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .flashcard {
+    height: 290px;
+  }
+
+  .flashcard__arabic { font-size: 2.5rem; }
+  .flashcard__meaning { font-size: 1.45rem; }
+  .flashcard__detail { font-size: 0.80rem; }
+
+  .quiz-controls {
+    gap: 8px;
+  }
+
+  .btn--nav { padding: 10px 16px; font-size: 0.80rem; }
+  .btn--generate { max-width: 100%; }
+
+  .dua-output__text {
+    padding: 24px 20px;
+    font-size: 1.15rem;
+  }
+
+  .dua-output__header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+}
+
+@media (max-width: 400px) {
+  .flashcard { height: 260px; }
+  .flashcard__arabic { font-size: 2.1rem; }
+  .btn--flip { padding: 11px 20px; }
+}
+
+
+/* ─────────────────────────────────────────────────────────────
+   19. PRINT — Clean dua output
+───────────────────────────────────────────────────────────── */
+@media print {
+  .pond-bg, .site-header, .blueprint-steps > *:not(#output-section),
+  .quiz-controls, .quiz-footer, .quiz-header, .flashcard-stage { display: none !important; }
+
+  .dua-output {
+    box-shadow: none;
+    border: 1px solid #ccc;
+    background: #fff;
+  }
+
+  .dua-output__text {
+    font-size: 1.2rem;
+    color: #000;
+  }
+}
+
+  
+
+/* =============================================================
+   EXTENDED STYLES: MCQ + MASTERY + HADITH
+============================================================= */
+
+/* ── Quiz Mode Toggle ── */
+.quiz-mode-toggle {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin-bottom: 28px;
+}
+
+.mode-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 10px 24px;
+  background: rgba(255,255,255,0.30);
+  border: 1.5px solid rgba(255,255,255,0.50);
+  border-radius: var(--radius-pill);
+  font-family: var(--font-serif);
+  font-size: 0.95rem;
+  color: rgba(240,248,255,0.75);
+  cursor: pointer;
+  transition: background var(--t-fast), border-color var(--t-fast),
+              color var(--t-fast), box-shadow var(--t-fast),
+              transform var(--t-fast) var(--ease-pond);
+}
+.mode-btn:hover {
+  background: rgba(255,255,255,0.50);
+  color: var(--warm-white);
+  transform: translateY(-2px);
+}
+.mode-btn--active {
+  background: rgba(255,255,255,0.70);
+  border-color: rgba(255,255,255,0.80);
+  color: var(--text-deep);
+  box-shadow: 0 4px 18px rgba(42,63,92,0.15);
+}
+.mode-btn__icon { font-size: 0.85em; }
+
+/* ── MCQ Card ── */
+.mcq-card {
+  max-width: 600px;
+  margin: 0 auto 24px;
+  background: var(--glass-bg-strong);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--glass-shadow-deep);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  overflow: hidden;
+  animation: cardRise var(--t-slow) var(--ease-pond) both;
+}
+
+.mcq-card__prompt-type {
+  text-align: center;
+  padding: 14px 24px 0;
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.10em;
+  color: var(--text-ghost);
+  font-family: var(--font-sans);
+}
+
+.mcq-card__stimulus {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  padding: 20px 32px 24px;
+  border-bottom: 1px solid rgba(255,255,255,0.35);
+  position: relative;
+}
+.mcq-card__stimulus::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 55% 60% at 80% 20%, rgba(143,168,204,0.14) 0%, transparent 60%),
+    radial-gradient(ellipse 45% 50% at 15% 80%, rgba(176,158,192,0.10) 0%, transparent 55%);
+  pointer-events: none;
+}
+
+.mcq-card__arabic {
+  font-family: var(--font-arabic);
+  font-size: 2.8rem;
+  font-weight: 700;
+  color: var(--text-arabic);
+  direction: rtl;
+  line-height: 1.3;
+  text-align: center;
+  text-shadow: 0 2px 10px rgba(42,63,92,0.08);
+}
+
+/* When stimulus is English (reverse mode) */
+.mcq-card__arabic.mcq-meaning-prompt {
+  font-family: var(--font-serif);
+  font-size: 1.8rem;
+  font-weight: 500;
+  direction: ltr;
+  color: var(--text-deep);
+}
+
+.mcq-card__translit {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: 1.0rem;
+  color: var(--pond-mid);
+}
+
+/* Options grid */
+.mcq-card__options {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  padding: 20px 24px;
+}
+
+.mcq-option {
+  display: block;
+  width: 100%;
+  padding: 14px 16px;
+  background: rgba(255,255,255,0.45);
+  border: 1.5px solid rgba(255,255,255,0.60);
+  border-radius: var(--radius-md);
+  font-family: var(--font-serif);
+  font-size: 0.95rem;
+  color: var(--text-mid);
+  cursor: pointer;
+  text-align: center;
+  transition: background var(--t-fast), border-color var(--t-fast),
+              box-shadow var(--t-fast), transform var(--t-fast) var(--ease-pond);
+  line-height: 1.4;
+}
+.mcq-option:hover:not(:disabled) {
+  background: rgba(255,255,255,0.78);
+  border-color: var(--periwinkle);
+  box-shadow: 0 4px 16px rgba(143,168,204,0.25);
+  transform: translateY(-2px);
+}
+
+/* Arabic options (reverse mode) */
+.mcq-option.mcq-option--arabic {
+  font-family: var(--font-arabic);
+  font-size: 1.25rem;
+  direction: rtl;
+  color: var(--text-arabic);
+}
+
+.mcq-option--correct {
+  background: linear-gradient(135deg, rgba(168,201,164,0.45) 0%, rgba(107,154,110,0.30) 100%) !important;
+  border-color: var(--lily-green) !important;
+  box-shadow: 0 4px 20px rgba(107,154,110,0.30) !important;
+  color: var(--lily-green-deep) !important;
+  font-weight: 500;
+}
+
+.mcq-option--wrong {
+  background: linear-gradient(135deg, rgba(212,168,176,0.45) 0%, rgba(180,100,110,0.20) 100%) !important;
+  border-color: var(--blush) !important;
+  box-shadow: 0 4px 20px rgba(212,168,176,0.25) !important;
+  color: #8a4a52 !important;
+}
+
+.mcq-option:disabled { cursor: default; transform: none !important; }
+
+/* MCQ Feedback */
+.mcq-feedback {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 20px 28px 24px;
+  border-top: 1px solid rgba(255,255,255,0.35);
+  text-align: center;
+  animation: viewFadeIn var(--t-mid) var(--ease-smooth) both;
+}
+
+.mcq-feedback__icon { font-size: 2rem; line-height: 1; }
+.mcq-feedback__text {
+  font-family: var(--font-serif);
+  font-size: 1.1rem;
+  font-weight: 500;
+  color: var(--text-deep);
+}
+.mcq-feedback__detail {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: 0.85rem;
+  color: var(--text-soft);
+  max-width: 380px;
+}
+
+.mcq-next-btn { margin-top: 8px; }
+
+/* MCQ Stats bar */
+.mcq-stats {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+  max-width: 360px;
+  margin: 0 auto 16px;
+  background: rgba(255,255,255,0.25);
+  border: 1px solid rgba(255,255,255,0.40);
+  border-radius: var(--radius-pill);
+  padding: 12px 24px;
+  backdrop-filter: blur(10px);
+}
+.mcq-stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  flex: 1;
+}
+.mcq-stat--divider {
+  flex: 0 0 auto;
+  color: rgba(240,248,255,0.30);
+  font-size: 1.2rem;
+  padding: 0 8px;
+}
+.mcq-stat__value {
+  font-family: var(--font-serif);
+  font-size: 1.5rem;
+  font-weight: 500;
+  color: var(--warm-white);
+  line-height: 1.1;
+}
+.mcq-stat__label {
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: rgba(240,248,255,0.55);
+}
+
+/* ── HADITH BANNER ── */
+.hadith-banner {
+  position: relative;
+  background: linear-gradient(160deg,
+    rgba(42,63,92,0.75) 0%,
+    rgba(61,107,138,0.65) 50%,
+    rgba(58,92,64,0.55) 100%
+  );
+  border: 1px solid rgba(255,255,255,0.22);
+  border-radius: var(--radius-xl);
+  padding: 40px 44px 32px;
+  margin-bottom: 32px;
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  overflow: hidden;
+  box-shadow: var(--glass-shadow-deep);
+}
+
+.hadith-banner::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 60% 50% at 90% 10%, rgba(212,168,176,0.18) 0%, transparent 60%),
+    radial-gradient(ellipse 50% 60% at 5% 90%, rgba(168,201,164,0.15) 0%, transparent 55%);
+  pointer-events: none;
+}
+
+.hadith-banner__ornament {
+  position: absolute;
+  top: 16px;
+  left: 24px;
+  font-size: 4rem;
+  font-family: var(--font-serif);
+  color: rgba(255,255,255,0.12);
+  line-height: 1;
+  pointer-events: none;
+  font-style: italic;
+}
+
+.hadith-banner__arabic {
+  font-family: var(--font-arabic);
+  font-size: 1.55rem;
+  line-height: 2.0;
+  color: var(--cream);
+  direction: rtl;
+  text-align: center;
+  margin-bottom: 18px;
+  text-shadow: 0 2px 12px rgba(0,0,0,0.25);
+}
+
+.hadith-banner__translation {
+  font-family: var(--font-serif);
+  font-size: 1.1rem;
+  font-style: italic;
+  color: rgba(240,248,255,0.90);
+  line-height: 1.8;
+  text-align: center;
+  margin-bottom: 16px;
+}
+
+.hadith-banner__source {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  margin-bottom: 18px;
+}
+
+.hadith-banner__source cite {
+  font-size: 0.80rem;
+  font-style: normal;
+  color: var(--periwinkle-light);
+  font-family: var(--font-sans);
+  font-weight: 400;
+  letter-spacing: 0.04em;
+}
+
+.hadith-banner__narrator {
+  font-size: 0.75rem;
+  color: rgba(240,248,255,0.55);
+  font-family: var(--font-serif);
+  font-style: italic;
+}
+
+.hadith-banner__scholars-note {
+  border-top: 1px solid rgba(255,255,255,0.15);
+  padding-top: 16px;
+  font-family: var(--font-serif);
+  font-size: 0.88rem;
+  color: rgba(240,248,255,0.65);
+  line-height: 1.7;
+  text-align: center;
+  font-style: italic;
+}
+
+/* ── MASTERY OVERVIEW ── */
+.mastery-overview {
+  display: flex;
+  align-items: center;
+  gap: 36px;
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-xl);
+  padding: 32px 36px;
+  margin-bottom: 28px;
+  box-shadow: var(--glass-shadow);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+}
+
+/* Mastery Ring SVG */
+.mastery-ring-wrap {
+  position: relative;
+  flex-shrink: 0;
+  width: 120px;
+  height: 120px;
+}
+.mastery-ring {
+  width: 120px;
+  height: 120px;
+  transform: rotate(-90deg);
+}
+.mastery-ring__track {
+  fill: none;
+  stroke: rgba(143,168,204,0.20);
+  stroke-width: 10;
+}
+.mastery-ring__fill {
+  fill: none;
+  stroke: url(#ringGradient);
+  stroke-width: 10;
+  stroke-linecap: round;
+  transition: stroke-dashoffset 1s var(--ease-smooth);
+}
+.mastery-ring__label {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+}
+.mastery-ring__pct {
+  font-family: var(--font-serif);
+  font-size: 1.6rem;
+  font-weight: 500;
+  color: var(--text-deep);
+  line-height: 1;
+}
+.mastery-ring__sub {
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-soft);
+}
+
+.mastery-overview__stats {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  flex: 1;
+}
+.mastery-ov-stat {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+.mastery-ov-stat__value {
+  font-family: var(--font-serif);
+  font-size: 2.0rem;
+  font-weight: 500;
+  color: var(--text-deep);
+  line-height: 1;
+}
+.mastery-ov-stat__label {
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  color: var(--text-soft);
+}
+.mastery-ov-stat--learning .mastery-ov-stat__value { color: var(--pond-mid); }
+.mastery-ov-stat--unseen   .mastery-ov-stat__value { color: var(--text-ghost); }
+.mastery-ov-stat--streak   .mastery-ov-stat__value { color: var(--lily-green); }
+
+/* ── MASTERY BAR ── */
+.mastery-bar-section {
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-xl);
+  padding: 24px 28px;
+  margin-bottom: 28px;
+  box-shadow: var(--glass-shadow);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+}
+
+.mastery-section-title {
+  font-family: var(--font-serif);
+  font-size: 1.2rem;
+  font-weight: 500;
+  color: var(--text-deep);
+  margin-bottom: 14px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.mastery-bar-legend {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-bottom: 12px;
+}
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.72rem;
+  color: var(--text-soft);
+  font-family: var(--font-sans);
+}
+.legend-item::before {
+  content: '';
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  border-radius: 3px;
+}
+.legend-item--mastered::before  { background: var(--lily-green); }
+.legend-item--learning::before  { background: var(--periwinkle); }
+.legend-item--weak::before      { background: var(--blush); }
+.legend-item--unseen::before    { background: rgba(143,168,204,0.20); border: 1px solid rgba(143,168,204,0.35); }
+
+.mastery-bar-track {
+  display: flex;
+  gap: 3px;
+  flex-wrap: wrap;
+}
+.mastery-bar-seg {
+  width: calc((100% - 98 * 3px) / 99);
+  min-width: 6px;
+  height: 28px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: transform var(--t-fast) var(--ease-pond), box-shadow var(--t-fast);
+  position: relative;
+}
+.mastery-bar-seg:hover {
+  transform: scaleY(1.3);
+  box-shadow: 0 3px 10px rgba(42,63,92,0.20);
+  z-index: 2;
+}
+.mastery-bar-seg--mastered { background: var(--lily-green); }
+.mastery-bar-seg--learning { background: var(--periwinkle); }
+.mastery-bar-seg--weak     { background: var(--blush); }
+.mastery-bar-seg--unseen   { background: rgba(143,168,204,0.20); border: 1px solid rgba(143,168,204,0.25); }
+
+/* Tooltip on bar segments */
+.mastery-bar-seg::after {
+  content: attr(data-tip);
+  position: absolute;
+  bottom: 120%;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(30,46,58,0.92);
+  color: var(--cream);
+  font-size: 0.68rem;
+  padding: 4px 8px;
+  border-radius: 6px;
+  white-space: nowrap;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity var(--t-fast);
+  font-family: var(--font-sans);
+  z-index: 10;
+}
+.mastery-bar-seg:hover::after { opacity: 1; }
+
+/* ── REVIEW SECTION ── */
+.review-section {
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-xl);
+  padding: 24px 28px;
+  margin-bottom: 28px;
+  box-shadow: var(--glass-shadow);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+}
+
+.review-section__count {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 22px;
+  height: 22px;
+  padding: 0 6px;
+  background: var(--blush);
+  color: #fff;
+  font-size: 0.70rem;
+  font-family: var(--font-sans);
+  border-radius: var(--radius-pill);
+  font-weight: 500;
+}
+
+.review-section__desc {
+  font-size: 0.82rem;
+  color: var(--text-soft);
+  font-style: italic;
+  font-family: var(--font-serif);
+  margin-bottom: 16px;
+}
+
+.review-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 12px;
+}
+
+.review-card {
+  background: linear-gradient(135deg,
+    rgba(212,168,176,0.20) 0%,
+    rgba(250,248,244,0.60) 100%
+  );
+  border: 1.5px solid rgba(212,168,176,0.45);
+  border-radius: var(--radius-md);
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  animation: cardRise var(--t-mid) var(--ease-pond) both;
+}
+
+.review-card__arabic {
+  font-family: var(--font-arabic);
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--text-arabic);
+  direction: rtl;
+  text-align: right;
+}
+
+.review-card__english {
+  font-family: var(--font-serif);
+  font-size: 0.88rem;
+  color: var(--text-mid);
+}
+
+.review-card__wrong-count {
+  font-size: 0.70rem;
+  color: var(--blush);
+  font-family: var(--font-sans);
+}
+
+.review-card__study-btn {
+  margin-top: 6px;
+  padding: 6px 12px;
+  font-size: 0.72rem;
+  font-family: var(--font-serif);
+  background: rgba(255,255,255,0.55);
+  border: 1px solid rgba(212,168,176,0.45);
+  border-radius: var(--radius-pill);
+  color: var(--text-mid);
+  cursor: pointer;
+  transition: background var(--t-fast), transform var(--t-fast) var(--ease-pond);
+}
+.review-card__study-btn:hover {
+  background: rgba(255,255,255,0.85);
+  transform: translateY(-1px);
+}
+
+.review-empty {
+  grid-column: 1 / -1;
+  text-align: center;
+  font-family: var(--font-serif);
+  font-style: italic;
+  color: var(--text-ghost);
+  font-size: 0.88rem;
+  padding: 20px;
+}
+
+/* ── ALL NAMES MASTERY TABLE ── */
+.all-names-mastery {
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-xl);
+  padding: 24px 28px;
+  margin-bottom: 24px;
+  box-shadow: var(--glass-shadow);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+}
+
+.mastery-filter-bar {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  margin-bottom: 16px;
+}
+
+.filter-btn {
+  padding: 6px 16px;
+  background: rgba(255,255,255,0.40);
+  border: 1.5px solid rgba(255,255,255,0.55);
+  border-radius: var(--radius-pill);
+  font-size: 0.76rem;
+  color: var(--text-soft);
+  cursor: pointer;
+  font-family: var(--font-sans);
+  transition: background var(--t-fast), border-color var(--t-fast), color var(--t-fast);
+}
+.filter-btn:hover { background: rgba(255,255,255,0.65); color: var(--text-deep); }
+.filter-btn--active {
+  background: rgba(255,255,255,0.78);
+  border-color: var(--periwinkle);
+  color: var(--text-deep);
+}
+
+.mastery-names-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 8px;
+  max-height: 420px;
+  overflow-y: auto;
+  padding-right: 4px;
+  scrollbar-width: thin;
+  scrollbar-color: var(--periwinkle-light) transparent;
+}
+.mastery-names-grid::-webkit-scrollbar { width: 5px; }
+.mastery-names-grid::-webkit-scrollbar-thumb { background: var(--periwinkle-light); border-radius: 10px; }
+
+.mastery-name-card {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 12px 14px;
+  border-radius: var(--radius-md);
+  border: 1.5px solid rgba(255,255,255,0.45);
+  background: rgba(255,255,255,0.40);
+  position: relative;
+  overflow: hidden;
+  transition: transform var(--t-fast) var(--ease-pond), box-shadow var(--t-fast);
+}
+.mastery-name-card:hover { transform: translateY(-2px); box-shadow: 0 4px 16px rgba(42,63,92,0.12); }
+
+.mastery-name-card__status-stripe {
+  position: absolute;
+  top: 0; left: 0;
+  width: 4px;
+  height: 100%;
+}
+.mastery-name-card[data-status="mastered"] .mastery-name-card__status-stripe { background: var(--lily-green); }
+.mastery-name-card[data-status="learning"] .mastery-name-card__status-stripe { background: var(--periwinkle); }
+.mastery-name-card[data-status="weak"]     .mastery-name-card__status-stripe { background: var(--blush); }
+.mastery-name-card[data-status="unseen"]   .mastery-name-card__status-stripe { background: rgba(143,168,204,0.30); }
+
+.mastery-name-card__arabic {
+  font-family: var(--font-arabic);
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--text-arabic);
+  direction: rtl;
+  text-align: right;
+  padding-left: 6px;
+}
+.mastery-name-card__english {
+  font-size: 0.70rem;
+  color: var(--text-soft);
+  font-family: var(--font-sans);
+  padding-left: 6px;
+  line-height: 1.3;
+}
+.mastery-name-card__score {
+  font-size: 0.65rem;
+  color: var(--text-ghost);
+  font-family: var(--font-sans);
+  padding-left: 6px;
+  margin-top: 2px;
+}
+
+/* Reset row */
+.mastery-reset-row {
+  display: flex;
+  justify-content: center;
+  padding: 8px 0 16px;
+}
+
+/* ── RESPONSIVE ADDITIONS ── */
+@media (max-width: 680px) {
+  .mastery-overview {
+    flex-direction: column;
+    align-items: center;
+    padding: 24px 20px;
+    gap: 20px;
+  }
+  .mastery-overview__stats { grid-template-columns: 1fr 1fr; }
+  .mcq-card__options { grid-template-columns: 1fr; }
+  .hadith-banner { padding: 28px 20px 24px; }
+  .hadith-banner__arabic { font-size: 1.2rem; }
+  .mastery-bar-seg { height: 20px; }
+}
+
+
+
+/* =============================================================
+   COLLECTIONS VIEW STYLES
+============================================================= */
+
+/* ── Collections Header ── */
+.collections-header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 20px;
+  margin-bottom: 28px;
+  flex-wrap: wrap;
+}
+
+.collections-header__title {
+  font-family: var(--font-serif);
+  font-size: 2.0rem;
+  font-weight: 300;
+  color: var(--warm-white);
+  text-shadow: 0 2px 16px rgba(42,63,92,0.30);
+  letter-spacing: 0.03em;
+  line-height: 1.1;
+  margin-bottom: 5px;
+}
+
+.collections-header__desc {
+  font-family: var(--font-serif);
+  font-size: 0.85rem;
+  font-style: italic;
+  color: rgba(240,248,255,0.68);
+}
+
+.collections-header__tabs {
+  display: flex;
+  gap: 6px;
+  background: rgba(255,255,255,0.18);
+  border: 1px solid rgba(255,255,255,0.30);
+  border-radius: var(--radius-xl);
+  padding: 5px;
+  backdrop-filter: blur(8px);
+  flex-shrink: 0;
+}
+
+.coll-tab {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 9px 18px;
+  border: 1.5px solid transparent;
+  border-radius: var(--radius-lg);
+  background: transparent;
+  font-family: var(--font-serif);
+  font-size: 0.90rem;
+  color: rgba(240,248,255,0.70);
+  cursor: pointer;
+  transition: background var(--t-mid), border-color var(--t-mid),
+              color var(--t-mid), box-shadow var(--t-mid),
+              transform var(--t-fast) var(--ease-pond);
+  white-space: nowrap;
+}
+.coll-tab:hover {
+  background: rgba(255,255,255,0.30);
+  color: var(--warm-white);
+  transform: translateY(-1px);
+}
+.coll-tab--active {
+  background: var(--glass-bg-strong);
+  border-color: var(--glass-border);
+  color: var(--text-deep);
+  box-shadow: 0 4px 16px rgba(42,63,92,0.14);
+}
+
+.coll-tab__badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 20px;
+  height: 20px;
+  padding: 0 5px;
+  background: var(--periwinkle);
+  color: #fff;
+  font-size: 0.65rem;
+  font-family: var(--font-sans);
+  border-radius: var(--radius-pill);
+  font-weight: 500;
+  transition: background var(--t-fast);
+}
+.coll-tab--active .coll-tab__badge { background: var(--pond-mid); }
+
+/* ── Collection Panels ── */
+.coll-panel {
+  animation: viewFadeIn var(--t-slow) var(--ease-smooth) both;
+}
+
+/* ── Empty State ── */
+.coll-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 60px 40px;
+  background: var(--glass-bg);
+  border: 1px dashed rgba(143,168,204,0.40);
+  border-radius: var(--radius-xl);
+  backdrop-filter: blur(16px);
+}
+
+.coll-empty__icon {
+  font-size: 3.5rem;
+  color: rgba(143,168,204,0.35);
+  line-height: 1;
+  margin-bottom: 16px;
+  font-family: var(--font-serif);
+}
+
+.coll-empty__title {
+  font-family: var(--font-serif);
+  font-size: 1.3rem;
+  font-weight: 500;
+  color: var(--text-mid);
+  margin-bottom: 8px;
+}
+
+.coll-empty__desc {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: 0.88rem;
+  color: var(--text-soft);
+  max-width: 380px;
+  line-height: 1.7;
+}
+
+/* ── Saved Duas Grid ── */
+.saved-duas-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.saved-dua-card {
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--glass-shadow);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  overflow: hidden;
+  transition: box-shadow var(--t-mid), transform var(--t-mid);
+  animation: cardRise var(--t-slow) var(--ease-pond) both;
+  position: relative;
+}
+.saved-dua-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0;
+  width: 5px;
+  height: 100%;
+  background: linear-gradient(180deg, var(--periwinkle) 0%, var(--lilac) 100%);
+  border-radius: var(--radius-xl) 0 0 var(--radius-xl);
+}
+.saved-dua-card:hover {
+  box-shadow: var(--glass-shadow-hover);
+  transform: translateY(-2px);
+}
+
+.saved-dua-card__header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  padding: 18px 24px 12px 32px;
+  border-bottom: 1px solid rgba(255,255,255,0.35);
+  gap: 12px;
+}
+
+.saved-dua-card__meta {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  flex: 1;
+}
+
+.saved-dua-card__title {
+  font-family: var(--font-serif);
+  font-size: 1.05rem;
+  font-weight: 500;
+  color: var(--text-deep);
+  cursor: pointer;
+  border: none;
+  background: none;
+  padding: 0;
+  text-align: left;
+  line-height: 1.3;
+}
+.saved-dua-card__title:hover { color: var(--pond-mid); }
+
+.saved-dua-card__date {
+  font-size: 0.70rem;
+  color: var(--text-ghost);
+  font-family: var(--font-sans);
+}
+
+.saved-dua-card__actions {
+  display: flex;
+  gap: 6px;
+  flex-shrink: 0;
+}
+
+.saved-dua-card__btn {
+  padding: 5px 12px;
+  font-size: 0.72rem;
+  font-family: var(--font-sans);
+  background: rgba(255,255,255,0.45);
+  border: 1px solid rgba(255,255,255,0.60);
+  border-radius: var(--radius-pill);
+  color: var(--text-soft);
+  cursor: pointer;
+  transition: background var(--t-fast), color var(--t-fast), transform var(--t-fast) var(--ease-pond);
+}
+.saved-dua-card__btn:hover {
+  background: rgba(255,255,255,0.80);
+  color: var(--text-deep);
+  transform: translateY(-1px);
+}
+.saved-dua-card__btn--delete:hover {
+  background: rgba(212,168,176,0.35);
+  color: #8a4a52;
+  border-color: rgba(212,168,176,0.55);
+}
+
+.saved-dua-card__body {
+  padding: 16px 24px 20px 32px;
+}
+
+.saved-dua-card__text {
+  font-family: var(--font-arabic);
+  font-size: 1.25rem;
+  line-height: 2.1;
+  color: var(--text-arabic);
+  direction: rtl;
+  text-align: right;
+  white-space: pre-wrap;
+  word-break: break-word;
+  max-height: 160px;
+  overflow: hidden;
+  position: relative;
+  transition: max-height var(--t-slow) var(--ease-smooth);
+}
+.saved-dua-card__text--expanded { max-height: 2000px; }
+
+.saved-dua-card__text::after {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 50px;
+  background: linear-gradient(transparent, rgba(250,248,244,0.85));
+  pointer-events: none;
+  transition: opacity var(--t-mid);
+}
+.saved-dua-card__text--expanded::after { opacity: 0; }
+
+.saved-dua-card__expand {
+  display: block;
+  margin-top: 10px;
+  font-size: 0.75rem;
+  color: var(--pond-mid);
+  font-style: italic;
+  font-family: var(--font-serif);
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  transition: color var(--t-fast);
+}
+.saved-dua-card__expand:hover { color: var(--text-deep); }
+
+/* Rename input */
+.saved-dua-card__rename {
+  font-family: var(--font-serif);
+  font-size: 1.0rem;
+  color: var(--text-deep);
+  background: rgba(255,255,255,0.70);
+  border: 1.5px solid var(--periwinkle);
+  border-radius: var(--radius-sm);
+  padding: 4px 10px;
+  outline: none;
+  flex: 1;
+}
+
+/* Save toast */
+.save-toast {
+  position: fixed;
+  bottom: 28px;
+  left: 50%;
+  transform: translateX(-50%) translateY(0);
+  background: rgba(42,63,92,0.90);
+  color: var(--cream);
+  font-family: var(--font-serif);
+  font-size: 0.90rem;
+  font-style: italic;
+  padding: 12px 24px;
+  border-radius: var(--radius-pill);
+  box-shadow: 0 8px 32px rgba(42,63,92,0.30);
+  backdrop-filter: blur(12px);
+  z-index: 500;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--t-mid), transform var(--t-mid) var(--ease-pond);
+}
+.save-toast--visible {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* ── Heritage Filter ── */
+.heritage-filter-bar {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
+}
+
+/* ── Heritage Grid ── */
+.heritage-duas-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.heritage-card {
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--glass-shadow);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  overflow: hidden;
+  transition: box-shadow var(--t-mid), transform var(--t-mid);
+  animation: cardRise var(--t-slow) var(--ease-pond) both;
+  position: relative;
+}
+.heritage-card:hover {
+  box-shadow: var(--glass-shadow-hover);
+  transform: translateY(-2px);
+}
+
+/* Category colour stripes */
+.heritage-card[data-cat="quran"]::before      { background: linear-gradient(180deg, var(--lily-green) 0%, var(--pond-mid) 100%); }
+.heritage-card[data-cat="prophet"]::before    { background: linear-gradient(180deg, var(--pond-mid) 0%, var(--periwinkle) 100%); }
+.heritage-card[data-cat="companions"]::before { background: linear-gradient(180deg, var(--lilac) 0%, var(--periwinkle) 100%); }
+.heritage-card[data-cat="scholars"]::before   { background: linear-gradient(180deg, var(--blush) 0%, var(--lilac) 100%); }
+
+.heritage-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0;
+  width: 5px;
+  height: 100%;
+  border-radius: var(--radius-xl) 0 0 var(--radius-xl);
+}
+
+.heritage-card__header {
+  padding: 20px 28px 14px 36px;
+  border-bottom: 1px solid rgba(255,255,255,0.35);
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.heritage-card__source-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.heritage-card__category {
+  display: inline-block;
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  letter-spacing: 0.09em;
+  padding: 2px 10px;
+  border-radius: var(--radius-pill);
+  font-family: var(--font-sans);
+  font-weight: 500;
+}
+[data-cat="quran"]      .heritage-card__category { background: rgba(107,154,110,0.20); color: var(--lily-green-deep); }
+[data-cat="prophet"]    .heritage-card__category { background: rgba(61,107,138,0.20); color: var(--pond-deep); }
+[data-cat="companions"] .heritage-card__category { background: rgba(176,158,192,0.25); color: #5a4a6a; }
+[data-cat="scholars"]   .heritage-card__category { background: rgba(212,168,176,0.25); color: #7a3a42; }
+
+.heritage-card__title {
+  font-family: var(--font-serif);
+  font-size: 1.1rem;
+  font-weight: 500;
+  color: var(--text-deep);
+  margin-top: 3px;
+}
+
+.heritage-card__source {
+  font-family: var(--font-serif);
+  font-size: 0.75rem;
+  font-style: italic;
+  color: var(--text-soft);
+}
+
+.heritage-card__copy-btn {
+  padding: 7px 14px;
+  font-size: 0.75rem;
+  font-family: var(--font-serif);
+  background: rgba(255,255,255,0.45);
+  border: 1px solid rgba(255,255,255,0.60);
+  border-radius: var(--radius-pill);
+  color: var(--text-soft);
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: background var(--t-fast), transform var(--t-fast) var(--ease-pond);
+}
+.heritage-card__copy-btn:hover {
+  background: rgba(255,255,255,0.80);
+  color: var(--text-deep);
+  transform: translateY(-1px);
+}
+
+.heritage-card__body {
+  padding: 18px 28px 22px 36px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.heritage-card__arabic {
+  font-family: var(--font-arabic);
+  font-size: 1.4rem;
+  line-height: 2.1;
+  color: var(--text-arabic);
+  direction: rtl;
+  text-align: right;
+}
+
+.heritage-card__translation {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: 0.92rem;
+  color: var(--text-mid);
+  line-height: 1.75;
+  border-left: 3px solid rgba(143,168,204,0.35);
+  padding-left: 14px;
+}
+
+.heritage-card__context {
+  font-size: 0.78rem;
+  color: var(--text-soft);
+  font-family: var(--font-sans);
+  font-weight: 300;
+  line-height: 1.6;
+}
+
+/* ── Responsive ── */
+@media (max-width: 680px) {
+  .collections-header { flex-direction: column; align-items: flex-start; }
+  .collections-header__tabs { width: 100%; }
+  .coll-tab { flex: 1; justify-content: center; font-size: 0.80rem; }
+  .saved-dua-card__header { flex-direction: column; }
+  .heritage-card__header { flex-direction: column; }
+  .heritage-card__arabic { font-size: 1.2rem; }
+}
+
+</style>
+</head>
+
+<body>
+
+  <!-- ============================================================
+       AMBIENT BACKGROUND LAYERS (Monet pond atmosphere)
+  ============================================================ -->
+  <div class="pond-bg" aria-hidden="true">
+    <div class="pond-layer pond-layer--deep"></div>
+    <div class="pond-layer pond-layer--mid"></div>
+    <div class="pond-layer pond-layer--ripple"></div>
+    <div class="pond-layer pond-layer--lily"></div>
+  </div>
+
+
+  <!-- ============================================================
+       SITE HEADER & NAVIGATION
+  ============================================================ -->
+  <header class="site-header" role="banner">
+    <div class="header-inner">
+
+      <!-- Brand / Logo -->
+      <div class="brand">
+        <span class="brand__ornament" aria-hidden="true">بسم الله</span>
+        <h1 class="brand__title">The Dua Blueprint</h1>
+        <p class="brand__subtitle">A Sanctuary for Sacred Supplication</p>
+      </div>
+
+      <!-- Primary Navigation -->
+      <nav class="main-nav" role="navigation" aria-label="Main navigation">
+        <button
+          class="nav-tab nav-tab--active"
+          id="nav-blueprint"
+          data-view="blueprint"
+          aria-selected="true"
+          role="tab"
+          aria-controls="view-blueprint"
+        >
+          <span class="nav-tab__icon" aria-hidden="true">✦</span>
+          <span class="nav-tab__label">The Blueprint</span>
+          <span class="nav-tab__sublabel">Dua Builder</span>
+        </button>
+
+        <button
+          class="nav-tab"
+          id="nav-quiz"
+          data-view="quiz"
+          aria-selected="false"
+          role="tab"
+          aria-controls="view-quiz"
+        >
+          <span class="nav-tab__icon" aria-hidden="true">◈</span>
+          <span class="nav-tab__label">Plunge In</span>
+          <span class="nav-tab__sublabel">The Quiz</span>
+        </button>
+
+        <button
+          class="nav-tab"
+          id="nav-mastery"
+          data-view="mastery"
+          aria-selected="false"
+          role="tab"
+          aria-controls="view-mastery"
+        >
+          <span class="nav-tab__icon" aria-hidden="true">◉</span>
+          <span class="nav-tab__label">My Mastery</span>
+          <span class="nav-tab__sublabel">Progress</span>
+        </button>
+
+        <button
+          class="nav-tab"
+          id="nav-collections"
+          data-view="collections"
+          aria-selected="false"
+          role="tab"
+          aria-controls="view-collections"
+        >
+          <span class="nav-tab__icon" aria-hidden="true">❧</span>
+          <span class="nav-tab__label">Collections</span>
+          <span class="nav-tab__sublabel">Saved Duas</span>
+        </button>
+      </nav>
+
+    </div>
+  </header>
+
+
+  <!-- ============================================================
+       MAIN CONTENT AREA
+  ============================================================ -->
+  <main class="main-content" role="main">
+
+
+    <!-- ==========================================================
+         VIEW 1: THE BLUEPRINT — DUA BUILDER
+    ========================================================== -->
+    <section
+      id="view-blueprint"
+      class="view view--active"
+      role="tabpanel"
+      aria-labelledby="nav-blueprint"
+    >
+
+      <!-- Saved Names Notification Bar (populated from Quiz) -->
+      <div class="saved-names-bar" id="saved-names-bar" aria-live="polite" hidden>
+        <span class="saved-names-bar__label">✦ Names saved from your study:</span>
+        <div class="saved-names-bar__chips" id="saved-names-chips" role="list"></div>
+        <button class="saved-names-bar__clear" id="clear-saved-names" aria-label="Clear all saved names">✕ Clear</button>
+      </div>
+
+      <!-- Steps Container -->
+      <div class="blueprint-steps">
+
+        <!-- ── STEP 1: THE FOUNDATION (Praise / Allah's Names) ── -->
+        <article class="step-card" id="step-foundation" data-step="1">
+          <header class="step-card__header">
+            <div class="step-card__number" aria-hidden="true">١</div>
+            <div class="step-card__titles">
+              <h2 class="step-card__title">The Foundation</h2>
+              <p class="step-card__subtitle">Begin with Praise — Choose from the 99 Names of Allah</p>
+            </div>
+          </header>
+
+          <div class="step-card__body">
+
+            <!-- Search & Filter Bar -->
+            <div class="names-search-bar" role="search">
+              <label for="names-search-input" class="sr-only">Search the Names of Allah</label>
+              <input
+                type="search"
+                id="names-search-input"
+                class="names-search-input"
+                placeholder="Search by name or meaning…"
+                autocomplete="off"
+                aria-label="Search the 99 Names of Allah"
+              />
+              <span class="names-search-bar__icon" aria-hidden="true">⌕</span>
+            </div>
+
+            <!-- Names Grid -->
+            <div
+              class="names-grid"
+              id="names-grid"
+              role="grid"
+              aria-label="The 99 Names of Allah"
+            >
+              <!-- JS will render name cards here -->
+              <!-- Each card structure (reference for JS):
+              <button class="name-card" role="gridcell" data-id="1" data-arabic="الرَّحْمَنُ" data-english="The Most Gracious" data-transliteration="Ar-Rahman">
+                <span class="name-card__arabic">الرَّحْمَنُ</span>
+                <span class="name-card__transliteration">Ar-Rahman</span>
+                <span class="name-card__english">The Most Gracious</span>
+              </button>
+              -->
+            </div>
+
+            <!-- Inserted Names Preview -->
+            <div class="inserted-names-preview" id="foundation-preview" aria-live="polite">
+              <p class="inserted-names-preview__label">Selected names will appear here:</p>
+              <div class="inserted-names-preview__content" id="foundation-content">
+                <span class="placeholder-text">No names selected yet. Click a name above to add it.</span>
+              </div>
+              <button
+                class="btn btn--ghost btn--small"
+                id="clear-foundation"
+                aria-label="Clear selected names from foundation"
+                hidden
+              >
+                ✕ Clear selection
+              </button>
+            </div>
+
+          </div>
+        </article>
+
+
+        <!-- ── STEP 2: THE PILLARS (Salawat) ── -->
+        <article class="step-card" id="step-pillars" data-step="2">
+          <header class="step-card__header">
+            <div class="step-card__number" aria-hidden="true">٢</div>
+            <div class="step-card__titles">
+              <h2 class="step-card__title">The Pillars</h2>
+              <p class="step-card__subtitle">Send Blessings upon the Prophet ﷺ</p>
+            </div>
+          </header>
+
+          <div class="step-card__body">
+
+            <!-- Salawat Options -->
+            <div class="salawat-options" role="group" aria-labelledby="salawat-group-label">
+              <p id="salawat-group-label" class="salawat-options__label">Choose a form of Salawat:</p>
+
+              <div class="salawat-grid" id="salawat-grid">
+
+                <label class="salawat-option" for="salawat-short">
+                  <input
+                    type="radio"
+                    id="salawat-short"
+                    name="salawat"
+                    value="short"
+                    class="salawat-option__radio"
+                  />
+                  <div class="salawat-option__card">
+                    <span class="salawat-option__arabic">صَلَّى اللهُ عَلَيْهِ وَسَلَّمَ</span>
+                    <span class="salawat-option__label">Short Form</span>
+                    <span class="salawat-option__transliteration">Sallallahu 'Alayhi wa Sallam</span>
+                  </div>
+                </label>
+
+                <label class="salawat-option" for="salawat-ibrahimiyya">
+                  <input
+                    type="radio"
+                    id="salawat-ibrahimiyya"
+                    name="salawat"
+                    value="ibrahimiyya"
+                    class="salawat-option__radio"
+                  />
+                  <div class="salawat-option__card">
+                    <span class="salawat-option__arabic">اللَّهُمَّ صَلِّ عَلَى مُحَمَّدٍ وَعَلَى آلِ مُحَمَّدٍ</span>
+                    <span class="salawat-option__label">Al-Ibrahimiyya</span>
+                    <span class="salawat-option__transliteration">Allahumma Salli 'Ala Muhammad…</span>
+                  </div>
+                </label>
+
+                <label class="salawat-option" for="salawat-none">
+                  <input
+                    type="radio"
+                    id="salawat-none"
+                    name="salawat"
+                    value="none"
+                    class="salawat-option__radio"
+                    checked
+                  />
+                  <div class="salawat-option__card">
+                    <span class="salawat-option__arabic" aria-hidden="true">—</span>
+                    <span class="salawat-option__label">None / I'll add my own</span>
+                    <span class="salawat-option__transliteration">Skip this step</span>
+                  </div>
+                </label>
+
+              </div>
+            </div>
+
+          </div>
+        </article>
+
+
+        <!-- ── STEP 3: THE HEART (Personal Supplication) ── -->
+        <article class="step-card" id="step-heart" data-step="3">
+          <header class="step-card__header">
+            <div class="step-card__number" aria-hidden="true">٣</div>
+            <div class="step-card__titles">
+              <h2 class="step-card__title">The Heart</h2>
+              <p class="step-card__subtitle">Pour out your personal supplication</p>
+            </div>
+          </header>
+
+          <div class="step-card__body">
+
+            <div class="textarea-wrapper">
+              <label for="personal-dua" class="sr-only">Write your personal supplication</label>
+              <textarea
+                id="personal-dua"
+                class="dua-textarea"
+                placeholder="O Allah, I ask You by Your beautiful Names…&#10;&#10;Write your personal supplication here, in any language…"
+                rows="7"
+                aria-label="Write your personal supplication"
+                spellcheck="true"
+              ></textarea>
+              <div class="textarea-footer">
+                <span class="char-count" id="char-count" aria-live="polite">0 characters</span>
+                <button
+                  class="btn btn--ghost btn--small"
+                  id="clear-heart"
+                  aria-label="Clear personal supplication"
+                >
+                  ✕ Clear
+                </button>
+              </div>
+            </div>
+
+          </div>
+        </article>
+
+
+        <!-- ── STEP 4: THE SEAL (Closing Praises) ── -->
+        <article class="step-card" id="step-seal" data-step="4">
+          <header class="step-card__header">
+            <div class="step-card__number" aria-hidden="true">٤</div>
+            <div class="step-card__titles">
+              <h2 class="step-card__title">The Seal</h2>
+              <p class="step-card__subtitle">Close with praise and Ameen</p>
+            </div>
+          </header>
+
+          <div class="step-card__body">
+
+            <div class="seal-options" role="group" aria-labelledby="seal-group-label">
+              <p id="seal-group-label" class="seal-options__label">Choose a closing:</p>
+
+              <div class="seal-grid" id="seal-grid">
+
+                <label class="seal-option" for="seal-hamd">
+                  <input
+                    type="checkbox"
+                    id="seal-hamd"
+                    name="seal"
+                    value="hamd"
+                    class="seal-option__check"
+                    checked
+                  />
+                  <div class="seal-option__card">
+                    <span class="seal-option__arabic">وَالْحَمْدُ لِلَّهِ رَبِّ الْعَالَمِينَ</span>
+                    <span class="seal-option__label">Al-Hamd</span>
+                    <span class="seal-option__meaning">All praise is for Allah, Lord of all the worlds</span>
+                  </div>
+                </label>
+
+                <label class="seal-option" for="seal-ameen">
+                  <input
+                    type="checkbox"
+                    id="seal-ameen"
+                    name="seal"
+                    value="ameen"
+                    class="seal-option__check"
+                    checked
+                  />
+                  <div class="seal-option__card">
+                    <span class="seal-option__arabic">آمِينَ</span>
+                    <span class="seal-option__label">Ameen</span>
+                    <span class="seal-option__meaning">O Allah, accept our supplication</span>
+                  </div>
+                </label>
+
+              </div>
+            </div>
+
+          </div>
+        </article>
+
+
+        <!-- ── OUTPUT: GENERATE & EXPORT ── -->
+        <div class="output-section" id="output-section">
+
+          <button class="btn btn--primary btn--generate" id="generate-btn" aria-label="Generate your complete dua">
+            <span class="btn__icon" aria-hidden="true">✦</span>
+            Generate My Dua
+          </button>
+
+          <!-- Generated Dua Output Block -->
+          <div class="dua-output" id="dua-output" aria-live="polite" hidden>
+            <header class="dua-output__header">
+              <h3 class="dua-output__title">Your Dua</h3>
+              <div class="dua-output__actions">
+                <button class="btn btn--ghost btn--small" id="copy-btn" aria-label="Copy dua to clipboard">
+                  <span class="btn__icon" aria-hidden="true">⎘</span>
+                  Copy to Clipboard
+                </button>
+                <button class="btn btn--ghost btn--small" id="save-to-collection-btn" aria-label="Save this dua to your collection">
+                  ❧ Save to Collection
+                </button>
+                <button class="btn btn--ghost btn--small" id="reset-btn" aria-label="Reset and start a new dua">
+                  ↺ Start Fresh
+                </button>
+              </div>
+            </header>
+
+            <div class="dua-output__text" id="dua-output-text" role="document" aria-label="Your generated dua"></div>
+
+            <div class="dua-output__toast" id="copy-toast" role="status" aria-live="polite" hidden>
+              ✓ Copied to clipboard
+            </div>
+          </div>
+
+        </div>
+
+      </div><!-- /.blueprint-steps -->
+
+    </section>
+    <!-- /END VIEW 1: THE BLUEPRINT -->
+
+
+    <!-- ==========================================================
+         VIEW 2: PLUNGE IN — THE QUIZ
+    ========================================================== -->
+    <section
+      id="view-quiz"
+      class="view"
+      role="tabpanel"
+      aria-labelledby="nav-quiz"
+      hidden
+    >
+
+      <!-- Quiz Header Info -->
+      <div class="quiz-header">
+        <h2 class="quiz-header__title">Plunge In</h2>
+        <p class="quiz-header__desc">Active recall of the 99 Names of Allah. Study by seeing — then dive deeper.</p>
+
+        <!-- Progress Bar -->
+        <div class="quiz-progress" role="progressbar" aria-valuemin="1" aria-valuemax="99" aria-valuenow="1" aria-label="Flashcard progress">
+          <div class="quiz-progress__bar" id="quiz-progress-bar"></div>
+          <span class="quiz-progress__label" id="quiz-progress-label">1 / 99</span>
+        </div>
+      </div>
+
+
+      <!-- ── THE FLASHCARD ── -->
+      <div class="flashcard-stage" id="flashcard-stage">
+
+        <div
+          class="flashcard"
+          id="flashcard"
+          role="button"
+          tabindex="0"
+          aria-label="Flashcard — press to flip"
+          aria-pressed="false"
+        >
+          <!-- Inner wrapper for 3D flip -->
+          <div class="flashcard__inner" id="flashcard-inner">
+
+            <!-- FRONT FACE: Arabic Name -->
+            <div class="flashcard__face flashcard__face--front" aria-label="Front of flashcard">
+              <div class="flashcard__face-content">
+                <span class="flashcard__hint">The Name</span>
+                <p class="flashcard__arabic" id="card-arabic" lang="ar">الرَّحْمَنُ</p>
+                <p class="flashcard__transliteration" id="card-transliteration">Ar-Rahman</p>
+                <span class="flashcard__number" id="card-number" aria-label="Card number">١</span>
+              </div>
+            </div>
+
+            <!-- BACK FACE: English Meaning -->
+            <div class="flashcard__face flashcard__face--back" aria-label="Back of flashcard" aria-hidden="true">
+              <div class="flashcard__face-content">
+                <span class="flashcard__hint">The Meaning</span>
+                <p class="flashcard__arabic flashcard__arabic--back" id="card-arabic-back" lang="ar">الرَّحْمَنُ</p>
+                <p class="flashcard__meaning" id="card-meaning">The Most Gracious</p>
+                <p class="flashcard__detail" id="card-detail">The One whose mercy is vast and encompasses all of creation.</p>
+
+                <!-- Add to Blueprint CTA -->
+                <button
+                  class="btn btn--add-to-blueprint"
+                  id="add-to-blueprint-btn"
+                  aria-label="Add this name to your Dua Blueprint"
+                >
+                  <span class="btn__icon" aria-hidden="true">✦</span>
+                  Add to Blueprint
+                </button>
+
+                <span class="add-confirmation" id="add-confirmation" aria-live="polite" hidden>
+                  ✓ Added to your Blueprint!
+                </span>
+              </div>
+            </div>
+
+          </div><!-- /.flashcard__inner -->
+        </div><!-- /.flashcard -->
+
+        <!-- Flip instruction -->
+        <p class="flip-hint" id="flip-hint" aria-live="polite">Click the card or press Space to reveal the meaning</p>
+
+      </div><!-- /.flashcard-stage -->
+
+
+      <!-- ── QUIZ CONTROLS ── -->
+      <div class="quiz-controls" role="group" aria-label="Flashcard navigation">
+
+        <button class="btn btn--nav btn--prev" id="prev-btn" aria-label="Previous card" disabled>
+          <span aria-hidden="true">←</span>
+          Previous
+        </button>
+
+        <button class="btn btn--flip" id="flip-btn" aria-label="Flip card to reveal meaning">
+          <span class="btn__icon" aria-hidden="true">↻</span>
+          Flip Card
+        </button>
+
+        <button class="btn btn--nav btn--next" id="next-btn" aria-label="Next card">
+          Next
+          <span aria-hidden="true">→</span>
+        </button>
+
+      </div>
+
+
+      <!-- ── QUIZ MODE TOGGLE ── -->
+      <div class="quiz-mode-toggle" role="group" aria-label="Quiz mode">
+        <button class="mode-btn mode-btn--active" id="mode-flashcard" data-mode="flashcard">
+          <span class="mode-btn__icon" aria-hidden="true">⧉</span> Flashcards
+        </button>
+        <button class="mode-btn" id="mode-mcq" data-mode="mcq">
+          <span class="mode-btn__icon" aria-hidden="true">◎</span> Challenge Me
+        </button>
+      </div>
+
+      <!-- ── FLASHCARD PANEL (existing) ── -->
+      <div id="panel-flashcard">
+        <!-- ── THE FLASHCARD ── -->
+        <div class="flashcard-stage" id="flashcard-stage">
+          <div class="flashcard" id="flashcard" role="button" tabindex="0"
+               aria-label="Flashcard — press to flip" aria-pressed="false">
+            <div class="flashcard__inner" id="flashcard-inner">
+              <div class="flashcard__face flashcard__face--front" aria-label="Front of flashcard">
+                <div class="flashcard__face-content">
+                  <span class="flashcard__hint">The Name</span>
+                  <p class="flashcard__arabic" id="card-arabic" lang="ar">الرَّحْمَنُ</p>
+                  <p class="flashcard__transliteration" id="card-transliteration">Ar-Rahman</p>
+                  <span class="flashcard__number" id="card-number" aria-label="Card number">١</span>
+                </div>
+              </div>
+              <div class="flashcard__face flashcard__face--back" aria-label="Back of flashcard" aria-hidden="true">
+                <div class="flashcard__face-content">
+                  <span class="flashcard__hint">The Meaning</span>
+                  <p class="flashcard__arabic flashcard__arabic--back" id="card-arabic-back" lang="ar">الرَّحْمَنُ</p>
+                  <p class="flashcard__meaning" id="card-meaning">The Most Gracious</p>
+                  <p class="flashcard__detail" id="card-detail">The One whose mercy is vast and encompasses all of creation.</p>
+                  <button class="btn btn--add-to-blueprint" id="add-to-blueprint-btn" aria-label="Add this name to your Dua Blueprint">
+                    <span class="btn__icon" aria-hidden="true">✦</span> Add to Blueprint
+                  </button>
+                  <span class="add-confirmation" id="add-confirmation" aria-live="polite" hidden>✓ Added to your Blueprint!</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <p class="flip-hint" id="flip-hint" aria-live="polite">Click the card or press Space to reveal the meaning</p>
+        </div>
+
+        <!-- ── QUIZ CONTROLS ── -->
+        <div class="quiz-controls" role="group" aria-label="Flashcard navigation">
+          <button class="btn btn--nav btn--prev" id="prev-btn" aria-label="Previous card" disabled>
+            <span aria-hidden="true">←</span> Previous
+          </button>
+          <button class="btn btn--flip" id="flip-btn" aria-label="Flip card to reveal meaning">
+            <span class="btn__icon" aria-hidden="true">↻</span> Flip Card
+          </button>
+          <button class="btn btn--nav btn--next" id="next-btn" aria-label="Next card">
+            Next <span aria-hidden="true">→</span>
+          </button>
+        </div>
+
+        <!-- ── QUIZ FOOTER: Shuffle & Reset ── -->
+        <div class="quiz-footer">
+          <button class="btn btn--ghost btn--small" id="shuffle-btn" aria-label="Shuffle the deck">⇄ Shuffle Deck</button>
+          <button class="btn btn--ghost btn--small" id="restart-btn" aria-label="Restart from card one">↺ Restart</button>
+          <span class="quiz-footer__note" id="quiz-saved-count" aria-live="polite"></span>
+        </div>
+      </div><!-- /#panel-flashcard -->
+
+      <!-- ── MCQ CHALLENGE PANEL ── -->
+      <div id="panel-mcq" hidden>
+
+        <!-- MCQ Question Card -->
+        <div class="mcq-card" id="mcq-card">
+          <div class="mcq-card__prompt-type" id="mcq-prompt-type">What is the meaning of this Name?</div>
+          <div class="mcq-card__stimulus" id="mcq-stimulus">
+            <p class="mcq-card__arabic" id="mcq-arabic" lang="ar">الرَّحْمَنُ</p>
+            <p class="mcq-card__translit" id="mcq-translit">Ar-Rahman</p>
+          </div>
+          <div class="mcq-card__options" id="mcq-options" role="list">
+            <!-- JS renders 4 option buttons here -->
+          </div>
+          <div class="mcq-feedback" id="mcq-feedback" hidden>
+            <div class="mcq-feedback__icon" id="mcq-feedback-icon" aria-hidden="true"></div>
+            <div class="mcq-feedback__text" id="mcq-feedback-text"></div>
+            <div class="mcq-feedback__detail" id="mcq-feedback-detail"></div>
+            <button class="btn btn--flip mcq-next-btn" id="mcq-next-btn">Next Question →</button>
+          </div>
+        </div>
+
+        <!-- MCQ Session Stats -->
+        <div class="mcq-stats" id="mcq-stats" aria-live="polite">
+          <div class="mcq-stat">
+            <span class="mcq-stat__value" id="mcq-correct-count">0</span>
+            <span class="mcq-stat__label">Correct</span>
+          </div>
+          <div class="mcq-stat mcq-stat--divider" aria-hidden="true">·</div>
+          <div class="mcq-stat">
+            <span class="mcq-stat__value" id="mcq-total-count">0</span>
+            <span class="mcq-stat__label">Answered</span>
+          </div>
+          <div class="mcq-stat mcq-stat--divider" aria-hidden="true">·</div>
+          <div class="mcq-stat">
+            <span class="mcq-stat__value" id="mcq-streak-count">0</span>
+            <span class="mcq-stat__label">Streak 🔥</span>
+          </div>
+        </div>
+
+        <!-- MCQ footer controls -->
+        <div class="quiz-footer" style="margin-top:16px">
+          <button class="btn btn--ghost btn--small" id="mcq-mode-toggle-btn">
+            ⇄ Switch: Name→Meaning / Meaning→Name
+          </button>
+          <button class="btn btn--ghost btn--small" id="mcq-restart-btn">↺ New Session</button>
+        </div>
+      </div><!-- /#panel-mcq -->
+
+    </section>
+    <!-- /END VIEW 2: THE QUIZ -->
+
+
+    <!-- ==========================================================
+         VIEW 3: MY MASTERY — Progress & Review
+    ========================================================== -->
+    <section
+      id="view-mastery"
+      class="view"
+      role="tabpanel"
+      aria-labelledby="nav-mastery"
+      hidden
+    >
+
+      <!-- ── HADITH BANNER ── -->
+      <div class="hadith-banner">
+        <div class="hadith-banner__ornament" aria-hidden="true">❝</div>
+        <blockquote class="hadith-banner__quote">
+          <p class="hadith-banner__arabic" lang="ar">
+            إِنَّ لِلَّهِ تِسْعَةً وَتِسْعِينَ اسْمًا مِائَةً إِلَّا وَاحِدًا مَنْ أَحْصَاهَا دَخَلَ الْجَنَّةَ
+          </p>
+          <p class="hadith-banner__translation">
+            "Indeed, Allah has ninety-nine names — one hundred minus one. Whoever <em>preserves</em> them (ahsaha — knows, understands, and acts upon them) will enter Paradise."
+          </p>
+          <footer class="hadith-banner__source">
+            <cite>Sahih al-Bukhari 2736 &amp; Sahih Muslim 2677</cite>
+            <span class="hadith-banner__narrator">Narrated by Abu Hurayrah (رضي الله عنه)</span>
+          </footer>
+        </blockquote>
+        <div class="hadith-banner__scholars-note">
+          <p>Scholars explain that <em>ahsaha</em> encompasses three levels: memorising the names, understanding their meanings, and supplicating to Allah through them — exactly what this tool is designed to help you do.</p>
+        </div>
+      </div>
+
+      <!-- ── OVERALL MASTERY SCORE ── -->
+      <div class="mastery-overview">
+        <div class="mastery-ring-wrap">
+          <svg class="mastery-ring" viewBox="0 0 120 120" aria-hidden="true">
+            <circle class="mastery-ring__track" cx="60" cy="60" r="50"/>
+            <circle class="mastery-ring__fill" id="mastery-ring-fill" cx="60" cy="60" r="50"
+                    stroke-dasharray="314" stroke-dashoffset="314"/>
+          </svg>
+          <div class="mastery-ring__label">
+            <span class="mastery-ring__pct" id="mastery-pct">0%</span>
+            <span class="mastery-ring__sub">Mastered</span>
+          </div>
+        </div>
+        <div class="mastery-overview__stats">
+          <div class="mastery-ov-stat">
+            <span class="mastery-ov-stat__value" id="stat-mastered">0</span>
+            <span class="mastery-ov-stat__label">Names Mastered</span>
+          </div>
+          <div class="mastery-ov-stat mastery-ov-stat--learning">
+            <span class="mastery-ov-stat__value" id="stat-learning">0</span>
+            <span class="mastery-ov-stat__label">In Progress</span>
+          </div>
+          <div class="mastery-ov-stat mastery-ov-stat--unseen">
+            <span class="mastery-ov-stat__value" id="stat-unseen">99</span>
+            <span class="mastery-ov-stat__label">Not Yet Studied</span>
+          </div>
+          <div class="mastery-ov-stat mastery-ov-stat--streak">
+            <span class="mastery-ov-stat__value" id="stat-total-correct">0</span>
+            <span class="mastery-ov-stat__label">Total Correct Answers</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── MASTERY PROGRESSION BAR ── -->
+      <div class="mastery-bar-section">
+        <h3 class="mastery-section-title">Your Journey Through the 99 Names</h3>
+        <div class="mastery-bar-legend">
+          <span class="legend-item legend-item--mastered">Mastered</span>
+          <span class="legend-item legend-item--learning">In Progress</span>
+          <span class="legend-item legend-item--weak">Needs Review</span>
+          <span class="legend-item legend-item--unseen">Not Studied</span>
+        </div>
+        <div class="mastery-bar-track" id="mastery-bar-track" role="img" aria-label="Mastery progress bar">
+          <!-- JS renders 99 segments -->
+        </div>
+      </div>
+
+      <!-- ── NAMES FOR REVIEW (Frequently Wrong) ── -->
+      <div class="review-section" id="review-section">
+        <h3 class="mastery-section-title">
+          <span aria-hidden="true">⚑</span> Names to Review
+          <span class="review-section__count" id="review-count-badge"></span>
+        </h3>
+        <p class="review-section__desc">These are names you've answered incorrectly more than once. Focus your study here.</p>
+        <div class="review-grid" id="review-grid" aria-live="polite">
+          <p class="review-empty" id="review-empty">Complete some Challenge Me rounds to see your review list here.</p>
+        </div>
+      </div>
+
+      <!-- ── ALL NAMES MASTERY TABLE ── -->
+      <div class="all-names-mastery" id="all-names-mastery">
+        <h3 class="mastery-section-title">All 99 Names — Mastery Status</h3>
+        <div class="mastery-filter-bar" role="group" aria-label="Filter names by status">
+          <button class="filter-btn filter-btn--active" data-filter="all">All</button>
+          <button class="filter-btn" data-filter="mastered">Mastered</button>
+          <button class="filter-btn" data-filter="learning">In Progress</button>
+          <button class="filter-btn" data-filter="weak">Needs Review</button>
+          <button class="filter-btn" data-filter="unseen">Not Studied</button>
+        </div>
+        <div class="mastery-names-grid" id="mastery-names-grid" role="list">
+          <!-- JS renders name mastery cards -->
+        </div>
+      </div>
+
+      <!-- Reset progress -->
+      <div class="mastery-reset-row">
+        <button class="btn btn--ghost btn--small" id="reset-progress-btn" aria-label="Reset all mastery progress">
+          ↺ Reset All Progress
+        </button>
+      </div>
+
+    </section>
+    <!-- /END VIEW 3: MY MASTERY -->
+
+
+    <!-- ==========================================================
+         VIEW 4: COLLECTIONS — Saved Duas & Heritage Supplications
+    ========================================================== -->
+    <section
+      id="view-collections"
+      class="view"
+      role="tabpanel"
+      aria-labelledby="nav-collections"
+      hidden
+    >
+
+      <!-- ── COLLECTIONS HEADER ── -->
+      <div class="collections-header">
+        <div class="collections-header__text">
+          <h2 class="collections-header__title">Dua Collections</h2>
+          <p class="collections-header__desc">Your saved supplications, alongside timeless duas from the Prophets, Companions, and righteous scholars.</p>
+        </div>
+        <div class="collections-header__tabs" role="tablist" aria-label="Collection categories">
+          <button class="coll-tab coll-tab--active" data-coll="my-duas" role="tab" aria-selected="true">
+            <span>✦</span> My Saved Duas
+            <span class="coll-tab__badge" id="my-duas-badge">0</span>
+          </button>
+          <button class="coll-tab" data-coll="heritage" role="tab" aria-selected="false">
+            <span>❧</span> Heritage Duas
+          </button>
+        </div>
+      </div>
+
+      <!-- ── MY SAVED DUAS PANEL ── -->
+      <div id="coll-panel-my-duas" class="coll-panel">
+
+        <!-- Empty state -->
+        <div class="coll-empty" id="coll-empty-state">
+          <div class="coll-empty__icon" aria-hidden="true">❧</div>
+          <p class="coll-empty__title">No saved duas yet</p>
+          <p class="coll-empty__desc">Generate a dua in The Blueprint and press <em>Save to Collection</em> to preserve it here.</p>
+          <button class="btn btn--primary" style="margin-top:16px;padding:12px 28px" id="go-to-blueprint-btn">
+            Open The Blueprint →
+          </button>
+        </div>
+
+        <!-- Saved duas list (JS-rendered) -->
+        <div class="saved-duas-grid" id="saved-duas-grid" hidden aria-live="polite" role="list"></div>
+
+      </div><!-- /#coll-panel-my-duas -->
+
+      <!-- ── HERITAGE DUAS PANEL ── -->
+      <div id="coll-panel-heritage" class="coll-panel" hidden>
+
+        <!-- Filter bar -->
+        <div class="heritage-filter-bar" role="group" aria-label="Filter heritage duas">
+          <button class="filter-btn filter-btn--active" data-hfilter="all">All</button>
+          <button class="filter-btn" data-hfilter="quran">Qur'anic</button>
+          <button class="filter-btn" data-hfilter="prophet">The Prophet ﷺ</button>
+          <button class="filter-btn" data-hfilter="companions">Companions</button>
+          <button class="filter-btn" data-hfilter="scholars">Righteous Scholars</button>
+        </div>
+
+        <div class="heritage-duas-grid" id="heritage-duas-grid" role="list">
+          <!-- JS renders heritage cards -->
+        </div>
+
+      </div><!-- /#coll-panel-heritage -->
+
+    </section>
+    <!-- /END VIEW 4: COLLECTIONS -->
+
+
+  </main>
+  <!-- /END MAIN CONTENT -->
+
+
+  <!-- ============================================================
+       SITE FOOTER
+  ============================================================ -->
+  <footer class="site-footer" role="contentinfo">
+    <p class="site-footer__text">
+      <span lang="ar">رَبَّنَا تَقَبَّلْ مِنَّا</span>
+      <span class="site-footer__translation">— Our Lord, accept from us.</span>
+    </p>
+  </footer>
+
+
+  <script>
+/* =============================================================
+   THE DUA BLUEPRINT — JavaScript
+   Handles: Navigation, Names Grid, Blueprint Builder,
+   Flashcard Quiz, Cross-view state, Clipboard
+============================================================= */
+
+'use strict';
+
+/* ─────────────────────────────────────────────────────────────
+   DATA: The 99 Names of Allah
+───────────────────────────────────────────────────────────── */
+const NAMES = [
+  { id:1,  arabic:'ٱللَّٰه',         transliteration:'Allah',          english:'The One God',                      detail:'The supreme name encompassing all divine attributes.' },
+  { id:2,  arabic:'ٱلرَّحْمَٰن',     transliteration:'Ar-Rahman',      english:'The Most Gracious',                detail:'The One whose mercy is boundless and encompasses all creation.' },
+  { id:3,  arabic:'ٱلرَّحِيم',       transliteration:'Ar-Rahim',       english:'The Most Merciful',                detail:'The One whose mercy is specifically bestowed upon the believers.' },
+  { id:4,  arabic:'ٱلْمَلِك',        transliteration:'Al-Malik',       english:'The Sovereign King',               detail:'The One who is the absolute ruler of all dominions.' },
+  { id:5,  arabic:'ٱلْقُدُّوس',      transliteration:'Al-Quddus',      english:'The Most Pure',                    detail:'The One who is free from all imperfections and flaws.' },
+  { id:6,  arabic:'ٱلسَّلَام',       transliteration:'As-Salam',       english:'The Source of Peace',              detail:'The One from whom all peace and safety flows.' },
+  { id:7,  arabic:'ٱلْمُؤْمِن',      transliteration:'Al-Mu\'min',     english:'The Guardian of Faith',            detail:'The One who grants security and affirms the truth.' },
+  { id:8,  arabic:'ٱلْمُهَيْمِن',    transliteration:'Al-Muhaymin',    english:'The Watchful Protector',           detail:'The One who oversees and protects all affairs.' },
+  { id:9,  arabic:'ٱلْعَزِيز',       transliteration:'Al-Aziz',        english:'The Almighty',                     detail:'The One who is mighty and cannot be overcome.' },
+  { id:10, arabic:'ٱلْجَبَّار',      transliteration:'Al-Jabbar',      english:'The Compeller',                    detail:'The One who mends the broken and compels by His will.' },
+  { id:11, arabic:'ٱلْمُتَكَبِّر',   transliteration:'Al-Mutakabbir',  english:'The Supreme',                      detail:'The One who rightfully possesses all greatness.' },
+  { id:12, arabic:'ٱلْخَالِق',       transliteration:'Al-Khaliq',      english:'The Creator',                      detail:'The One who brings all things into existence from nothing.' },
+  { id:13, arabic:'ٱلْبَارِئ',       transliteration:'Al-Bari\'',      english:'The Originator',                   detail:'The One who creates with distinction and order.' },
+  { id:14, arabic:'ٱلْمُصَوِّر',     transliteration:'Al-Musawwir',    english:'The Fashioner',                    detail:'The One who gives shape and form to all of creation.' },
+  { id:15, arabic:'ٱلْغَفَّار',      transliteration:'Al-Ghaffar',     english:'The Repeatedly Forgiving',         detail:'The One who forgives sins again and again.' },
+  { id:16, arabic:'ٱلْقَهَّار',      transliteration:'Al-Qahhar',      english:'The Subduer',                      detail:'The One who dominates over everything.' },
+  { id:17, arabic:'ٱلْوَهَّاب',      transliteration:'Al-Wahhab',      english:'The Bestower',                     detail:'The One who gives freely without measure or expectation.' },
+  { id:18, arabic:'ٱلرَّزَّاق',      transliteration:'Ar-Razzaq',      english:'The Provider',                     detail:'The One who provides sustenance for all creation.' },
+  { id:19, arabic:'ٱلْفَتَّاح',      transliteration:'Al-Fattah',      english:'The Opener',                       detail:'The One who opens all doors and removes all obstacles.' },
+  { id:20, arabic:'ٱلْعَلِيم',       transliteration:'Al-\'Alim',      english:'The All-Knowing',                  detail:'The One whose knowledge encompasses everything.' },
+  { id:21, arabic:'ٱلْقَابِض',       transliteration:'Al-Qabid',       english:'The Restrainer',                   detail:'The One who withholds and restrains according to His wisdom.' },
+  { id:22, arabic:'ٱلْبَاسِط',       transliteration:'Al-Basit',       english:'The Extender',                     detail:'The One who extends and expands according to His will.' },
+  { id:23, arabic:'ٱلْخَافِض',       transliteration:'Al-Khafid',      english:'The Humbler',                      detail:'The One who lowers whoever He wills.' },
+  { id:24, arabic:'ٱلرَّافِع',       transliteration:'Ar-Rafi\'',      english:'The Exalter',                      detail:'The One who raises up whoever He wills.' },
+  { id:25, arabic:'ٱلْمُعِز',        transliteration:'Al-Mu\'izz',     english:'The Bestower of Honour',           detail:'The One who grants honour and dignity.' },
+  { id:26, arabic:'ٱلْمُذِل',        transliteration:'Al-Mudhill',     english:'The Humiliator',                   detail:'The One who humiliates those who deserve it.' },
+  { id:27, arabic:'ٱلسَّمِيع',       transliteration:'As-Sami\'',      english:'The All-Hearing',                  detail:'The One who hears all things, even the smallest whisper.' },
+  { id:28, arabic:'ٱلْبَصِير',       transliteration:'Al-Basir',       english:'The All-Seeing',                   detail:'The One who sees all things, apparent and hidden.' },
+  { id:29, arabic:'ٱلْحَكَم',        transliteration:'Al-Hakam',       english:'The Judge',                        detail:'The One who is the ultimate arbiter of all matters.' },
+  { id:30, arabic:'ٱلْعَدْل',        transliteration:'Al-\'Adl',       english:'The Just',                         detail:'The One who is perfectly just in all His dealings.' },
+  { id:31, arabic:'ٱللَّطِيف',       transliteration:'Al-Latif',       english:'The Subtle',                       detail:'The One who is gentle and aware of the finest details.' },
+  { id:32, arabic:'ٱلْخَبِير',       transliteration:'Al-Khabir',      english:'The All-Aware',                    detail:'The One who has complete awareness of all things.' },
+  { id:33, arabic:'ٱلْحَلِيم',       transliteration:'Al-Halim',       english:'The Forbearing',                   detail:'The One who is patient and does not hasten punishment.' },
+  { id:34, arabic:'ٱلْعَظِيم',       transliteration:'Al-\'Azim',      english:'The Magnificent',                  detail:'The One who possesses infinite magnificence and greatness.' },
+  { id:35, arabic:'ٱلْغَفُور',       transliteration:'Al-Ghafur',      english:'The Forgiving',                    detail:'The One who covers and erases sins and faults.' },
+  { id:36, arabic:'ٱلشَّكُور',       transliteration:'Ash-Shakur',     english:'The Appreciative',                 detail:'The One who rewards abundantly for small deeds.' },
+  { id:37, arabic:'ٱلْعَلِىّ',       transliteration:'Al-\'Ali',       english:'The Most High',                    detail:'The One who is exalted above all things.' },
+  { id:38, arabic:'ٱلْكَبِير',       transliteration:'Al-Kabir',       english:'The Most Great',                   detail:'The One who is immeasurably great.' },
+  { id:39, arabic:'ٱلْحَفِيظ',       transliteration:'Al-Hafiz',       english:'The Preserver',                    detail:'The One who safeguards and maintains all creation.' },
+  { id:40, arabic:'ٱلْمُقِيت',       transliteration:'Al-Muqit',       english:'The Nourisher',                    detail:'The One who provides nourishment for all creatures.' },
+  { id:41, arabic:'ٱلْحَسِيب',       transliteration:'Al-Hasib',       english:'The Reckoner',                     detail:'The One who takes account of all actions and deeds.' },
+  { id:42, arabic:'ٱلْجَلِيل',       transliteration:'Al-Jalil',       english:'The Majestic',                     detail:'The One who possesses all attributes of majesty.' },
+  { id:43, arabic:'ٱلْكَرِيم',       transliteration:'Al-Karim',       english:'The Most Generous',                detail:'The One who is infinitely generous and noble.' },
+  { id:44, arabic:'ٱلرَّقِيب',       transliteration:'Ar-Raqib',       english:'The Watchful',                     detail:'The One who observes all things at all times.' },
+  { id:45, arabic:'ٱلْمُجِيب',       transliteration:'Al-Mujib',       english:'The Responsive',                   detail:'The One who answers all prayers and supplications.' },
+  { id:46, arabic:'ٱلْوَاسِع',       transliteration:'Al-Wasi\'',      english:'The All-Encompassing',             detail:'The One whose knowledge, mercy, and power are boundless.' },
+  { id:47, arabic:'ٱلْحَكِيم',       transliteration:'Al-Hakim',       english:'The Perfectly Wise',               detail:'The One whose wisdom is perfect and absolute.' },
+  { id:48, arabic:'ٱلْوَدُود',       transliteration:'Al-Wadud',       english:'The Loving',                       detail:'The One who loves His righteous servants with infinite love.' },
+  { id:49, arabic:'ٱلْمَجِيد',       transliteration:'Al-Majid',       english:'The Most Glorious',                detail:'The One who is supremely glorious and exalted.' },
+  { id:50, arabic:'ٱلْبَاعِث',       transliteration:'Al-Ba\'ith',     english:'The Resurrector',                  detail:'The One who will resurrect all the dead on the Last Day.' },
+  { id:51, arabic:'ٱلشَّهِيد',       transliteration:'Ash-Shahid',     english:'The Witness',                      detail:'The One who witnesses all things at all times.' },
+  { id:52, arabic:'ٱلْحَق',          transliteration:'Al-Haqq',        english:'The Truth',                        detail:'The One whose existence and attributes are absolute truth.' },
+  { id:53, arabic:'ٱلْوَكِيل',       transliteration:'Al-Wakil',       english:'The Trustee',                      detail:'The One who manages all affairs on behalf of His creation.' },
+  { id:54, arabic:'ٱلْقَوِى',        transliteration:'Al-Qawiyy',      english:'The Most Strong',                  detail:'The One who possesses all-encompassing strength.' },
+  { id:55, arabic:'ٱلْمَتِين',       transliteration:'Al-Matin',       english:'The Firm',                         detail:'The One whose power is unshakeable and unwavering.' },
+  { id:56, arabic:'ٱلْوَلِى',        transliteration:'Al-Waliyy',      english:'The Protecting Friend',            detail:'The One who protects and befriends the believers.' },
+  { id:57, arabic:'ٱلْحَمِيد',       transliteration:'Al-Hamid',       english:'The Praiseworthy',                 detail:'The One who is deserving of all praise and thanks.' },
+  { id:58, arabic:'ٱلْمُحْصِى',      transliteration:'Al-Muhsi',       english:'The Accounter',                    detail:'The One who counts and records everything.' },
+  { id:59, arabic:'ٱلْمُبْدِئ',      transliteration:'Al-Mubdi\'',     english:'The Originator',                   detail:'The One who creates all things for the first time.' },
+  { id:60, arabic:'ٱلْمُعِيد',       transliteration:'Al-Mu\'id',      english:'The Restorer',                     detail:'The One who recreates after death and destruction.' },
+  { id:61, arabic:'ٱلْمُحْيِى',      transliteration:'Al-Muhyi',       english:'The Giver of Life',                detail:'The One who gives life to all living things.' },
+  { id:62, arabic:'ٱلْمُمِيت',       transliteration:'Al-Mumit',       english:'The Taker of Life',                detail:'The One who causes death at the appointed time.' },
+  { id:63, arabic:'ٱلْحَىّ',         transliteration:'Al-Hayy',        english:'The Ever-Living',                  detail:'The One who is eternally alive and never dies.' },
+  { id:64, arabic:'ٱلْقَيُّوم',      transliteration:'Al-Qayyum',      english:'The Self-Subsisting',              detail:'The One who sustains Himself and all of creation.' },
+  { id:65, arabic:'ٱلْوَاجِد',       transliteration:'Al-Wajid',       english:'The Finder',                       detail:'The One who obtains whatever He wills whenever He wills.' },
+  { id:66, arabic:'ٱلْمَاجِد',       transliteration:'Al-Majid',       english:'The Noble',                        detail:'The One who is most noble and filled with glory.' },
+  { id:67, arabic:'ٱلْوَاحِد',       transliteration:'Al-Wahid',       english:'The One',                          detail:'The One who is unique and without any partner.' },
+  { id:68, arabic:'ٱلْأَحَد',        transliteration:'Al-Ahad',        english:'The Unique',                       detail:'The One who is indivisible and absolutely singular.' },
+  { id:69, arabic:'ٱلصَّمَد',        transliteration:'As-Samad',       english:'The Eternal',                      detail:'The One who is independent and depended upon by all.' },
+  { id:70, arabic:'ٱلْقَادِر',       transliteration:'Al-Qadir',       english:'The Capable',                      detail:'The One who has power over all things.' },
+  { id:71, arabic:'ٱلْمُقْتَدِر',    transliteration:'Al-Muqtadir',    english:'The Omnipotent',                   detail:'The One with complete and perfect power.' },
+  { id:72, arabic:'ٱلْمُقَدِّم',     transliteration:'Al-Muqaddim',    english:'The Expediter',                    detail:'The One who brings forward whatever He wills.' },
+  { id:73, arabic:'ٱلْمُؤَخِّر',     transliteration:'Al-Mu\'akhkhir', english:'The Delayer',                      detail:'The One who delays whatever He wills in His wisdom.' },
+  { id:74, arabic:'ٱلْأَوَّل',       transliteration:'Al-Awwal',       english:'The First',                        detail:'The One who has no beginning.' },
+  { id:75, arabic:'ٱلْآخِر',         transliteration:'Al-Akhir',       english:'The Last',                         detail:'The One who has no end.' },
+  { id:76, arabic:'ٱلظَّاهِر',       transliteration:'Az-Zahir',       english:'The Manifest',                     detail:'The One who is apparent through His signs and creation.' },
+  { id:77, arabic:'ٱلْبَاطِن',       transliteration:'Al-Batin',       english:'The Hidden',                       detail:'The One who is hidden from all comprehension.' },
+  { id:78, arabic:'ٱلْوَالِي',       transliteration:'Al-Wali',        english:'The Governor',                     detail:'The One who governs all affairs of creation.' },
+  { id:79, arabic:'ٱلْمُتَعَالِ',    transliteration:'Al-Muta\'ali',   english:'The Self-Exalted',                 detail:'The One who is exalted far above all things.' },
+  { id:80, arabic:'ٱلْبَر',          transliteration:'Al-Barr',        english:'The Source of All Goodness',       detail:'The One who is the source of all goodness and kindness.' },
+  { id:81, arabic:'ٱلتَّوَّاب',      transliteration:'At-Tawwab',      english:'The Ever-Relenting',               detail:'The One who accepts repentance abundantly.' },
+  { id:82, arabic:'ٱلْمُنْتَقِم',    transliteration:'Al-Muntaqim',    english:'The Avenger',                      detail:'The One who exacts just retribution from wrongdoers.' },
+  { id:83, arabic:'ٱلْعَفُو',        transliteration:'Al-\'Afuww',     english:'The Pardoner',                     detail:'The One who erases sins completely and forgives abundantly.' },
+  { id:84, arabic:'ٱلرَّءُوف',       transliteration:'Ar-Ra\'uf',      english:'The Most Kind',                    detail:'The One who is extremely kind and compassionate.' },
+  { id:85, arabic:'مَالِكُ ٱلْمُلْك',transliteration:'Malik al-Mulk',  english:'Master of the Kingdom',            detail:'The One who has supreme ownership over all dominions.' },
+  { id:86, arabic:'ذُو ٱلْجَلَال',   transliteration:'Dhul-Jalal',     english:'Lord of Majesty and Generosity',   detail:'The One who possesses both majesty and infinite generosity.' },
+  { id:87, arabic:'ٱلْمُقْسِط',      transliteration:'Al-Muqsit',      english:'The Equitable',                    detail:'The One who acts with perfect fairness and equity.' },
+  { id:88, arabic:'ٱلْجَامِع',       transliteration:'Al-Jami\'',      english:'The Gatherer',                     detail:'The One who gathers all of creation on the Day of Judgment.' },
+  { id:89, arabic:'ٱلْغَنِى',        transliteration:'Al-Ghani',       english:'The Self-Sufficient',              detail:'The One who is free from all needs.' },
+  { id:90, arabic:'ٱلْمُغْنِى',      transliteration:'Al-Mughni',      english:'The Enricher',                     detail:'The One who enriches whomever He wills.' },
+  { id:91, arabic:'ٱلْمَانِع',       transliteration:'Al-Mani\'',      english:'The Withholder',                   detail:'The One who withholds in His wisdom to protect.' },
+  { id:92, arabic:'ٱلضَّار',         transliteration:'Ad-Darr',        english:'The Distresser',                   detail:'The One who allows harm to befall as a test or punishment.' },
+  { id:93, arabic:'ٱلنَّافِع',       transliteration:'An-Nafi\'',      english:'The Benefiter',                    detail:'The One who creates all benefit for creation.' },
+  { id:94, arabic:'ٱلنُّور',         transliteration:'An-Nur',         english:'The Light',                        detail:'The One who is the light of the heavens and the earth.' },
+  { id:95, arabic:'ٱلْهَادِى',       transliteration:'Al-Hadi',        english:'The Guide',                        detail:'The One who guides whomever He wills to the right path.' },
+  { id:96, arabic:'ٱلْبَدِيع',       transliteration:'Al-Badi\'',      english:'The Incomparable',                 detail:'The One who created all things in an unprecedented manner.' },
+  { id:97, arabic:'ٱلْبَاقِى',       transliteration:'Al-Baqi',        english:'The Ever-Enduring',                detail:'The One who remains after everything else perishes.' },
+  { id:98, arabic:'ٱلْوَارِث',       transliteration:'Al-Warith',      english:'The Inheritor',                    detail:'The One who remains after all things pass away.' },
+  { id:99, arabic:'ٱلرَّشِيد',       transliteration:'Ar-Rashid',      english:'The Guide to the Right Path',      detail:'The One who guides all matters to their proper end.' },
+  // Note: some traditions list As-Sabur as the 99th
+  // { id:99, arabic:'ٱلصَّبُور', transliteration:'As-Sabur', english:'The Most Patient', detail:'The One who is infinitely patient and does not rush to punish.' },
+];
+
+/* Salawat text map */
+const SALAWAT = {
+  none: '',
+  short: 'صَلَّى اللهُ عَلَيْهِ وَسَلَّمَ',
+  ibrahimiyya: 'اللَّهُمَّ صَلِّ عَلَى مُحَمَّدٍ وَعَلَى آلِ مُحَمَّدٍ، كَمَا صَلَّيْتَ عَلَى إِبْرَاهِيمَ وَعَلَى آلِ إِبْرَاهِيمَ، إِنَّكَ حَمِيدٌ مَجِيدٌ'
+};
+
+/* Seal text map */
+const SEAL_TEXT = {
+  hamd: 'وَالْحَمْدُ لِلَّهِ رَبِّ الْعَالَمِينَ',
+  ameen: 'آمِينَ'
+};
+
+/* ─────────────────────────────────────────────────────────────
+   STATE
+───────────────────────────────────────────────────────────── */
+const state = {
+  /* Blueprint */
+  selectedNames: [],      // Array of name objects selected in Step 1
+  savedFromQuiz: [],      // Names saved from the Quiz view
+
+  /* Quiz */
+  deck: [...NAMES],       // current card order (may be shuffled)
+  currentIndex: 0,
+  isFlipped: false,
+};
+
+/* ─────────────────────────────────────────────────────────────
+   DOM REFERENCES
+───────────────────────────────────────────────────────────── */
+const $ = id => document.getElementById(id);
+const $$ = sel => document.querySelectorAll(sel);
+
+// Navigation
+const navTabs      = $$('.nav-tab');
+const viewBlueprint = $('view-blueprint');
+const viewQuiz      = $('view-quiz');
+
+// Step 1
+const namesGrid         = $('names-grid');
+const searchInput       = $('names-search-input');
+const foundationContent = $('foundation-content');
+const clearFoundation   = $('clear-foundation');
+
+// Saved names bar
+const savedNamesBar     = $('saved-names-bar');
+const savedNamesChips   = $('saved-names-chips');
+const clearSavedNames   = $('clear-saved-names');
+
+// Step 3
+const personalDua       = $('personal-dua');
+const charCount         = $('char-count');
+const clearHeart        = $('clear-heart');
+
+// Output
+const generateBtn       = $('generate-btn');
+const duaOutput         = $('dua-output');
+const duaOutputText     = $('dua-output-text');
+const copyBtn           = $('copy-btn');
+const resetBtn          = $('reset-btn');
+const copyToast         = $('copy-toast');
+
+// Quiz
+const flashcard         = $('flashcard');
+const flashcardInner    = $('flashcard-inner');
+const cardArabic        = $('card-arabic');
+const cardTranslit      = $('card-transliteration');
+const cardNumber        = $('card-number');
+const cardArabicBack    = $('card-arabic-back');
+const cardMeaning       = $('card-meaning');
+const cardDetail        = $('card-detail');
+const flipBtn           = $('flip-btn');
+const prevBtn           = $('prev-btn');
+const nextBtn           = $('next-btn');
+const shuffleBtn        = $('shuffle-btn');
+const restartBtn        = $('restart-btn');
+const addToBlueprintBtn = $('add-to-blueprint-btn');
+const addConfirmation   = $('add-confirmation');
+const flipHint          = $('flip-hint');
+const progressBar       = $('quiz-progress-bar');
+const progressLabel     = $('quiz-progress-label');
+const quizSavedCount    = $('quiz-saved-count');
+
+/* ─────────────────────────────────────────────────────────────
+   NAVIGATION
+───────────────────────────────────────────────────────────── */
+function switchView(targetView) {
+  navTabs.forEach(tab => {
+    const isTarget = tab.dataset.view === targetView;
+    tab.classList.toggle('nav-tab--active', isTarget);
+    tab.setAttribute('aria-selected', isTarget ? 'true' : 'false');
+  });
+
+  if (targetView === 'blueprint') {
+    viewBlueprint.removeAttribute('hidden');
+    viewBlueprint.classList.add('view--active');
+    viewQuiz.setAttribute('hidden', '');
+    viewQuiz.classList.remove('view--active');
+    // Re-trigger entrance animation
+    viewBlueprint.style.animation = 'none';
+    requestAnimationFrame(() => {
+      viewBlueprint.style.animation = '';
+    });
+  } else {
+    viewQuiz.removeAttribute('hidden');
+    viewQuiz.classList.add('view--active');
+    viewBlueprint.setAttribute('hidden', '');
+    viewBlueprint.classList.remove('view--active');
+    viewQuiz.style.animation = 'none';
+    requestAnimationFrame(() => {
+      viewQuiz.style.animation = '';
+    });
+  }
+}
+
+navTabs.forEach(tab => {
+  tab.addEventListener('click', () => switchView(tab.dataset.view));
+});
+
+/* ─────────────────────────────────────────────────────────────
+   STEP 1: NAMES GRID
+───────────────────────────────────────────────────────────── */
+function buildNamesGrid() {
+  namesGrid.innerHTML = '';
+  NAMES.forEach(name => {
+    const btn = document.createElement('button');
+    btn.className = 'name-card';
+    btn.setAttribute('role', 'gridcell');
+    btn.dataset.id = name.id;
+    btn.dataset.arabic = name.arabic;
+    btn.dataset.english = name.english;
+    btn.dataset.transliteration = name.transliteration;
+    btn.innerHTML = `
+      <span class="name-card__arabic">${name.arabic}</span>
+      <span class="name-card__transliteration">${name.transliteration}</span>
+      <span class="name-card__english">${name.english}</span>
+    `;
+    btn.addEventListener('click', () => toggleNameSelection(name, btn));
+    namesGrid.appendChild(btn);
+  });
+}
+
+function toggleNameSelection(name, btn) {
+  const existingIdx = state.selectedNames.findIndex(n => n.id === name.id);
+  if (existingIdx >= 0) {
+    state.selectedNames.splice(existingIdx, 1);
+    btn.classList.remove('name-card--selected');
+  } else {
+    state.selectedNames.push(name);
+    btn.classList.add('name-card--selected');
+  }
+  renderFoundationPreview();
+}
+
+function renderFoundationPreview() {
+  const all = [...state.selectedNames, ...state.savedFromQuiz.filter(
+    sq => !state.selectedNames.find(sn => sn.id === sq.id)
+  )];
+
+  if (all.length === 0) {
+    foundationContent.innerHTML = '<span class="placeholder-text">No names selected yet. Click a name above to add it.</span>';
+    clearFoundation.hidden = true;
+  } else {
+    foundationContent.innerHTML = all.map(n =>
+      `<span style="display:inline-block;margin:0 6px">${n.arabic}</span>`
+    ).join(' · ');
+    clearFoundation.hidden = false;
+  }
+}
+
+/* Search / Filter */
+searchInput.addEventListener('input', () => {
+  const query = searchInput.value.trim().toLowerCase();
+  $$('.name-card').forEach(card => {
+    const arabic = card.dataset.arabic.toLowerCase();
+    const english = card.dataset.english.toLowerCase();
+    const translit = card.dataset.transliteration.toLowerCase();
+    const match = !query || arabic.includes(query) || english.includes(query) || translit.includes(query);
+    card.classList.toggle('name-card--hidden', !match);
+  });
+});
+
+clearFoundation.addEventListener('click', () => {
+  state.selectedNames = [];
+  $$('.name-card--selected').forEach(c => c.classList.remove('name-card--selected'));
+  renderFoundationPreview();
+});
+
+/* ─────────────────────────────────────────────────────────────
+   STEP 3: CHARACTER COUNT
+───────────────────────────────────────────────────────────── */
+personalDua.addEventListener('input', () => {
+  const len = personalDua.value.length;
+  charCount.textContent = `${len.toLocaleString()} character${len !== 1 ? 's' : ''}`;
+});
+
+clearHeart.addEventListener('click', () => {
+  personalDua.value = '';
+  charCount.textContent = '0 characters';
+});
+
+/* ─────────────────────────────────────────────────────────────
+   OUTPUT: GENERATE DUA
+───────────────────────────────────────────────────────────── */
+function compileDua() {
+  const parts = [];
+
+  // Opening (Bismillah)
+  parts.push('بِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيمِ');
+  parts.push('');
+
+  // Step 1: Foundation — selected names
+  const allFoundationNames = [
+    ...state.selectedNames,
+    ...state.savedFromQuiz.filter(sq => !state.selectedNames.find(sn => sn.id === sq.id))
+  ];
+
+  if (allFoundationNames.length > 0) {
+    const namePhrase = allFoundationNames.map(n => `يَا ${n.arabic}`).join('، ');
+    parts.push(namePhrase);
+    parts.push('');
+  }
+
+  // Step 2: Salawat
+  const selectedSalawat = document.querySelector('input[name="salawat"]:checked');
+  if (selectedSalawat && selectedSalawat.value !== 'none') {
+    parts.push(SALAWAT[selectedSalawat.value]);
+    parts.push('');
+  }
+
+  // Step 3: Personal dua
+  const personal = personalDua.value.trim();
+  if (personal) {
+    parts.push(personal);
+    parts.push('');
+  }
+
+  // Step 4: Seal
+  const sealHamd  = document.getElementById('seal-hamd');
+  const sealAmeen = document.getElementById('seal-ameen');
+  const sealParts = [];
+  if (sealHamd && sealHamd.checked)  sealParts.push(SEAL_TEXT.hamd);
+  if (sealAmeen && sealAmeen.checked) sealParts.push(SEAL_TEXT.ameen);
+  if (sealParts.length > 0) {
+    parts.push(sealParts.join('\n'));
+  }
+
+  return parts.join('\n').trim();
+}
+
+generateBtn.addEventListener('click', () => {
+  const text = compileDua();
+  if (!text || text === 'بِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيمِ') {
+    // Nothing substantive added — still show but indicate
+  }
+  duaOutputText.textContent = text;
+  duaOutput.removeAttribute('hidden');
+  copyToast.hidden = true;
+
+  // Smooth scroll to output
+  setTimeout(() => {
+    duaOutput.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }, 100);
+});
+
+/* Copy to Clipboard */
+copyBtn.addEventListener('click', async () => {
+  try {
+    await navigator.clipboard.writeText(duaOutputText.textContent);
+    copyToast.hidden = false;
+    copyBtn.textContent = '✓ Copied!';
+    setTimeout(() => {
+      copyToast.hidden = true;
+      copyBtn.innerHTML = '<span class="btn__icon">⎘</span> Copy to Clipboard';
+    }, 2500);
+  } catch {
+    // Fallback for older browsers
+    const range = document.createRange();
+    range.selectNodeContents(duaOutputText);
+    const sel = window.getSelection();
+    sel.removeAllRanges();
+    sel.addRange(range);
+    document.execCommand('copy');
+    sel.removeAllRanges();
+    copyToast.hidden = false;
+    setTimeout(() => { copyToast.hidden = true; }, 2500);
+  }
+});
+
+/* Start Fresh */
+resetBtn.addEventListener('click', () => {
+  // Reset selections
+  state.selectedNames = [];
+  $$('.name-card--selected').forEach(c => c.classList.remove('name-card--selected'));
+  renderFoundationPreview();
+
+  // Reset salawat
+  document.getElementById('salawat-none').checked = true;
+
+  // Reset textarea
+  personalDua.value = '';
+  charCount.textContent = '0 characters';
+
+  // Reset seals
+  document.getElementById('seal-hamd').checked = true;
+  document.getElementById('seal-ameen').checked = true;
+
+  // Hide output
+  duaOutput.setAttribute('hidden', '');
+  copyToast.hidden = true;
+
+  // Scroll to top
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+});
+
+/* ─────────────────────────────────────────────────────────────
+   SAVED NAMES BAR (from Quiz → Blueprint)
+───────────────────────────────────────────────────────────── */
+function updateSavedNamesBar() {
+  if (state.savedFromQuiz.length === 0) {
+    savedNamesBar.hidden = true;
+    return;
+  }
+  savedNamesBar.hidden = false;
+  savedNamesChips.innerHTML = '';
+  state.savedFromQuiz.forEach(name => {
+    const chip = document.createElement('span');
+    chip.className = 'saved-chip';
+    chip.setAttribute('role', 'listitem');
+    chip.textContent = `${name.arabic} · ${name.english}`;
+    savedNamesChips.appendChild(chip);
+  });
+
+  // Also update the names grid — highlight saved names
+  $$('.name-card').forEach(card => {
+    const id = parseInt(card.dataset.id);
+    if (state.savedFromQuiz.find(n => n.id === id)) {
+      card.classList.add('name-card--selected');
+    }
+  });
+
+  renderFoundationPreview();
+  updateQuizSavedCount();
+}
+
+clearSavedNames.addEventListener('click', () => {
+  state.savedFromQuiz = [];
+  updateSavedNamesBar();
+  renderFoundationPreview();
+  updateQuizSavedCount();
+  // Remove saved highlights from grid
+  $$('.name-card').forEach(card => {
+    const id = parseInt(card.dataset.id);
+    if (!state.selectedNames.find(n => n.id === id)) {
+      card.classList.remove('name-card--selected');
+    }
+  });
+});
+
+function updateQuizSavedCount() {
+  const count = state.savedFromQuiz.length;
+  quizSavedCount.textContent = count > 0
+    ? `✦ ${count} name${count !== 1 ? 's' : ''} saved to Blueprint`
+    : '';
+}
+
+/* ─────────────────────────────────────────────────────────────
+   QUIZ / FLASHCARD
+───────────────────────────────────────────────────────────── */
+
+/* Convert number to Arabic-Indic numeral */
+function toArabicNumeral(n) {
+  return n.toString().replace(/\d/g, d => '٠١٢٣٤٥٦٧٨٩'[d]);
+}
+
+function renderCard() {
+  const name = state.deck[state.currentIndex];
+  if (!name) return;
+
+  // Front face
+  cardArabic.textContent        = name.arabic;
+  cardTranslit.textContent      = name.transliteration;
+  cardNumber.textContent        = toArabicNumeral(name.id);
+
+  // Back face
+  cardArabicBack.textContent    = name.arabic;
+  cardMeaning.textContent       = name.english;
+  cardDetail.textContent        = name.detail;
+
+  // Progress
+  const pct = ((state.currentIndex + 1) / state.deck.length) * 100;
+  progressBar.style.width       = `${pct}%`;
+  progressLabel.textContent     = `${state.currentIndex + 1} / ${state.deck.length}`;
+  const progressEl = progressBar.parentElement;
+  progressEl.setAttribute('aria-valuenow', state.currentIndex + 1);
+
+  // Nav buttons
+  prevBtn.disabled = state.currentIndex === 0;
+  nextBtn.disabled = state.currentIndex === state.deck.length - 1;
+
+  // Reset flip
+  unflipCard();
+
+  // Hide add confirmation
+  addConfirmation.hidden = true;
+
+  // Update add button state
+  const alreadySaved = state.savedFromQuiz.some(n => n.id === name.id);
+  addToBlueprintBtn.textContent = alreadySaved
+    ? '✦ Added to Blueprint'
+    : '✦ Add to Blueprint';
+  addToBlueprintBtn.disabled = alreadySaved;
+}
+
+function unflipCard() {
+  state.isFlipped = false;
+  flashcard.classList.remove('flashcard--flipped');
+  flashcard.setAttribute('aria-pressed', 'false');
+  flashcardInner.querySelector('.flashcard__face--back').setAttribute('aria-hidden', 'true');
+  flashcardInner.querySelector('.flashcard__face--front').removeAttribute('aria-hidden');
+  flipHint.textContent = 'Click the card or press Space to reveal the meaning';
+  flipHint.classList.remove('flip-hint--hidden');
+}
+
+function flipCard() {
+  state.isFlipped = !state.isFlipped;
+  flashcard.classList.toggle('flashcard--flipped', state.isFlipped);
+  flashcard.setAttribute('aria-pressed', state.isFlipped ? 'true' : 'false');
+
+  if (state.isFlipped) {
+    flashcardInner.querySelector('.flashcard__face--back').removeAttribute('aria-hidden');
+    flashcardInner.querySelector('.flashcard__face--front').setAttribute('aria-hidden', 'true');
+    flipHint.classList.add('flip-hint--hidden');
+  } else {
+    flashcardInner.querySelector('.flashcard__face--back').setAttribute('aria-hidden', 'true');
+    flashcardInner.querySelector('.flashcard__face--front').removeAttribute('aria-hidden');
+    flipHint.textContent = 'Click to flip back';
+    flipHint.classList.remove('flip-hint--hidden');
+  }
+}
+
+/* Card events */
+flashcard.addEventListener('click', flipCard);
+flashcard.addEventListener('keydown', e => {
+  if (e.key === ' ' || e.key === 'Enter') { e.preventDefault(); flipCard(); }
+});
+
+flipBtn.addEventListener('click', flipCard);
+
+prevBtn.addEventListener('click', () => {
+  if (state.currentIndex > 0) {
+    state.currentIndex--;
+    renderCard();
+  }
+});
+
+nextBtn.addEventListener('click', () => {
+  if (state.currentIndex < state.deck.length - 1) {
+    state.currentIndex++;
+    renderCard();
+  }
+});
+
+/* Keyboard navigation (left/right arrows) */
+document.addEventListener('keydown', e => {
+  const quizVisible = !viewQuiz.hidden;
+  if (!quizVisible) return;
+  if (e.key === 'ArrowRight' && state.currentIndex < state.deck.length - 1) {
+    state.currentIndex++;
+    renderCard();
+  }
+  if (e.key === 'ArrowLeft' && state.currentIndex > 0) {
+    state.currentIndex--;
+    renderCard();
+  }
+});
+
+/* Shuffle */
+shuffleBtn.addEventListener('click', () => {
+  // Fisher-Yates shuffle
+  const arr = [...state.deck];
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+  state.deck = arr;
+  state.currentIndex = 0;
+  renderCard();
+
+  // Brief visual feedback
+  shuffleBtn.textContent = '⇄ Shuffled!';
+  setTimeout(() => { shuffleBtn.textContent = '⇄ Shuffle Deck'; }, 1200);
+});
+
+/* Restart */
+restartBtn.addEventListener('click', () => {
+  state.deck = [...NAMES];
+  state.currentIndex = 0;
+  renderCard();
+});
+
+/* Add to Blueprint */
+addToBlueprintBtn.addEventListener('click', () => {
+  const name = state.deck[state.currentIndex];
+  if (!state.savedFromQuiz.find(n => n.id === name.id)) {
+    state.savedFromQuiz.push(name);
+    addConfirmation.hidden = false;
+    addToBlueprintBtn.textContent = '✦ Added to Blueprint';
+    addToBlueprintBtn.disabled = true;
+    updateSavedNamesBar();
+    updateQuizSavedCount();
+    setTimeout(() => { addConfirmation.hidden = true; }, 2000);
+  }
+});
+
+/* Touch/swipe support for flashcard */
+let touchStartX = 0;
+flashcard.addEventListener('touchstart', e => {
+  touchStartX = e.changedTouches[0].clientX;
+}, { passive: true });
+
+flashcard.addEventListener('touchend', e => {
+  const diff = e.changedTouches[0].clientX - touchStartX;
+  if (Math.abs(diff) > 50) {
+    // Swipe left = next, right = prev
+    if (diff < 0 && state.currentIndex < state.deck.length - 1) {
+      state.currentIndex++;
+      renderCard();
+    } else if (diff > 0 && state.currentIndex > 0) {
+      state.currentIndex--;
+      renderCard();
+    }
+  }
+}, { passive: true });
+
+/* ─────────────────────────────────────────────────────────────
+   INITIALISE
+───────────────────────────────────────────────────────────── */
+function init() {
+  buildNamesGrid();
+  renderCard();
+  updateSavedNamesBar();
+}
+
+document.addEventListener('DOMContentLoaded', init);
+
+
+
+/* =============================================================
+   EXTENDED JS: MCQ + MASTERY + REVIEW
+============================================================= */
+
+/* ── MASTERY STATE ──
+   Per-name: { correct: N, wrong: N, seen: bool }
+   Thresholds: mastered = correct >= 3 AND correct/(correct+wrong) >= 0.75
+               learning = seen, not mastered, wrong < 3
+               weak     = wrong >= 3
+               unseen   = not seen
+*/
+const masteryData = {};  // keyed by name.id
+
+function getStatus(id) {
+  const d = masteryData[id];
+  if (!d || !d.seen) return 'unseen';
+  const total = (d.correct || 0) + (d.wrong || 0);
+  const ratio = total > 0 ? d.correct / total : 0;
+  if ((d.correct || 0) >= 3 && ratio >= 0.75) return 'mastered';
+  if ((d.wrong || 0) >= 3) return 'weak';
+  return 'learning';
+}
+
+function recordAnswer(id, correct) {
+  if (!masteryData[id]) masteryData[id] = { correct: 0, wrong: 0, seen: true };
+  masteryData[id].seen = true;
+  if (correct) masteryData[id].correct = (masteryData[id].correct || 0) + 1;
+  else         masteryData[id].wrong   = (masteryData[id].wrong   || 0) + 1;
+  // If mastery view is visible, refresh it
+  if (!document.getElementById('view-mastery').hidden) renderMasteryView();
+}
+
+/* ── MODE TOGGLE (flashcard vs MCQ) ── */
+const modeFlashcardBtn = document.getElementById('mode-flashcard');
+const modeMcqBtn       = document.getElementById('mode-mcq');
+const panelFlashcard   = document.getElementById('panel-flashcard');
+const panelMcq         = document.getElementById('panel-mcq');
+
+// Remove duplicate flashcard-stage from HTML (it's now inside panel-flashcard)
+// The HTML was restructured so we just toggle panels
+
+modeFlashcardBtn.addEventListener('click', () => {
+  modeFlashcardBtn.classList.add('mode-btn--active');
+  modeMcqBtn.classList.remove('mode-btn--active');
+  panelFlashcard.removeAttribute('hidden');
+  panelMcq.setAttribute('hidden', '');
+});
+
+modeMcqBtn.addEventListener('click', () => {
+  modeMcqBtn.classList.add('mode-btn--active');
+  modeFlashcardBtn.classList.remove('mode-btn--active');
+  panelMcq.removeAttribute('hidden');
+  panelFlashcard.setAttribute('hidden', '');
+  if (!mcqState.questionReady) loadMcqQuestion();
+});
+
+/* ── MCQ STATE ── */
+const mcqState = {
+  questionReady: false,
+  currentName: null,
+  mode: 'name-to-meaning',  // or 'meaning-to-name'
+  correct: 0,
+  total: 0,
+  streak: 0,
+  answered: false,
+  usedIds: new Set(),
+};
+
+const mcqPromptType    = document.getElementById('mcq-prompt-type');
+const mcqArabic        = document.getElementById('mcq-arabic');
+const mcqTranslit      = document.getElementById('mcq-translit');
+const mcqOptions       = document.getElementById('mcq-options');
+const mcqFeedback      = document.getElementById('mcq-feedback');
+const mcqFeedbackIcon  = document.getElementById('mcq-feedback-icon');
+const mcqFeedbackText  = document.getElementById('mcq-feedback-text');
+const mcqFeedbackDetail= document.getElementById('mcq-feedback-detail');
+const mcqNextBtn       = document.getElementById('mcq-next-btn');
+const mcqCorrectCount  = document.getElementById('mcq-correct-count');
+const mcqTotalCount    = document.getElementById('mcq-total-count');
+const mcqStreakCount   = document.getElementById('mcq-streak-count');
+const mcqModeToggleBtn = document.getElementById('mcq-mode-toggle-btn');
+const mcqRestartBtn    = document.getElementById('mcq-restart-btn');
+
+function pickRandom(arr, exclude = []) {
+  const pool = arr.filter(n => !exclude.includes(n.id));
+  if (pool.length === 0) return arr[Math.floor(Math.random() * arr.length)];
+  return pool[Math.floor(Math.random() * pool.length)];
+}
+
+function shuffle(arr) {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+function loadMcqQuestion() {
+  mcqState.answered = false;
+  mcqFeedback.hidden = true;
+  mcqOptions.innerHTML = '';
+
+  // Prefer weak/unseen names as questions
+  const weak   = NAMES.filter(n => getStatus(n.id) === 'weak');
+  const unseen = NAMES.filter(n => getStatus(n.id) === 'unseen');
+  const pool   = weak.length > 0 ? weak : unseen.length > 0 ? unseen : NAMES;
+
+  // Avoid repeating same name too soon
+  const recentIds = [...mcqState.usedIds].slice(-10);
+  mcqState.currentName = pickRandom(pool, recentIds);
+  mcqState.usedIds.add(mcqState.currentName.id);
+
+  const name = mcqState.currentName;
+
+  if (mcqState.mode === 'name-to-meaning') {
+    // Show Arabic, pick English meaning
+    mcqPromptType.textContent = 'What is the meaning of this Name?';
+    mcqArabic.textContent = name.arabic;
+    mcqArabic.className = 'mcq-card__arabic';
+    mcqArabic.lang = 'ar';
+    mcqTranslit.textContent = name.transliteration;
+    mcqTranslit.hidden = false;
+
+    // 4 options: correct + 3 distractors
+    const distractors = shuffle(NAMES.filter(n => n.id !== name.id)).slice(0, 3);
+    const options = shuffle([name, ...distractors]);
+
+    options.forEach(opt => {
+      const btn = document.createElement('button');
+      btn.className = 'mcq-option';
+      btn.textContent = opt.english;
+      btn.dataset.id = opt.id;
+      btn.addEventListener('click', () => handleMcqAnswer(btn, opt.id === name.id, name));
+      mcqOptions.appendChild(btn);
+    });
+
+  } else {
+    // Show English meaning, pick Arabic name
+    mcqPromptType.textContent = 'Which Arabic Name has this meaning?';
+    mcqArabic.textContent = name.english;
+    mcqArabic.className = 'mcq-card__arabic mcq-meaning-prompt';
+    mcqArabic.removeAttribute('lang');
+    mcqTranslit.hidden = true;
+
+    const distractors = shuffle(NAMES.filter(n => n.id !== name.id)).slice(0, 3);
+    const options = shuffle([name, ...distractors]);
+
+    options.forEach(opt => {
+      const btn = document.createElement('button');
+      btn.className = 'mcq-option mcq-option--arabic';
+      btn.innerHTML = `<span>${opt.arabic}</span><small style="display:block;font-size:0.6em;font-family:var(--font-serif);font-style:italic;color:var(--text-soft);direction:ltr;margin-top:3px">${opt.transliteration}</small>`;
+      btn.dataset.id = opt.id;
+      btn.addEventListener('click', () => handleMcqAnswer(btn, opt.id === name.id, name));
+      mcqOptions.appendChild(btn);
+    });
+  }
+
+  mcqState.questionReady = true;
+}
+
+function handleMcqAnswer(clickedBtn, isCorrect, name) {
+  if (mcqState.answered) return;
+  mcqState.answered = true;
+
+  // Disable all options
+  mcqOptions.querySelectorAll('.mcq-option').forEach(btn => {
+    btn.disabled = true;
+    if (parseInt(btn.dataset.id) === name.id) {
+      btn.classList.add('mcq-option--correct');
+    }
+  });
+
+  if (!isCorrect) {
+    clickedBtn.classList.add('mcq-option--wrong');
+  }
+
+  // Record in mastery
+  recordAnswer(name.id, isCorrect);
+
+  // Update session stats
+  mcqState.total++;
+  if (isCorrect) {
+    mcqState.correct++;
+    mcqState.streak++;
+  } else {
+    mcqState.streak = 0;
+  }
+  mcqCorrectCount.textContent = mcqState.correct;
+  mcqTotalCount.textContent   = mcqState.total;
+  mcqStreakCount.textContent  = mcqState.streak;
+
+  // Show feedback
+  mcqFeedbackIcon.textContent  = isCorrect ? '✦' : '✗';
+  mcqFeedbackText.textContent  = isCorrect
+    ? (mcqState.streak >= 3 ? `Masha'Allah! ${mcqState.streak} in a row!` : 'Correct! Well done.')
+    : `The answer is: ${name.english}`;
+  mcqFeedbackDetail.textContent = name.detail;
+  mcqFeedback.hidden = false;
+
+  // Style feedback
+  mcqFeedback.style.background = isCorrect
+    ? 'linear-gradient(135deg, rgba(168,201,164,0.15) 0%, transparent 100%)'
+    : 'linear-gradient(135deg, rgba(212,168,176,0.15) 0%, transparent 100%)';
+  mcqFeedbackIcon.style.color = isCorrect ? 'var(--lily-green)' : 'var(--blush)';
+}
+
+mcqNextBtn.addEventListener('click', loadMcqQuestion);
+
+mcqModeToggleBtn.addEventListener('click', () => {
+  mcqState.mode = mcqState.mode === 'name-to-meaning' ? 'meaning-to-name' : 'name-to-meaning';
+  mcqModeToggleBtn.textContent = mcqState.mode === 'name-to-meaning'
+    ? '⇄ Switch: Name→Meaning / Meaning→Name'
+    : '⇄ Currently: Meaning → Name';
+  loadMcqQuestion();
+});
+
+mcqRestartBtn.addEventListener('click', () => {
+  mcqState.correct = 0;
+  mcqState.total   = 0;
+  mcqState.streak  = 0;
+  mcqState.usedIds.clear();
+  mcqCorrectCount.textContent = '0';
+  mcqTotalCount.textContent   = '0';
+  mcqStreakCount.textContent  = '0';
+  loadMcqQuestion();
+});
+
+/* Keyboard: Enter/Space on MCQ to go next */
+document.addEventListener('keydown', e => {
+  if (panelMcq.hidden) return;
+  if ((e.key === 'Enter' || e.key === ' ') && mcqState.answered && !mcqFeedback.hidden) {
+    e.preventDefault();
+    loadMcqQuestion();
+  }
+});
+
+/* ── MASTERY VIEW NAV ── */
+const navMastery   = document.getElementById('nav-mastery');
+const viewMastery  = document.getElementById('view-mastery');
+
+// Extend the existing switchView function
+const _originalSwitchView = switchView;
+// Override
+window._switchViewExtended = function(targetView) {
+  // Handle our new tab
+  document.querySelectorAll('.nav-tab').forEach(tab => {
+    const isTarget = tab.dataset.view === targetView;
+    tab.classList.toggle('nav-tab--active', isTarget);
+    tab.setAttribute('aria-selected', isTarget ? 'true' : 'false');
+  });
+
+  [viewBlueprint, viewQuiz, viewMastery].forEach(v => {
+    if (v) v.setAttribute('hidden', '');
+  });
+
+  if (targetView === 'blueprint') {
+    viewBlueprint.removeAttribute('hidden');
+  } else if (targetView === 'quiz') {
+    viewQuiz.removeAttribute('hidden');
+  } else if (targetView === 'mastery') {
+    viewMastery.removeAttribute('hidden');
+    renderMasteryView();
+  }
+
+  // Re-trigger animation
+  const target = { blueprint: viewBlueprint, quiz: viewQuiz, mastery: viewMastery }[targetView];
+  if (target) {
+    target.style.animation = 'none';
+    requestAnimationFrame(() => { target.style.animation = ''; });
+  }
+};
+
+// Re-bind all nav tabs with the new handler
+document.querySelectorAll('.nav-tab').forEach(tab => {
+  // Clone to remove old listeners
+  const clone = tab.cloneNode(true);
+  tab.parentNode.replaceChild(clone, tab);
+  clone.addEventListener('click', () => window._switchViewExtended(clone.dataset.view));
+});
+
+/* ── RENDER MASTERY VIEW ── */
+function computeMasteryStats() {
+  let mastered = 0, learning = 0, weak = 0, unseen = 0, totalCorrect = 0;
+  NAMES.forEach(n => {
+    const s = getStatus(n.id);
+    if (s === 'mastered') mastered++;
+    else if (s === 'learning') learning++;
+    else if (s === 'weak') weak++;
+    else unseen++;
+    if (masteryData[n.id]) totalCorrect += masteryData[n.id].correct || 0;
+  });
+  return { mastered, learning, weak, unseen, totalCorrect };
+}
+
+function renderMasteryView() {
+  const { mastered, learning, weak, unseen, totalCorrect } = computeMasteryStats();
+  const pct = Math.round((mastered / 99) * 100);
+
+  // Ring
+  document.getElementById('mastery-pct').textContent = pct + '%';
+  const circumference = 2 * Math.PI * 50; // r=50
+  const offset = circumference - (pct / 100) * circumference;
+  document.getElementById('mastery-ring-fill').style.strokeDashoffset = offset;
+
+  // Add SVG gradient defs if not present
+  const svg = document.querySelector('.mastery-ring');
+  if (svg && !svg.querySelector('defs')) {
+    svg.insertAdjacentHTML('afterbegin', `
+      <defs>
+        <linearGradient id="ringGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+          <stop offset="0%" style="stop-color:var(--lily-green-light)"/>
+          <stop offset="100%" style="stop-color:var(--periwinkle)"/>
+        </linearGradient>
+      </defs>`);
+  }
+
+  // Stats
+  document.getElementById('stat-mastered').textContent     = mastered;
+  document.getElementById('stat-learning').textContent     = learning + weak;
+  document.getElementById('stat-unseen').textContent       = unseen;
+  document.getElementById('stat-total-correct').textContent = totalCorrect;
+
+  // Bar track
+  const track = document.getElementById('mastery-bar-track');
+  track.innerHTML = '';
+  NAMES.forEach(n => {
+    const status = getStatus(n.id);
+    const seg = document.createElement('div');
+    seg.className = `mastery-bar-seg mastery-bar-seg--${status}`;
+    seg.dataset.tip = `${n.transliteration} · ${n.english}`;
+    seg.setAttribute('title', `${n.arabic} — ${n.english}`);
+    track.appendChild(seg);
+  });
+
+  // Review grid (weak names)
+  const reviewGrid  = document.getElementById('review-grid');
+  const reviewEmpty = document.getElementById('review-empty');
+  const reviewBadge = document.getElementById('review-count-badge');
+  const weakNames   = NAMES.filter(n => getStatus(n.id) === 'weak');
+
+  reviewBadge.textContent = weakNames.length > 0 ? weakNames.length : '';
+  reviewBadge.style.display = weakNames.length > 0 ? '' : 'none';
+
+  if (weakNames.length === 0) {
+    reviewGrid.innerHTML = '';
+    if (!reviewEmpty.parentNode) reviewGrid.appendChild(reviewEmpty);
+    reviewEmpty.style.display = '';
+  } else {
+    reviewEmpty && (reviewEmpty.style.display = 'none');
+    reviewGrid.innerHTML = '';
+    weakNames.sort((a, b) => (masteryData[b.id]?.wrong || 0) - (masteryData[a.id]?.wrong || 0))
+      .forEach(n => {
+        const d = masteryData[n.id] || {};
+        const card = document.createElement('div');
+        card.className = 'review-card';
+        card.innerHTML = `
+          <div class="review-card__arabic">${n.arabic}</div>
+          <div class="review-card__english">${n.english}</div>
+          <div class="review-card__wrong-count">✗ Incorrect ${d.wrong || 0} time${(d.wrong||0)!==1?'s':''}</div>
+          <button class="review-card__study-btn" data-id="${n.id}">Study this name →</button>
+        `;
+        card.querySelector('.review-card__study-btn').addEventListener('click', () => {
+          // Jump to quiz, open flashcard at this name
+          window._switchViewExtended('quiz');
+          modeFlashcardBtn.click();
+          const idx = state.deck.findIndex(x => x.id === n.id);
+          if (idx >= 0) { state.currentIndex = idx; renderCard(); }
+          else {
+            state.deck = [...NAMES];
+            state.currentIndex = NAMES.findIndex(x => x.id === n.id);
+            renderCard();
+          }
+        });
+        reviewGrid.appendChild(card);
+      });
+  }
+
+  // All names mastery grid
+  renderMasteryNamesGrid('all');
+}
+
+function renderMasteryNamesGrid(filter) {
+  const grid = document.getElementById('mastery-names-grid');
+  grid.innerHTML = '';
+  NAMES.forEach(n => {
+    const status = getStatus(n.id);
+    if (filter !== 'all' && status !== filter) return;
+    const d = masteryData[n.id] || {};
+    const card = document.createElement('div');
+    card.className = 'mastery-name-card';
+    card.setAttribute('role', 'listitem');
+    card.dataset.status = status;
+    const scoreText = d.seen
+      ? `✓ ${d.correct||0}  ✗ ${d.wrong||0}`
+      : 'Not studied yet';
+    card.innerHTML = `
+      <div class="mastery-name-card__status-stripe"></div>
+      <div class="mastery-name-card__arabic">${n.arabic}</div>
+      <div class="mastery-name-card__english">${n.english}</div>
+      <div class="mastery-name-card__score">${scoreText}</div>
+    `;
+    grid.appendChild(card);
+  });
+  if (grid.children.length === 0) {
+    grid.innerHTML = '<p style="grid-column:1/-1;text-align:center;font-style:italic;color:var(--text-ghost);padding:20px;font-family:var(--font-serif)">No names in this category yet.</p>';
+  }
+}
+
+// Filter buttons
+document.querySelectorAll('.filter-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('filter-btn--active'));
+    btn.classList.add('filter-btn--active');
+    renderMasteryNamesGrid(btn.dataset.filter);
+  });
+});
+
+// Reset progress
+document.getElementById('reset-progress-btn').addEventListener('click', () => {
+  if (confirm('Reset all your mastery progress? This cannot be undone.')) {
+    Object.keys(masteryData).forEach(k => delete masteryData[k]);
+    renderMasteryView();
+  }
+});
+
+
+/* =============================================================
+   COLLECTIONS — Saved Duas + Heritage Duas
+============================================================= */
+
+/* ─── HERITAGE DUA DATA ─────────────────────────────────────── */
+const HERITAGE_DUAS = [
+  {
+    id: 'h1', category: 'quran',
+    title: "Dua of Prophet Ibrahim ﷺ for His Parents",
+    source: 'Surah Ibrahim (14:41)',
+    arabic: 'رَبَّنَا ٱغْفِرْ لِى وَلِوَٰلِدَىَّ وَلِلْمُؤْمِنِينَ يَوْمَ يَقُومُ ٱلْحِسَابُ',
+    translation: '"Our Lord, forgive me and my parents and the believers on the Day when the account is established."',
+    context: 'The supplication of Ibrahim ﷺ, the Khalilullah (intimate friend of Allah), asking for forgiveness for himself, his parents, and all believers on the Day of Reckoning.'
+  },
+  {
+    id: 'h2', category: 'quran',
+    title: 'Dua of Prophet Yunus ﷺ in the Belly of the Whale',
+    source: 'Surah Al-Anbiya (21:87)',
+    arabic: 'لَّآ إِلَٰهَ إِلَّآ أَنتَ سُبْحَٰنَكَ إِنِّى كُنتُ مِنَ ٱلظَّٰلِمِينَ',
+    translation: '"There is no deity except You; exalted are You. Indeed, I have been of the wrongdoers."',
+    context: 'Known as the Dua of Dhul-Nun. The Prophet ﷺ said: "No Muslim calls upon Allah with these words in any matter except that Allah will respond to him." (Tirmidhi)'
+  },
+  {
+    id: 'h3', category: 'quran',
+    title: 'The Supplication of the People of Knowledge',
+    source: 'Surah Al-Imran (3:8)',
+    arabic: 'رَبَّنَا لَا تُزِغْ قُلُوبَنَا بَعْدَ إِذْ هَدَيْتَنَا وَهَبْ لَنَا مِن لَّدُنكَ رَحْمَةً إِنَّكَ أَنتَ ٱلْوَهَّابُ',
+    translation: '"Our Lord, let not our hearts deviate after You have guided us and grant us from Yourself mercy. Indeed, You are the Bestower."',
+    context: 'This is the supplication of those firmly grounded in knowledge (ar-rasikhun fil-ilm), who humbly acknowledge that guidance is entirely a gift from Allah.'
+  },
+  {
+    id: 'h4', category: 'quran',
+    title: 'Dua for Entering the Mercy of Allah',
+    source: "Surah Al-A'raf (7:23)",
+    arabic: 'رَبَّنَا ظَلَمْنَآ أَنفُسَنَا وَإِن لَّمْ تَغْفِرْ لَنَا وَتَرْحَمْنَا لَنَكُونَنَّ مِنَ ٱلْخَٰسِرِينَ',
+    translation: '"Our Lord, we have wronged ourselves, and if You do not forgive us and have mercy upon us, we will surely be among the losers."',
+    context: "The supplication of Adam and Hawwa after their descent. A timeless acknowledgment of human weakness and complete dependence on Allah's mercy and forgiveness."
+  },
+  {
+    id: 'h5', category: 'quran',
+    title: 'Dua of Prophet Musa ﷺ for Help',
+    source: 'Surah Al-Qasas (28:24)',
+    arabic: 'رَبِّ إِنِّى لِمَا أَنزَلْتَ إِلَىَّ مِنْ خَيْرٍ فَقِيرٌ',
+    translation: '"My Lord, indeed I am, for whatever good You would send down to me, in need."',
+    context: 'Spoken by Musa ﷺ when he was alone, a stranger, and in poverty near Madyan. A beautiful example of complete tawakkul and gentle asking.'
+  },
+  {
+    id: 'h6', category: 'prophet',
+    title: 'Sayyid al-Istighfar — The Master of Seeking Forgiveness',
+    source: 'Sahih al-Bukhari (6306)',
+    arabic: 'اللَّهُمَّ أَنْتَ رَبِّي لَا إِلَهَ إِلَّا أَنْتَ خَلَقْتَنِي وَأَنَا عَبْدُكَ وَأَنَا عَلَى عَهْدِكَ وَوَعْدِكَ مَا اسْتَطَعْتُ أَعُوذُ بِكَ مِنْ شَرِّ مَا صَنَعْتُ أَبُوءُ لَكَ بِنِعْمَتِكَ عَلَيَّ وَأَبُوءُ لَكَ بِذَنْبِي فَاغْفِرْ لِي فَإِنَّهُ لَا يَغْفِرُ الذُّنُوبَ إِلَّا أَنْتَ',
+    translation: '"O Allah, You are my Lord. There is no god but You. You created me and I am Your servant, and I abide by Your covenant and promise as best I can. I seek refuge in You from the evil of what I have done. I acknowledge Your favour upon me, and I acknowledge my sins. So forgive me, for indeed no one forgives sins except You."',
+    context: 'The Prophet ﷺ said: "Whoever says this with certainty in the morning and dies that day before evening will be among the people of Paradise." (Bukhari)'
+  },
+  {
+    id: 'h7', category: 'prophet',
+    title: 'Dua for Firmness of the Heart',
+    source: "Jami' at-Tirmidhi (3522)",
+    arabic: 'يَا مُقَلِّبَ الْقُلُوبِ ثَبِّتْ قَلْبِي عَلَى دِينِكَ',
+    translation: '"O Turner of the hearts, make my heart firm upon Your religion."',
+    context: 'The Prophet ﷺ recited this abundantly. He said: "Indeed, the heart of every person is between two fingers of ar-Rahman; He turns it however He wills." (Tirmidhi)'
+  },
+  {
+    id: 'h8', category: 'prophet',
+    title: 'Dua of Light',
+    source: 'Sahih Muslim (763)',
+    arabic: 'اللَّهُمَّ اجْعَلْ فِي قَلْبِي نُورًا وَفِي لِسَانِي نُورًا وَاجْعَلْ فِي سَمْعِي نُورًا وَاجْعَلْ فِي بَصَرِي نُورًا وَاجْعَلْ مِنْ خَلْفِي نُورًا وَمِنْ أَمَامِي نُورًا وَاجْعَلْ مِنْ فَوْقِي نُورًا وَمِنْ تَحْتِي نُورًا اللَّهُمَّ أَعْطِنِي نُورًا',
+    translation: '"O Allah, place light in my heart, and light on my tongue, and place light in my hearing, and place light in my sight, and place light behind me, and light in front of me, and place light above me and light beneath me. O Allah, grant me light."',
+    context: "Recited by the Prophet ﷺ in prostration. A profound supplication for one's entire being to be illuminated by the divine light of guidance."
+  },
+  {
+    id: 'h9', category: 'prophet',
+    title: 'Dua for Beneficial Knowledge',
+    source: 'Sahih Muslim (2722)',
+    arabic: 'اللَّهُمَّ إِنِّي أَسْأَلُكَ عِلْمًا نَافِعًا وَرِزْقًا طَيِّبًا وَعَمَلًا مُتَقَبَّلًا',
+    translation: '"O Allah, I ask You for beneficial knowledge, good sustenance, and accepted deeds."',
+    context: 'The Prophet ﷺ would say this after the Fajr prayer. A concise supplication covering three great needs: knowledge, provision, and accepted action.'
+  },
+  {
+    id: 'h10', category: 'prophet',
+    title: 'Dua for Protection from Spiritual Weakness',
+    source: 'Sahih Muslim (2707)',
+    arabic: 'اللَّهُمَّ إِنِّي أَعُوذُ بِكَ مِنَ الْعَجْزِ وَالْكَسَلِ وَالْجُبْنِ وَالْبُخْلِ وَالْهَرَمِ وَعَذَابِ الْقَبْرِ',
+    translation: '"O Allah, I seek refuge with You from incapacity, laziness, cowardice, miserliness, old age, and the punishment of the grave."',
+    context: "A morning and evening supplication of the Prophet ﷺ, seeking protection from the spiritual diseases that weaken a believer's worship."
+  },
+  {
+    id: 'h11', category: 'companions',
+    title: 'Dua of Abu Bakr al-Siddiq رضي الله عنه',
+    source: 'Sahih al-Bukhari (834)',
+    arabic: 'اللَّهُمَّ إِنِّي ظَلَمْتُ نَفْسِي ظُلْمًا كَثِيرًا وَلَا يَغْفِرُ الذُّنُوبَ إِلَّا أَنْتَ فَاغْفِرْ لِي مَغْفِرَةً مِنْ عِنْدِكَ وَارْحَمْنِي إِنَّكَ أَنْتَ الْغَفُورُ الرَّحِيمُ',
+    translation: '"O Allah, I have wronged myself greatly and none forgives sins except You, so forgive me with a forgiveness from Yourself and have mercy on me. Verily, You are the Forgiving, the Merciful."',
+    context: 'Abu Bakr al-Siddiq رضي الله عنه asked the Prophet ﷺ to teach him a supplication for his prayer — and the Prophet ﷺ taught him this dua, marking its supreme value.'
+  },
+  {
+    id: 'h12', category: 'companions',
+    title: "Dua of Ali ibn Abi Talib رضي الله عنه — Qunut al-Witr",
+    source: 'Musnad Imam Ahmad',
+    arabic: 'اللَّهُمَّ إِنِّي أَعُوذُ بِرِضَاكَ مِنْ سَخَطِكَ وَبِمُعَافَاتِكَ مِنْ عُقُوبَتِكَ وَأَعُوذُ بِكَ مِنْكَ لَا أُحْصِي ثَنَاءً عَلَيْكَ أَنْتَ كَمَا أَثْنَيْتَ عَلَى نَفْسِكَ',
+    translation: '"O Allah, I seek refuge in Your pleasure from Your anger, and in Your pardon from Your punishment, and I seek refuge in You from You. I cannot enumerate Your praises — You are as You have praised Yourself."',
+    context: 'Taught by the Prophet ﷺ to Ali رضي الله عنه for use in the Witr prayer. "I seek refuge in You from You" expresses that there is no escape from Allah except to Allah Himself.'
+  },
+  {
+    id: 'h13', category: 'companions',
+    title: "Dua of Ibn Abbas رضي الله عنه upon Waking",
+    source: 'Sahih al-Bukhari (6316)',
+    arabic: 'اللَّهُمَّ لَكَ الْحَمْدُ أَنْتَ نُورُ السَّمَاوَاتِ وَالْأَرْضِ وَلَكَ الْحَمْدُ أَنْتَ قَيِّمُ السَّمَاوَاتِ وَالْأَرْضِ وَلَكَ الْحَمْدُ أَنْتَ رَبُّ السَّمَاوَاتِ وَالْأَرْضِ',
+    translation: '"O Allah, to You belongs all praise. You are the Light of the heavens and the earth. To You belongs all praise. You are the Sustainer of the heavens and the earth. To You belongs all praise. You are the Lord of the heavens and the earth."',
+    context: 'Narrated by Ibn Abbas رضي الله عنه as a supplication the Prophet ﷺ would say upon waking at night for Tahajjud. A majestic affirmation of divine sovereignty before standing in night prayer.'
+  },
+  {
+    id: 'h14', category: 'scholars',
+    title: "Dua of Imam al-Nawawi رحمه الله — For Righteousness",
+    source: 'Al-Adhkar by Imam al-Nawawi',
+    arabic: 'اللَّهُمَّ إِنِّي أَسْأَلُكَ فِعْلَ الْخَيْرَاتِ وَتَرْكَ الْمُنْكَرَاتِ وَحُبَّ الْمَسَاكِينِ وَأَنْ تَغْفِرَ لِي وَتَرْحَمَنِي',
+    translation: '"O Allah, I ask You for the doing of good deeds, the abandonment of evil deeds, love of the poor, that You forgive me and have mercy on me."',
+    context: 'Recorded in the hadith collection of Imam al-Nawawi رحمه الله. A comprehensive supplication asking for righteousness, humility before the poor, forgiveness, and mercy.'
+  },
+  {
+    id: 'h15', category: 'scholars',
+    title: "Dua of Ibn al-Qayyim رحمه الله — The Heart's Goal",
+    source: 'Madarij al-Salikin',
+    arabic: 'إِلَهِي أَنْتَ مُرَادِي وَرِضَاكَ مَطْلُوبِي أَعْطِنِي مَحَبَّتَكَ وَمَعْرِفَتَكَ',
+    translation: '"My God, You are my goal and Your pleasure is what I seek — grant me Your love and Your knowledge."',
+    context: 'Recorded by Ibn al-Qayyim رحمه الله in Madarij al-Salikin. This luminous supplication encapsulates the entire journey of the spiritual wayfarer — that Allah Himself is the destination, not merely His gifts.'
+  },
+  {
+    id: 'h16', category: 'scholars',
+    title: "Dua of Imam al-Shafi'i رحمه الله",
+    source: "Manaqib al-Shafi'i by al-Bayhaqi",
+    arabic: 'اللَّهُمَّ لَكَ الْحَمْدُ كُلُّهُ وَلَكَ الْمُلْكُ كُلُّهُ وَبِيَدِكَ الْخَيْرُ كُلُّهُ وَإِلَيْكَ يَرْجِعُ الْأَمْرُ كُلُّهُ أَسْأَلُكَ مِنَ الْخَيْرِ كُلِّهِ وَأَعُوذُ بِكَ مِنَ الشَّرِّ كُلِّهِ',
+    translation: '"O Allah, all praise belongs to You, all dominion is Yours, all good is in Your hands, and all matters return to You. I ask You for all good and seek Your refuge from all evil."',
+    context: "Imam al-Shafi'i رحمه الله would recite this at the close of his supplications. The rhythm of kullu (all) emphasises the total, unconditional nature of Allah's dominion and generosity."
+  },
+  {
+    id: 'h17', category: 'scholars',
+    title: 'Dua of Imam Ahmad ibn Hanbal رحمه الله — Dignity of the Face',
+    source: 'Tabaqat al-Hanabilah',
+    arabic: 'اللَّهُمَّ كَمَا صُنْتَ وَجْهِي عَنِ السُّجُودِ لِغَيْرِكَ فَصُنْ وَجْهِي عَنِ الْمَسْأَلَةِ لِغَيْرِكَ',
+    translation: '"O Allah, just as You have preserved my face from prostrating to other than You, so preserve my face from asking of other than You."',
+    context: 'Imam Ahmad رحمه الله endured years of imprisonment for refusing to compromise his beliefs. This dua expresses his most guarded virtue: never humiliating himself before any creation when only Allah deserves such need.'
+  },
+  {
+    id: 'h18', category: 'scholars',
+    title: "Dua of Rabi'a al-Adawiyya رحمها الله — Pure Love",
+    source: "Hilyat al-Awliya' by Abu Nu'aym",
+    arabic: 'اللَّهُمَّ إِنْ كُنْتُ أَعْبُدُكَ خَوْفًا مِنَ النَّارِ فَأَحْرِقْنِي بِهَا وَإِنْ كُنْتُ أَعْبُدُكَ طَمَعًا فِي الْجَنَّةِ فَاحْرِمْنِي مِنْهَا وَإِنْ كُنْتُ أَعْبُدُكَ لِذَاتِكَ فَلَا تَحْرِمْنِي مِنْ جَمَالِكَ الْبَاقِي',
+    translation: '"O Allah, if I worship You out of fear of the Fire, burn me in it. If I worship You hoping for Paradise, forbid it to me. But if I worship You for Your own sake, do not withhold from me Your everlasting Beauty."',
+    context: "The famous supplication of Rabi'a al-Adawiyya رحمها الله, the 8th-century mystic from Basra. Considered one of the most profound expressions of pure love (hubb) for Allah in all of Islamic spiritual literature."
+  },
+];
+
+/* ─── SAVED DUAS STATE ───────────────────────────────────────── */
+const savedDuas = [];
+
+/* ─── DOM REFS ───────────────────────────────────────────────── */
+const saveToCollectionBtn = document.getElementById('save-to-collection-btn');
+const collEmptyState      = document.getElementById('coll-empty-state');
+const savedDuasGrid       = document.getElementById('saved-duas-grid');
+const myDuasBadge         = document.getElementById('my-duas-badge');
+const goToBlueprintBtn    = document.getElementById('go-to-blueprint-btn');
+const saveToast           = document.getElementById('save-toast');
+
+/* ─── TOAST ──────────────────────────────────────────────────── */
+function showSaveToast(msg) {
+  saveToast.textContent = msg;
+  saveToast.classList.add('save-toast--visible');
+  setTimeout(() => saveToast.classList.remove('save-toast--visible'), 2800);
+}
+
+/* ─── SAVE DUA ───────────────────────────────────────────────── */
+if (saveToCollectionBtn) {
+  saveToCollectionBtn.addEventListener('click', () => {
+    const textEl = document.getElementById('dua-output-text');
+    const text = textEl ? textEl.textContent.trim() : '';
+    if (!text) { showSaveToast('Generate a dua first before saving.'); return; }
+
+    const now = new Date();
+    const dateStr = now.toLocaleDateString('en-GB', { day:'numeric', month:'long', year:'numeric' });
+    const entry = {
+      id: 'saved_' + Date.now(),
+      title: 'My Dua — ' + dateStr,
+      text,
+      date: dateStr,
+    };
+    savedDuas.unshift(entry);
+    updateMyDuasBadge();
+    renderSavedDuas();
+    showSaveToast('Your dua has been saved to Collections');
+  });
+}
+
+if (goToBlueprintBtn) {
+  goToBlueprintBtn.addEventListener('click', () => window._switchViewExtended('blueprint'));
+}
+
+function updateMyDuasBadge() {
+  if (myDuasBadge) myDuasBadge.textContent = savedDuas.length;
+}
+
+/* ─── RENDER SAVED DUAS ──────────────────────────────────────── */
+function renderSavedDuas() {
+  if (!savedDuasGrid || !collEmptyState) return;
+  if (savedDuas.length === 0) {
+    collEmptyState.style.display = '';
+    savedDuasGrid.hidden = true;
+    return;
+  }
+  collEmptyState.style.display = 'none';
+  savedDuasGrid.hidden = false;
+  savedDuasGrid.innerHTML = '';
+
+  savedDuas.forEach(entry => {
+    const card = document.createElement('article');
+    card.className = 'saved-dua-card';
+    card.setAttribute('role', 'listitem');
+    card.innerHTML = `
+      <div class="saved-dua-card__header">
+        <div class="saved-dua-card__meta">
+          <button class="saved-dua-card__title">${entry.title}</button>
+          <span class="saved-dua-card__date">Saved ${entry.date}</span>
+        </div>
+        <div class="saved-dua-card__actions">
+          <button class="saved-dua-card__btn saved-dua-card__btn--rename">✎ Rename</button>
+          <button class="saved-dua-card__btn saved-dua-card__btn--copy">⎘ Copy</button>
+          <button class="saved-dua-card__btn saved-dua-card__btn--delete">✕</button>
+        </div>
+      </div>
+      <div class="saved-dua-card__body">
+        <div class="saved-dua-card__text" id="dua-text-${entry.id}">${entry.text}</div>
+        <button class="saved-dua-card__expand">Show full dua ↓</button>
+      </div>`;
+
+    card.querySelector('.saved-dua-card__expand').addEventListener('click', function() {
+      const t = card.querySelector('.saved-dua-card__text');
+      this.textContent = t.classList.toggle('saved-dua-card__text--expanded') ? 'Collapse ↑' : 'Show full dua ↓';
+    });
+
+    card.querySelector('.saved-dua-card__btn--copy').addEventListener('click', async () => {
+      try { await navigator.clipboard.writeText(entry.text); } catch(e) {}
+      showSaveToast('Dua copied to clipboard');
+    });
+
+    card.querySelector('.saved-dua-card__btn--rename').addEventListener('click', () => {
+      const titleBtn = card.querySelector('.saved-dua-card__title');
+      const input = document.createElement('input');
+      input.className = 'saved-dua-card__rename';
+      input.value = entry.title;
+      titleBtn.replaceWith(input);
+      input.focus(); input.select();
+      const commit = () => {
+        const val = input.value.trim() || entry.title;
+        entry.title = val;
+        const newBtn = document.createElement('button');
+        newBtn.className = 'saved-dua-card__title';
+        newBtn.textContent = val;
+        input.replaceWith(newBtn);
+      };
+      input.addEventListener('blur', commit);
+      input.addEventListener('keydown', e => { if (e.key === 'Enter') input.blur(); });
+    });
+
+    card.querySelector('.saved-dua-card__btn--delete').addEventListener('click', () => {
+      if (!confirm('Remove this dua from your collection?')) return;
+      const i = savedDuas.findIndex(d => d.id === entry.id);
+      if (i >= 0) savedDuas.splice(i, 1);
+      updateMyDuasBadge();
+      renderSavedDuas();
+    });
+
+    savedDuasGrid.appendChild(card);
+  });
+}
+
+/* ─── HERITAGE DUAS ──────────────────────────────────────────── */
+function renderHeritageDuas(filter) {
+  const grid = document.getElementById('heritage-duas-grid');
+  if (!grid) return;
+  grid.innerHTML = '';
+  const list = filter === 'all' ? HERITAGE_DUAS : HERITAGE_DUAS.filter(d => d.category === filter);
+  const labels = { quran:"Qur'ānic", prophet:'The Prophet ﷺ', companions:'Companion', scholars:'Righteous Scholar' };
+
+  list.forEach(dua => {
+    const card = document.createElement('article');
+    card.className = 'heritage-card';
+    card.setAttribute('data-cat', dua.category);
+    card.setAttribute('role', 'listitem');
+    card.innerHTML = `
+      <div class="heritage-card__header">
+        <div class="heritage-card__source-wrap">
+          <span class="heritage-card__category">${labels[dua.category] || dua.category}</span>
+          <h3 class="heritage-card__title">${dua.title}</h3>
+          <cite class="heritage-card__source">${dua.source}</cite>
+        </div>
+        <button class="heritage-card__copy-btn">⎘ Copy</button>
+      </div>
+      <div class="heritage-card__body">
+        <p class="heritage-card__arabic" lang="ar">${dua.arabic}</p>
+        <p class="heritage-card__translation">${dua.translation}</p>
+        <p class="heritage-card__context">${dua.context}</p>
+      </div>`;
+
+    card.querySelector('.heritage-card__copy-btn').addEventListener('click', async () => {
+      const t = dua.arabic + '\n\n' + dua.translation + '\n\n— ' + dua.source;
+      try { await navigator.clipboard.writeText(t); } catch(e) {}
+      showSaveToast('Dua copied to clipboard');
+    });
+
+    grid.appendChild(card);
+  });
+
+  if (list.length === 0) {
+    grid.innerHTML = '<p style="text-align:center;font-style:italic;color:var(--text-ghost);padding:40px;font-family:var(--font-serif)">No duas in this category.</p>';
+  }
+}
+
+/* Heritage filter buttons */
+document.querySelectorAll('[data-hfilter]').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('[data-hfilter]').forEach(b => b.classList.remove('filter-btn--active'));
+    btn.classList.add('filter-btn--active');
+    renderHeritageDuas(btn.dataset.hfilter);
+  });
+});
+
+/* ─── COLLECTIONS SUB-TABS ───────────────────────────────────── */
+document.querySelectorAll('.coll-tab').forEach(tab => {
+  tab.addEventListener('click', () => {
+    document.querySelectorAll('.coll-tab').forEach(t => {
+      t.classList.remove('coll-tab--active');
+      t.setAttribute('aria-selected', 'false');
+    });
+    tab.classList.add('coll-tab--active');
+    tab.setAttribute('aria-selected', 'true');
+    const target = tab.dataset.coll;
+    const myPanel  = document.getElementById('coll-panel-my-duas');
+    const herPanel = document.getElementById('coll-panel-heritage');
+    if (myPanel)  myPanel.hidden  = (target !== 'my-duas');
+    if (herPanel) herPanel.hidden = (target !== 'heritage');
+    if (target === 'heritage') renderHeritageDuas('all');
+    if (target === 'my-duas')  renderSavedDuas();
+  });
+});
+
+/* ─── OVERRIDE SWITCH VIEW (final, covers all 4 views) ──────── */
+window._switchViewExtended = function(targetView) {
+  document.querySelectorAll('.nav-tab').forEach(tab => {
+    const isTarget = tab.dataset.view === targetView;
+    tab.classList.toggle('nav-tab--active', isTarget);
+    tab.setAttribute('aria-selected', String(isTarget));
+  });
+  ['blueprint','quiz','mastery','collections'].forEach(v => {
+    const el = document.getElementById('view-' + v);
+    if (el) el.setAttribute('hidden', '');
+  });
+  const target = document.getElementById('view-' + targetView);
+  if (target) {
+    target.removeAttribute('hidden');
+    target.style.animation = 'none';
+    requestAnimationFrame(() => { target.style.animation = ''; });
+  }
+  if (targetView === 'mastery')     renderMasteryView();
+  if (targetView === 'collections') { renderSavedDuas(); renderHeritageDuas('all'); }
+};
+
+/* Re-bind ALL nav tabs with the definitive handler */
+document.querySelectorAll('.nav-tab').forEach(tab => {
+  const fresh = tab.cloneNode(true);
+  tab.parentNode.replaceChild(fresh, tab);
+  fresh.addEventListener('click', () => window._switchViewExtended(fresh.dataset.view));
+});
+
+/* ─── INIT ───────────────────────────────────────────────────── */
+updateMyDuasBadge();
+renderHeritageDuas('all');
+
+
+  </script>
+
+  <div class="save-toast" id="save-toast" role="status" aria-live="polite"></div>
+</body>
+</html>
