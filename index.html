@@ -739,28 +739,29 @@
     }
   }, 3000);
 
-  // Register combined service worker (OneSignal + offline cache)
+  // Unregister old service workers and register fresh one
   if ('serviceWorker' in navigator) {
-    window.addEventListener('load', () => {
+    window.addEventListener('load', async () => {
+      // Unregister any old service workers first
+      const registrations = await navigator.serviceWorker.getRegistrations();
+      for (const reg of registrations) {
+        if (!reg.active?.scriptURL?.includes('OneSignalSDKWorker')) {
+          await reg.unregister();
+        }
+      }
+      // Register the combined OneSignal + cache worker
       navigator.serviceWorker.register('/SistersQuranClub/OneSignalSDKWorker.js', { scope: '/SistersQuranClub/' })
         .then(reg => {
-          console.log('SW registered:', reg.scope);
-          // When a new service worker is found, reload automatically
           reg.addEventListener('updatefound', () => {
             const newWorker = reg.installing;
             newWorker.addEventListener('statechange', () => {
-              if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
-                console.log('New version available — reloading...');
+              if (newWorker.state === 'activated') {
                 window.location.reload();
               }
             });
           });
         })
-        .catch(err => console.log('SW skipped (preview env):', err.message));
-      // Also reload if the controller changes (new SW took over)
-      navigator.serviceWorker.addEventListener('controllerchange', () => {
-        window.location.reload();
-      });
+        .catch(err => console.log('SW skipped:', err.message));
     });
   }
 </script>
