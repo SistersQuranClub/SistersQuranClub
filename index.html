@@ -739,12 +739,28 @@
     }
   }, 3000);
 
-  // Register service worker for offline support
+  // Register combined service worker (OneSignal + offline cache)
   if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => {
-      navigator.serviceWorker.register('/SistersQuranClub/sw.js')
-        .then(reg => console.log('SQC service worker registered:', reg.scope))
-        .catch(err => console.log('Service worker error:', err));
+      navigator.serviceWorker.register('/SistersQuranClub/OneSignalSDKWorker.js', { scope: '/SistersQuranClub/' })
+        .then(reg => {
+          console.log('SW registered:', reg.scope);
+          // When a new service worker is found, reload automatically
+          reg.addEventListener('updatefound', () => {
+            const newWorker = reg.installing;
+            newWorker.addEventListener('statechange', () => {
+              if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+                console.log('New version available — reloading...');
+                window.location.reload();
+              }
+            });
+          });
+        })
+        .catch(err => console.log('SW skipped (preview env):', err.message));
+      // Also reload if the controller changes (new SW took over)
+      navigator.serviceWorker.addEventListener('controllerchange', () => {
+        window.location.reload();
+      });
     });
   }
 </script>
