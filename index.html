@@ -7,6 +7,30 @@
   <meta name="theme-color" content="#c4748a">
   <link rel="manifest" href="manifest.json">
   <title>Sisters Quran Club</title>
+  <script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
+  <script>
+    window.OneSignalDeferred = window.OneSignalDeferred || [];
+    OneSignalDeferred.push(async function(OneSignal) {
+      await OneSignal.init({
+        appId: "6108e895-f615-448a-a8e7-f19993e2ff1d",
+        serviceWorkerPath: "OneSignalSDKWorker.js",
+        notifyButton: { enable: false },
+        promptOptions: {
+          slidedown: {
+            prompts: [{
+              type: "push",
+              autoPrompt: false,
+              text: {
+                actionMessage: "🌿 Allow SQC to send you garden reminders and Islamic reminders!",
+                acceptButton: "Allow 🌸",
+                cancelButton: "Maybe later"
+              }
+            }]
+          }
+        }
+      });
+    });
+  </script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Nunito:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
@@ -143,6 +167,42 @@
     .expand-btn{background:rgba(255,255,255,0.12);border:none;border-radius:20px;padding:6px 14px;color:rgba(255,255,255,0.8);font-family:'Nunito',sans-serif;font-size:12px;font-weight:700;cursor:pointer;transition:background 0.2s;margin-left:auto}
     .expand-btn:hover{background:rgba(255,255,255,0.2)}
 
+    /* Notification settings page */
+    .notify-wrap{max-width:600px;margin:0 auto;padding:40px 24px 60px}
+    .notify-hero{text-align:center;margin-bottom:32px}
+    .notify-status{display:flex;align-items:center;gap:10px;background:white;border:1px solid var(--rose-pale);border-radius:14px;padding:14px 18px;margin-bottom:24px}
+    .notify-status-dot{width:10px;height:10px;border-radius:50%;background:#ccc;flex-shrink:0}
+    .notify-status-dot.on{background:#4caf50;box-shadow:0 0 0 3px #e8f5e9}
+    .notify-status-dot.off{background:#e57373;box-shadow:0 0 0 3px #ffebee}
+    .notify-status-text{font-size:13px;font-weight:600;color:var(--text-soft);flex:1}
+    .notify-card{background:white;border-radius:16px;border:1px solid var(--rose-pale);padding:20px;margin-bottom:16px}
+    .notify-card-title{font-family:'Cormorant Garamond',serif;font-size:18px;color:var(--rose-deep);margin-bottom:4px;display:flex;align-items:center;gap:8px}
+    .notify-card-sub{font-size:12px;color:var(--text-soft);margin-bottom:16px;line-height:1.5}
+    .toggle-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
+    .toggle-label{font-size:13px;font-weight:600;color:var(--text)}
+    .toggle{position:relative;width:44px;height:24px;cursor:pointer}
+    .toggle input{opacity:0;width:0;height:0}
+    .slider{position:absolute;inset:0;background:#ddd;border-radius:24px;transition:0.3s}
+    .slider:before{content:'';position:absolute;width:18px;height:18px;left:3px;top:3px;background:white;border-radius:50%;transition:0.3s}
+    input:checked+.slider{background:var(--rose)}
+    input:checked+.slider:before{transform:translateX(20px)}
+    .time-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px}
+    .time-option{padding:10px;border:1.5px solid var(--rose-pale);border-radius:10px;text-align:center;cursor:pointer;transition:all 0.2s;font-size:12px;font-weight:600;color:var(--text-soft)}
+    .time-option.active{border-color:var(--rose);background:var(--rose-pale);color:var(--rose-deep)}
+    .time-input{width:100%;padding:10px 12px;border:1.5px solid var(--rose-pale);border-radius:10px;font-family:'Nunito',sans-serif;font-size:13px;color:var(--text);background:var(--cream);outline:none}
+    .time-input:focus{border-color:var(--rose-light)}
+    .content-chips{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:4px}
+    .content-chip{padding:7px 14px;border-radius:20px;border:1.5px solid var(--rose-pale);background:white;font-size:12px;font-weight:600;color:var(--text-soft);cursor:pointer;transition:all 0.2s}
+    .content-chip.active{border-color:var(--rose);background:var(--rose-pale);color:var(--rose-deep)}
+    .preview-box{background:linear-gradient(135deg,var(--rose-pale),#fff0f8);border-radius:12px;padding:14px;margin-top:14px;border:1px solid var(--rose-pale)}
+    .preview-notif{display:flex;align-items:flex-start;gap:10px}
+    .preview-icon{font-size:24px;margin-top:2px}
+    .preview-title{font-size:13px;font-weight:700;color:var(--text);margin-bottom:3px}
+    .preview-body{font-size:12px;color:var(--text-soft);line-height:1.5}
+    .preview-label{font-size:10px;color:var(--rose-light);font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-bottom:8px}
+    .save-notify-btn{width:100%;padding:13px;background:var(--rose);color:white;border:none;border-radius:14px;font-family:'Nunito',sans-serif;font-size:14px;font-weight:700;cursor:pointer;margin-top:8px;transition:background 0.2s}
+    .save-notify-btn:hover{background:var(--rose-deep)}
+    .onesignal-customlink-container{margin-bottom:16px}
   </style>
 </head>
 <body>
@@ -178,6 +238,7 @@
     <button class="nav-link active" onclick="showPage('home')">Home</button>
     <button class="nav-link" onclick="showPage('resources')">Resources</button>
     <button class="nav-link" onclick="showPage('dua')">🤲 Duas</button>
+    <button class="nav-link" onclick="showPage('notify')">🔔 Reminders</button>
     <button class="nav-link cta" onclick="showPage('tracker')">🌿 Garden</button>
   </div>
 </nav>
@@ -364,6 +425,89 @@
   </footer>
 </div>
 
+<!-- NOTIFICATION SETTINGS PAGE -->
+<div class="page" id="page-notify">
+  <div class="notify-wrap">
+    <div class="notify-hero">
+      <div class="section-label">Stay Connected</div>
+      <h2 class="section-title">Garden Reminders 🔔</h2>
+      <p style="font-size:14px;color:var(--text-soft);margin-top:10px;line-height:1.7">Set up personalised reminders to tend your garden and stay consistent in your ibadah 🌿</p>
+    </div>
+
+    <!-- Subscription status -->
+    <div class="notify-status" id="notifyStatus">
+      <div class="notify-status-dot off" id="notifyDot"></div>
+      <span class="notify-status-text" id="notifyStatusText">Notifications not enabled yet</span>
+    </div>
+
+    <!-- Enable notifications -->
+    <div class="notify-card">
+      <div class="notify-card-title">📲 Enable Notifications</div>
+      <div class="notify-card-sub">Click below to allow SQC to send you reminders. You can turn this off anytime from your browser settings.</div>
+      <div class='onesignal-customlink-container'></div>
+    </div>
+
+    <!-- Schedule -->
+    <div class="notify-card">
+      <div class="notify-card-title">🗓️ Reminder Schedule</div>
+      <div class="notify-card-sub">Choose when you'd like to receive your garden reminders.</div>
+      <div class="toggle-row">
+        <span class="toggle-label">Daily reminder</span>
+        <label class="toggle"><input type="checkbox" id="dailyToggle" onchange="updatePreview()"><span class="slider"></span></label>
+      </div>
+      <div class="toggle-row">
+        <span class="toggle-label">Weekly reminder (Fridays)</span>
+        <label class="toggle"><input type="checkbox" id="weeklyToggle" onchange="updatePreview()"><span class="slider"></span></label>
+      </div>
+      <label style="font-size:12px;font-weight:700;color:var(--text-soft);display:block;margin-bottom:8px">Preferred time</label>
+      <input type="time" class="time-input" id="notifyTime" value="08:00" onchange="updatePreview()">
+    </div>
+
+    <!-- Content preferences -->
+    <div class="notify-card">
+      <div class="notify-card-title">✨ What to include</div>
+      <div class="notify-card-sub">Customise what your reminders contain.</div>
+      <div class="content-chips">
+        <div class="content-chip active" onclick="toggleChip(this)" data-type="garden">🌿 Garden update</div>
+        <div class="content-chip active" onclick="toggleChip(this)" data-type="hadith">📖 Hadith</div>
+        <div class="content-chip active" onclick="toggleChip(this)" data-type="verse">🤲 Quranic verse</div>
+        <div class="content-chip active" onclick="toggleChip(this)" data-type="dua">💫 Daily dua</div>
+      </div>
+    </div>
+
+    <!-- Preview -->
+    <div class="notify-card">
+      <div class="notify-card-title">👁️ Notification Preview</div>
+      <div class="notify-card-sub">This is how your reminder will look.</div>
+      <div class="preview-box">
+        <div class="preview-label">Notification preview</div>
+        <div class="preview-notif">
+          <div class="preview-icon">🌸</div>
+          <div>
+            <div class="preview-title" id="previewTitle">Sisters Quran Club 🌿</div>
+            <div class="preview-body" id="previewBody">Assalamu Alaikum! Time to tend your garden 🌱 "The best deeds are those done regularly, even if they are small." — Prophet Muhammad ﷺ</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <button class="save-notify-btn" onclick="saveNotifyPrefs()">💾 Save My Preferences</button>
+  </div>
+
+  <footer>
+    <div class="footer-logo">Sisters Quran Club 🌸</div>
+    <div class="footer-verse">"This is the Book about which there is no doubt" — Al-Quran 2:2</div>
+    <div class="footer-links">
+      <a class="footer-link" onclick="showPage('home')">Home</a>
+      <a class="footer-link" onclick="showPage('resources')">Resources</a>
+      <a class="footer-link" onclick="showPage('dua')">Dua Blueprint</a>
+      <a class="footer-link" onclick="showPage('tracker')">Ibadah Garden</a>
+      <a class="footer-link" href="mailto:gardenofquran@gmail.com">Contact Us</a>
+    </div>
+    <div class="footer-copy">© 2025 Sisters Quran Club · gardenofquran@gmail.com</div>
+  </footer>
+</div>
+
 <!-- TRACKER PAGE -->
 <div class="page" id="page-tracker">
   <div class="tracker-wrap">
@@ -471,6 +615,129 @@
     btn.classList.toggle('open');
     document.getElementById('recordingsPanel').classList.toggle('open');
   }
+
+  /* ── PAGE NAVIGATION ── */
+  function showPage(name) {
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.nav-link').forEach(b => b.classList.remove('active'));
+    document.getElementById('page-' + name).classList.add('active');
+    document.querySelectorAll('.nav-link').forEach(b => {
+      if (b.textContent.toLowerCase().includes(name) ||
+         (name === 'tracker' && b.textContent.includes('Garden')) ||
+         (name === 'dua' && b.textContent.includes('Duas')) ||
+         (name === 'notify' && b.textContent.includes('Reminders')) ||
+         (name === 'home' && b.textContent === 'Home')) {
+        b.classList.add('active');
+      }
+    });
+    if (name === 'notify') loadNotifyPrefs();
+    window.scrollTo(0, 0);
+  }
+
+  /* ── NOTIFICATION SYSTEM ── */
+  const HADITHS = [
+    '"The best deeds are those done regularly, even if they are small." — Prophet Muhammad ﷺ',
+    '"When a person dies, all their deeds end except three: a continuing charity, beneficial knowledge, or a righteous child who prays for them." — Prophet Muhammad ﷺ',
+    '"Take up good deeds only as much as you are able, for the best deeds are those done regularly even if they are few." — Prophet Muhammad ﷺ',
+    '"Allah loves that when one of you does something, they do it with excellence." — Prophet Muhammad ﷺ',
+    '"Make things easy, do not make them difficult." — Prophet Muhammad ﷺ',
+  ];
+  const VERSES = [
+    '"This is the Book about which there is no doubt, a guidance for those conscious of Allah." — Al-Quran 2:2',
+    '"So remember Me; I will remember you. And be grateful to Me and do not deny Me." — Al-Quran 2:152',
+    '"Indeed, prayer prohibits immorality and wrongdoing, and the remembrance of Allah is greater." — Al-Quran 29:45',
+    '"Whoever does righteousness, whether male or female, while being a believer — We will surely cause them to live a good life." — Al-Quran 16:97',
+    '"And your Lord says: Call upon Me; I will respond to you." — Al-Quran 40:60',
+  ];
+  const DUAS = [
+    'Rabbana atina fid-dunya hasanatan wa fil-akhirati hasanatan waqina adhaban-nar 🤲',
+    'Allahumma inni as\'aluka al-\'afwa wal-\'afiyah fid-dunya wal-akhirah 🤲',
+    'Subhanallahi wa bihamdihi, Subhanallahil-Azeem 🤲',
+    'La hawla wa la quwwata illa billah 🤲',
+    'Astaghfirullah al-\'azim alladhi la ilaha illa huwa al-Hayy al-Qayyum 🤲',
+  ];
+
+  let notifyChips = { garden:true, hadith:true, verse:true, dua:true };
+
+  function toggleChip(el) {
+    const type = el.dataset.type;
+    notifyChips[type] = !notifyChips[type];
+    el.classList.toggle('active', notifyChips[type]);
+    updatePreview();
+  }
+
+  function updatePreview() {
+    const parts = [];
+    if (notifyChips.garden) parts.push('🌱 Tend your garden today!');
+    if (notifyChips.hadith) parts.push(HADITHS[Math.floor(Math.random()*HADITHS.length)]);
+    if (notifyChips.verse)  parts.push(VERSES[Math.floor(Math.random()*VERSES.length)]);
+    if (notifyChips.dua)    parts.push(DUAS[Math.floor(Math.random()*DUAS.length)]);
+    const time   = document.getElementById('notifyTime')?.value || '08:00';
+    const daily  = document.getElementById('dailyToggle')?.checked;
+    const weekly = document.getElementById('weeklyToggle')?.checked;
+    const freq   = daily ? 'Daily at '+time : weekly ? 'Fridays at '+time : 'Schedule not set';
+    document.getElementById('previewTitle').textContent = 'Sisters Quran Club 🌿 — '+freq;
+    document.getElementById('previewBody').textContent  = parts.join(' • ') || 'Select at least one content type above.';
+  }
+
+  function saveNotifyPrefs() {
+    const prefs = {
+      daily:  document.getElementById('dailyToggle').checked,
+      weekly: document.getElementById('weeklyToggle').checked,
+      time:   document.getElementById('notifyTime').value,
+      chips:  notifyChips
+    };
+    localStorage.setItem('sqc_notify_prefs', JSON.stringify(prefs));
+    if (window.OneSignalDeferred) {
+      OneSignalDeferred.push(async function(OneSignal) {
+        await OneSignal.Slidedown.promptPush();
+      });
+    }
+    showToast('🌸 Preferences saved! You\'ll receive reminders as set.');
+  }
+
+  function loadNotifyPrefs() {
+    const saved = localStorage.getItem('sqc_notify_prefs');
+    if (saved) {
+      const prefs = JSON.parse(saved);
+      if (document.getElementById('dailyToggle'))  document.getElementById('dailyToggle').checked  = prefs.daily  || false;
+      if (document.getElementById('weeklyToggle')) document.getElementById('weeklyToggle').checked = prefs.weekly || false;
+      if (document.getElementById('notifyTime'))   document.getElementById('notifyTime').value     = prefs.time   || '08:00';
+      if (prefs.chips) {
+        notifyChips = prefs.chips;
+        document.querySelectorAll('.content-chip').forEach(chip => {
+          chip.classList.toggle('active', notifyChips[chip.dataset.type]);
+        });
+      }
+    }
+    updatePreview();
+    if (window.OneSignalDeferred) {
+      OneSignalDeferred.push(async function(OneSignal) {
+        const isSubscribed = await OneSignal.User.PushSubscription.optedIn;
+        const dot  = document.getElementById('notifyDot');
+        const text = document.getElementById('notifyStatusText');
+        if (dot && text) {
+          dot.className  = 'notify-status-dot ' + (isSubscribed ? 'on' : 'off');
+          text.textContent = isSubscribed
+            ? '✅ Notifications are enabled on this device'
+            : '❌ Notifications not enabled yet — click Allow above';
+        }
+      });
+    }
+  }
+
+  // Show gentle reminder banner after 3 seconds if prefs not set
+  setTimeout(() => {
+    if (!localStorage.getItem('sqc_notify_prefs')) {
+      const banner = document.createElement('div');
+      banner.style.cssText = 'position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:#c4748a;color:white;padding:10px 20px;border-radius:30px;font-family:Nunito,sans-serif;font-size:13px;font-weight:700;cursor:pointer;z-index:50;box-shadow:0 4px 20px rgba(196,116,138,0.4);white-space:nowrap;animation:fadeUp 0.4s ease';
+      banner.textContent = '🔔 Set up garden reminders';
+      banner.onclick = () => { showPage('notify'); banner.remove(); };
+      document.body.appendChild(banner);
+      setTimeout(() => banner.style.opacity = '0', 7000);
+      setTimeout(() => banner.remove(), 7500);
+    }
+  }, 3000);
 
   // Register service worker for offline support
   if ('serviceWorker' in navigator) {
