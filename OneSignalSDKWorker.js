@@ -1,53 +1,50 @@
 // OneSignal SDK (required)
 importScripts("https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.sw.js");
 
-// SQC Offline Cache — bump version number whenever site updates!
-const CACHE_NAME = 'sqc-cache-v2';
-const ASSETS = [
-  '/SistersQuranClub/',
-  '/SistersQuranClub/index.html',
-  '/SistersQuranClub/dua-blueprint.html',
-];
+const CACHE_NAME = 'sqc-cache-v3';
 
+// Install — skip waiting immediately
 self.addEventListener('install', e => {
-  e.waitUntil(caches.open(CACHE_NAME).then(cache => cache.addAll(ASSETS)));
   self.skipWaiting();
 });
 
+// Activate — clear ALL old caches immediately
 self.addEventListener('activate', e => {
   e.waitUntil(
     caches.keys().then(keys =>
-      Promise.all(keys.filter(k => k !== CACHE_NAME).map(k => caches.delete(k)))
-    )
+      Promise.all(keys.map(k => caches.delete(k)))
+    ).then(() => self.clients.claim())
   );
-  self.clients.claim();
 });
 
+// Fetch — NEVER cache HTML, always fetch fresh
 self.addEventListener('fetch', e => {
-  // Network-first for HTML pages — always get fresh content
-  if (e.request.mode === 'navigate' || e.request.headers.get('accept')?.includes('text/html')) {
+  const url = new URL(e.request.url);
+
+  // Always fetch HTML fresh from network — never cache it
+  if (e.request.mode === 'navigate' ||
+      url.pathname.endsWith('.html') ||
+      url.pathname.endsWith('/')) {
     e.respondWith(
-      fetch(e.request)
-        .then(response => {
-          // Update cache with fresh version
-          const clone = response.clone();
-          caches.open(CACHE_NAME).then(cache => cache.put(e.request, clone));
-          return response;
-        })
-        .catch(() => caches.match(e.request)) // Fallback to cache if offline
+      fetch(e.request).catch(() =>
+        new Response('<h1>You are offline</h1><p>Please connect to the internet.</p>',
+          { headers: { 'Content-Type': 'text/html' } })
+      )
     );
     return;
   }
-  // Cache-first for everything else (fonts, images, etc)
+
+  // Cache-first for static assets (fonts, images, JS, CSS)
   e.respondWith(
     caches.match(e.request).then(cached => {
       if (cached) return cached;
       return fetch(e.request).then(response => {
-        if (response && response.status === 200 && response.type === 'basic') {
-          caches.open(CACHE_NAME).then(cache => cache.put(e.request, response.clone()));
+        if (response && response.status === 200) {
+          const clone = response.clone();
+          caches.open(CACHE_NAME).then(cache => cache.put(e.request, clone));
         }
         return response;
-      }).catch(() => caches.match('/SistersQuranClub/index.html'));
+      });
     })
   );
 });
