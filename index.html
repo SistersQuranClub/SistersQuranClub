@@ -7,6 +7,7 @@
   <meta name="theme-color" content="#c4748a">
   <link rel="manifest" href="manifest.json">
   <title>Sisters Quran Club</title>
+  <script src="https://accounts.google.com/gsi/client" async defer></script>
   <script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
   <script>
     window.OneSignalDeferred = window.OneSignalDeferred || [];
@@ -203,6 +204,47 @@
     .save-notify-btn{width:100%;padding:13px;background:var(--rose);color:white;border:none;border-radius:14px;font-family:'Nunito',sans-serif;font-size:14px;font-weight:700;cursor:pointer;margin-top:8px;transition:background 0.2s}
     .save-notify-btn:hover{background:var(--rose-deep)}
     .onesignal-customlink-container{margin-bottom:16px}
+    /* ── SIGN IN ── */
+    .signin-modal{position:fixed;inset:0;background:rgba(60,20,30,0.55);backdrop-filter:blur(6px);z-index:200;display:flex;align-items:center;justify-content:center;padding:24px}
+    .signin-modal.hidden{display:none}
+    .signin-box{background:white;border-radius:24px;padding:36px 28px;max-width:380px;width:100%;text-align:center;box-shadow:0 20px 60px rgba(196,116,138,0.25)}
+    .signin-logo{width:80px;height:80px;border-radius:50%;object-fit:cover;margin:0 auto 16px;display:block}
+    .signin-title{font-family:'Cormorant Garamond',serif;font-size:26px;color:var(--rose-deep);margin-bottom:6px}
+    .signin-sub{font-size:13px;color:var(--text-soft);margin-bottom:24px;line-height:1.6}
+    .signin-divider{display:flex;align-items:center;gap:12px;margin:20px 0;color:#ccc;font-size:12px}
+    .signin-divider::before,.signin-divider::after{content:'';flex:1;height:1px;background:#f0e0e8}
+    .skip-btn{width:100%;padding:11px;background:transparent;border:1.5px solid var(--rose-pale);border-radius:12px;font-family:'Nunito',sans-serif;font-size:13px;color:var(--text-soft);cursor:pointer;margin-top:8px}
+    .skip-btn:hover{border-color:var(--rose-light)}
+
+    /* Name picker (shown after Google sign-in for new users) */
+    .name-picker{display:none}
+    .name-picker.visible{display:block}
+    .name-picker-title{font-family:'Cormorant Garamond',serif;font-size:20px;color:var(--rose-deep);margin-bottom:8px}
+    .name-picker-sub{font-size:13px;color:var(--text-soft);margin-bottom:16px;line-height:1.5}
+    .name-picker-grid{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-bottom:16px}
+    .name-pick-btn{padding:8px 18px;border-radius:20px;border:1.5px solid var(--rose-light);background:white;font-family:'Nunito',sans-serif;font-size:13px;font-weight:600;color:var(--rose);cursor:pointer;transition:all 0.18s}
+    .name-pick-btn.active{background:var(--rose);color:white;border-color:var(--rose)}
+    .confirm-name-btn{width:100%;padding:12px;background:var(--rose);color:white;border:none;border-radius:12px;font-family:'Nunito',sans-serif;font-size:14px;font-weight:700;cursor:pointer;opacity:0.5;pointer-events:none;transition:all 0.2s}
+    .confirm-name-btn.ready{opacity:1;pointer-events:all}
+
+    /* Nav profile */
+    .nav-profile{display:flex;align-items:center;gap:8px;cursor:pointer;padding:4px 12px 4px 4px;border-radius:20px;border:1.5px solid var(--rose-pale);background:white;transition:all 0.2s}
+    .nav-profile:hover{border-color:var(--rose-light)}
+    .nav-profile img{width:28px;height:28px;border-radius:50%;object-fit:cover}
+    .nav-profile span{font-size:12px;font-weight:700;color:var(--rose-deep)}
+    .nav-signin-btn{padding:7px 16px;border-radius:20px;background:var(--rose);color:white;border:none;font-family:'Nunito',sans-serif;font-size:12px;font-weight:700;cursor:pointer}
+
+    /* Profile dropdown */
+    .profile-dropdown{position:absolute;top:60px;right:16px;background:white;border-radius:16px;border:1px solid var(--rose-pale);box-shadow:0 8px 32px rgba(196,116,138,0.15);padding:12px;min-width:200px;z-index:150;display:none}
+    .profile-dropdown.open{display:block}
+    .profile-dropdown-header{display:flex;align-items:center;gap:10px;padding-bottom:10px;border-bottom:1px solid var(--rose-pale);margin-bottom:8px}
+    .profile-dropdown-header img{width:40px;height:40px;border-radius:50%;object-fit:cover}
+    .profile-dropdown-name{font-size:13px;font-weight:700;color:var(--text)}
+    .profile-dropdown-email{font-size:11px;color:var(--text-soft)}
+    .profile-dropdown-item{display:flex;align-items:center;gap:8px;padding:8px 4px;font-size:13px;color:var(--text-soft);cursor:pointer;border-radius:8px;transition:background 0.15s}
+    .profile-dropdown-item:hover{background:var(--rose-pale);color:var(--rose-deep)}
+    .signout-btn{width:100%;text-align:left;background:none;border:none;font-family:'Nunito',sans-serif;padding:0;cursor:pointer;color:#e57373;font-size:13px;font-weight:600;display:flex;align-items:center;gap:8px;padding:8px 4px;border-radius:8px;transition:background 0.15s}
+    .signout-btn:hover{background:#fff5f5}
   </style>
 </head>
 <body>
@@ -229,8 +271,51 @@
     <button class="nav-link" onclick="showPage('dua')">🤲 Duas</button>
     <button class="nav-link" onclick="showPage('notify')">🔔 Reminders</button>
     <button class="nav-link cta" onclick="showPage('tracker')">🌿 Garden</button>
+    <!-- Profile / Sign in -->
+    <div id="navAuth">
+      <button class="nav-signin-btn" onclick="openSignIn()">Sign in 🌸</button>
+    </div>
+  </div>
+  <!-- Profile dropdown -->
+  <div class="profile-dropdown" id="profileDropdown">
+    <div class="profile-dropdown-header">
+      <img id="dropdownAvatar" src="" alt="">
+      <div>
+        <div class="profile-dropdown-name" id="dropdownName"></div>
+        <div class="profile-dropdown-email" id="dropdownEmail"></div>
+      </div>
+    </div>
+    <div class="profile-dropdown-item" onclick="showPage('tracker');closeDropdown()">🌿 My Garden</div>
+    <div class="profile-dropdown-item" onclick="showPage('notify');closeDropdown()">🔔 Reminders</div>
+    <div class="profile-dropdown-item" onclick="showPage('resources');closeDropdown()">📚 Resources</div>
+    <button class="signout-btn" onclick="signOut()">🚪 Sign out</button>
   </div>
 </nav>
+
+<!-- SIGN IN MODAL -->
+<div class="signin-modal hidden" id="signinModal">
+  <div class="signin-box">
+    <img src="logo.png" class="signin-logo" alt="SQC">
+
+    <!-- Step 1: Sign in -->
+    <div id="signinStep1">
+      <div class="signin-title">Welcome, Sister 🌸</div>
+      <div class="signin-sub">Sign in to access your personal Ibadah Garden, reminders and more</div>
+      <!-- Google Sign-In button rendered here -->
+      <div id="googleSignInBtn" style="display:flex;justify-content:center;margin-bottom:8px"></div>
+      <div class="signin-divider">or</div>
+      <button class="skip-btn" onclick="closeSignIn()">Continue as guest</button>
+    </div>
+
+    <!-- Step 2: Pick SQC name (new users only) -->
+    <div id="signinStep2" class="name-picker">
+      <div class="name-picker-title">Almost there! 🌿</div>
+      <div class="name-picker-sub">Which name do you go by in the Sisters Quran Club? This links your Google account to your garden.</div>
+      <div class="name-picker-grid" id="namePickerGrid"></div>
+      <button class="confirm-name-btn" id="confirmNameBtn" onclick="confirmName()">🌸 Open My Garden</button>
+    </div>
+  </div>
+</div>
 
 <!-- HOME PAGE -->
 <div class="page active" id="page-home">
@@ -595,6 +680,14 @@
       }
     });
     if (name === 'notify') loadNotifyPrefs();
+    // If going to tracker and signed in, pass name via URL hash
+    if (name === 'tracker' && currentUser?.sqcName) {
+      const iframe = document.querySelector('#page-tracker iframe');
+      if (iframe && !iframe.src.includes('member=')) {
+        const sep = iframe.src.includes('?') ? '&' : '?';
+        iframe.src = iframe.src + sep + 'member=' + encodeURIComponent(currentUser.sqcName);
+      }
+    }
     window.scrollTo(0, 0);
   }
 
@@ -703,7 +796,182 @@
     }
   }, 3000);
 
-  // Unregister old service workers and register fresh one
+  /* ── GOOGLE SIGN IN ── */
+  const CLIENT_ID = '847784187984-s9vii931ro5jod4cr2240vmnqlko4suv.apps.googleusercontent.com';
+  const API_URL   = 'https://script.google.com/macros/s/AKfycbwNoIeJkygzl5DWAWKg1qKy2KuMynzPgoMW9SI9MYYFQkwyei-U0HLqRVxW4fdfTQX1/exec';
+
+  let currentUser = null;
+  let selectedSQCName = null;
+
+  // Load Google Identity Services
+  window.addEventListener('load', () => {
+    // Check if already signed in
+    const saved = localStorage.getItem('sqc_user');
+    if (saved) {
+      currentUser = JSON.parse(saved);
+      updateNavProfile(currentUser);
+    }
+
+    // Initialize Google Sign-In
+    if (window.google) {
+      initGoogle();
+    } else {
+      // Wait for script to load
+      document.querySelector('script[src*="accounts.google.com"]')
+        ?.addEventListener('load', initGoogle);
+    }
+  });
+
+  function initGoogle() {
+    google.accounts.id.initialize({
+      client_id: CLIENT_ID,
+      callback: handleGoogleSignIn,
+      auto_select: false,
+    });
+    google.accounts.id.renderButton(
+      document.getElementById('googleSignInBtn'), {
+        theme: 'outline',
+        size: 'large',
+        shape: 'pill',
+        text: 'signin_with',
+        logo_alignment: 'center',
+      }
+    );
+  }
+
+  async function handleGoogleSignIn(response) {
+    // Decode JWT token
+    const payload = JSON.parse(atob(response.credential.split('.')[1]));
+    const user = {
+      googleId: payload.sub,
+      name:     payload.name,
+      email:    payload.email,
+      picture:  payload.picture,
+      sqcName:  null
+    };
+
+    // Check if we already have their SQC name saved
+    const existing = localStorage.getItem('sqc_user_' + payload.sub);
+    if (existing) {
+      const saved = JSON.parse(existing);
+      user.sqcName = saved.sqcName;
+      currentUser = user;
+      localStorage.setItem('sqc_user', JSON.stringify(user));
+      updateNavProfile(user);
+      closeSignIn();
+      showToast('🌸 Welcome back, ' + (user.sqcName || user.name) + '!');
+      // Auto-load their garden
+      if (user.sqcName) {
+        showPage('tracker');
+      }
+    } else {
+      // New user — show name picker
+      currentUser = user;
+      showNamePicker();
+    }
+  }
+
+  async function showNamePicker() {
+    document.getElementById('signinStep1').style.display = 'none';
+    document.getElementById('signinStep2').classList.add('visible');
+    // Load names from sheet
+    const grid = document.getElementById('namePickerGrid');
+    grid.innerHTML = '<div style="color:#ccc;font-size:13px">Loading members...</div>';
+    try {
+      const res   = await fetch(API_URL + '?action=members');
+      const json  = await res.json();
+      grid.innerHTML = '';
+      json.names.forEach(name => {
+        const btn = document.createElement('button');
+        btn.className = 'name-pick-btn';
+        btn.textContent = name;
+        btn.onclick = () => {
+          document.querySelectorAll('.name-pick-btn').forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+          selectedSQCName = name;
+          document.getElementById('confirmNameBtn').classList.add('ready');
+        };
+        grid.appendChild(btn);
+      });
+    } catch(err) {
+      grid.innerHTML = '<div style="color:#e57373;font-size:12px">Could not load names. Please check your connection.</div>';
+    }
+  }
+
+  function confirmName() {
+    if (!selectedSQCName || !currentUser) return;
+    currentUser.sqcName = selectedSQCName;
+    localStorage.setItem('sqc_user', JSON.stringify(currentUser));
+    localStorage.setItem('sqc_user_' + currentUser.googleId, JSON.stringify(currentUser));
+    updateNavProfile(currentUser);
+    closeSignIn();
+    showToast('🌸 Welcome to SQC, ' + selectedSQCName + '!');
+    showPage('tracker');
+  }
+
+  function updateNavProfile(user) {
+    const navAuth = document.getElementById('navAuth');
+    navAuth.innerHTML = `
+      <div class="nav-profile" onclick="toggleDropdown()">
+        <img src="${user.picture}" alt="${user.name}" onerror="this.src='logo.png'">
+        <span>${user.sqcName || user.name.split(' ')[0]}</span>
+      </div>`;
+    document.getElementById('dropdownAvatar').src   = user.picture;
+    document.getElementById('dropdownName').textContent  = user.sqcName || user.name;
+    document.getElementById('dropdownEmail').textContent = user.email;
+  }
+
+  function toggleDropdown() {
+    document.getElementById('profileDropdown').classList.toggle('open');
+  }
+
+  function closeDropdown() {
+    document.getElementById('profileDropdown').classList.remove('open');
+  }
+
+  function openSignIn() {
+    document.getElementById('signinModal').classList.remove('hidden');
+    document.getElementById('signinStep1').style.display = 'block';
+    document.getElementById('signinStep2').classList.remove('visible');
+    selectedSQCName = null;
+    setTimeout(() => {
+      if (window.google) initGoogle();
+    }, 100);
+  }
+
+  function closeSignIn() {
+    document.getElementById('signinModal').classList.add('hidden');
+  }
+
+  function signOut() {
+    localStorage.removeItem('sqc_user');
+    currentUser = null;
+    document.getElementById('navAuth').innerHTML =
+      `<button class="nav-signin-btn" onclick="openSignIn()">Sign in 🌸</button>`;
+    closeDropdown();
+    showPage('home');
+    showToast('👋 Signed out successfully');
+    if (window.google) {
+      google.accounts.id.disableAutoSelect();
+    }
+  }
+
+  // Close dropdown when clicking outside
+  document.addEventListener('click', e => {
+    const dropdown = document.getElementById('profileDropdown');
+    if (dropdown?.classList.contains('open') &&
+        !e.target.closest('.nav-profile') &&
+        !e.target.closest('.profile-dropdown')) {
+      closeDropdown();
+    }
+  });
+
+  // Show sign-in modal for first-time visitors after 2 seconds
+  setTimeout(() => {
+    if (!localStorage.getItem('sqc_user')) {
+      openSignIn();
+    }
+  }, 2000);
   if ('serviceWorker' in navigator) {
     window.addEventListener('load', async () => {
       // Unregister any old service workers first
