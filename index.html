@@ -312,6 +312,14 @@
       <div class="name-picker-title">Almost there! 🌿</div>
       <div class="name-picker-sub">Which name do you go by in the Sisters Quran Club? This links your Google account to your garden.</div>
       <div class="name-picker-grid" id="namePickerGrid"></div>
+      <!-- Add new name option -->
+      <div style="margin:12px 0 14px">
+        <div style="font-size:11px;color:#bbb;font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-bottom:8px">Don't see your name?</div>
+        <div style="display:flex;gap:8px">
+          <input type="text" id="newNameInput" placeholder="Type your name..." style="flex:1;padding:9px 12px;border:1.5px solid #f0d0da;border-radius:10px;font-family:'Nunito',sans-serif;font-size:13px;outline:none" oninput="handleNewNameInput()">
+          <button onclick="addNewName()" id="addNameBtn" style="padding:9px 14px;background:#c4748a;color:white;border:none;border-radius:10px;font-family:'Nunito',sans-serif;font-size:13px;font-weight:700;cursor:pointer;opacity:0.5;pointer-events:none">Add</button>
+        </div>
+      </div>
       <button class="confirm-name-btn" id="confirmNameBtn" onclick="confirmName()">🌸 Open My Garden</button>
     </div>
   </div>
@@ -324,10 +332,21 @@
     <img src="logo.png" class="hero-logo" alt="Sisters Quran Club Logo" style="width:180px;height:180px;border-radius:50%;object-fit:cover;box-shadow:0 8px 32px rgba(196,116,138,0.2)">
 
     <div class="hero-bismillah">بِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيمِ</div>
-    <h1 class="hero-title">Sisters<br>Quran Club</h1>
+    <h1 class="hero-title" id="heroTitle">Sisters<br>Quran Club</h1>
     <p class="hero-verse">"This is the Book about which there is no doubt, a guidance for those conscious of Allah"</p>
     <p class="hero-ref">AL-QURAN 2:2</p>
-    <p class="hero-tagline">Sisters coming together to talk about the wonderful words of Allah ✨</p>
+    <p class="hero-tagline" id="heroTagline">Sisters coming together to talk about the wonderful words of Allah ✨</p>
+
+    <!-- Personalised stats card (shown when signed in) -->
+    <div id="personalStats" style="display:none;background:white;border-radius:20px;border:1px solid #f0d0da;padding:18px 24px;margin-bottom:20px;text-align:left;width:100%;max-width:340px">
+      <div style="font-family:'Cormorant Garamond',serif;font-size:16px;color:#9a4a62;margin-bottom:12px">🌿 Your garden this week</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;text-align:center">
+        <div><div style="font-size:22px;font-weight:700;color:#c4748a;font-family:'Cormorant Garamond',serif" id="statPlants">—</div><div style="font-size:10px;color:#aaa">Plants</div></div>
+        <div><div style="font-size:22px;font-weight:700;color:#c4748a;font-family:'Cormorant Garamond',serif" id="statQuran">—</div><div style="font-size:10px;color:#aaa">Quran</div></div>
+        <div><div style="font-size:22px;font-weight:700;color:#c4748a;font-family:'Cormorant Garamond',serif" id="statAdhkar">—</div><div style="font-size:10px;color:#aaa">Adhkar</div></div>
+      </div>
+      <div id="nextBadge" style="margin-top:10px;font-size:12px;color:#b07888;text-align:center"></div>
+    </div>
     <div class="hero-btns">
       <button class="btn-primary" onclick="showPage('resources')">📚 Explore Resources</button>
       <button class="btn-secondary" onclick="showPage('dua')">🤲 Dua Blueprint</button>
@@ -796,6 +815,92 @@
     }
   }, 3000);
 
+  function handleNewNameInput() {
+    const val = document.getElementById('newNameInput').value.trim();
+    const btn = document.getElementById('addNameBtn');
+    if (val.length > 1) {
+      btn.style.opacity = '1';
+      btn.style.pointerEvents = 'all';
+    } else {
+      btn.style.opacity = '0.5';
+      btn.style.pointerEvents = 'none';
+    }
+  }
+
+  async function addNewName() {
+    const name = document.getElementById('newNameInput').value.trim();
+    if (!name) return;
+    const btn = document.getElementById('addNameBtn');
+    btn.textContent = '...';
+    try {
+      const res  = await fetch(API_URL + '?action=addMember&name=' + encodeURIComponent(name));
+      const json = await res.json();
+      if (json.success) {
+        // Add to the picker grid and select it
+        const grid = document.getElementById('namePickerGrid');
+        const newBtn = document.createElement('button');
+        newBtn.className = 'name-pick-btn';
+        newBtn.textContent = name;
+        newBtn.onclick = () => {
+          document.querySelectorAll('.name-pick-btn').forEach(b => b.classList.remove('active'));
+          newBtn.classList.add('active');
+          selectedSQCName = name;
+          document.getElementById('confirmNameBtn').classList.add('ready');
+        };
+        grid.appendChild(newBtn);
+        newBtn.click();
+        document.getElementById('newNameInput').value = '';
+        btn.textContent = '✓';
+        btn.style.background = '#4caf50';
+        setTimeout(() => { btn.textContent = 'Add'; btn.style.background = '#c4748a'; }, 2000);
+      }
+    } catch(err) {
+      btn.textContent = '✗';
+      setTimeout(() => { btn.textContent = 'Add'; }, 2000);
+    }
+  }
+
+  async function personaliseHome(user) {
+    if (!user?.sqcName) return;
+    // Update greeting
+    const hour = new Date().getHours();
+    const greeting = hour < 12 ? 'Good morning' : hour < 17 ? 'Good afternoon' : 'Good evening';
+    document.getElementById('heroTitle').innerHTML = `${greeting},<br>${user.sqcName}! 🌸`;
+    document.getElementById('heroTagline').textContent = 'Welcome back to your Sisters Quran Club 🌿';
+    // Show stats card
+    document.getElementById('personalStats').style.display = 'block';
+    // Fetch their garden data
+    try {
+      const res   = await fetch(API_URL + '?name=' + encodeURIComponent(user.sqcName));
+      const json  = await res.json();
+      const entries = json.entries || [];
+      const quranE   = entries.filter(e => e.ibadahType === 'Quran' || (!e.ibadahType && e.seedling));
+      const morningE = entries.filter(e => e.ibadahType === 'Morning Adhkar');
+      const eveningE = entries.filter(e => e.ibadahType === 'Evening Adhkar');
+      const hifzE    = entries.filter(e => e.ibadahType === 'Hifz');
+      const tahajE   = entries.filter(e => e.ibadahType === 'Tahajjud');
+      const totalPlants = entries.length;
+      document.getElementById('statPlants').textContent  = totalPlants;
+      document.getElementById('statQuran').textContent   = quranE.length;
+      document.getElementById('statAdhkar').textContent  = morningE.length + eveningE.length;
+      // Next badge hint
+      const badges = [
+        { emoji:'⭐', label:'Quran Streak', target:5, current:quranE.length },
+        { emoji:'🌅', label:'Morning Devotee', target:5, current:morningE.length },
+        { emoji:'📿', label:'Memoriser', target:3, current:hifzE.length },
+        { emoji:'✨', label:'Night Worshipper', target:3, current:tahajE.length },
+        { emoji:'🌸', label:'Full Bloom', target:10, current:totalPlants },
+      ];
+      const next = badges.filter(b => b.current < b.target).sort((a,b) => (b.current/b.target) - (a.current/a.target))[0];
+      if (next) {
+        document.getElementById('nextBadge').textContent =
+          `${next.emoji} ${next.label}: ${next.current}/${next.target} — keep going!`;
+      }
+    } catch(err) {
+      document.getElementById('statPlants').textContent = '—';
+    }
+  }
+
   /* ── GOOGLE SIGN IN ── */
   const CLIENT_ID = '847784187984-s9vii931ro5jod4cr2240vmnqlko4suv.apps.googleusercontent.com';
   const API_URL   = 'https://script.google.com/macros/s/AKfycbwNoIeJkygzl5DWAWKg1qKy2KuMynzPgoMW9SI9MYYFQkwyei-U0HLqRVxW4fdfTQX1/exec';
@@ -810,6 +915,7 @@
     if (saved) {
       currentUser = JSON.parse(saved);
       updateNavProfile(currentUser);
+      personaliseHome(currentUser);
     }
 
     // Initialize Google Sign-In
@@ -860,10 +966,8 @@
       updateNavProfile(user);
       closeSignIn();
       showToast('🌸 Welcome back, ' + (user.sqcName || user.name) + '!');
-      // Auto-load their garden
-      if (user.sqcName) {
-        showPage('tracker');
-      }
+      personaliseHome(user);
+      if (user.sqcName) showPage('tracker');
     } else {
       // New user — show name picker
       currentUser = user;
@@ -906,6 +1010,7 @@
     updateNavProfile(currentUser);
     closeSignIn();
     showToast('🌸 Welcome to SQC, ' + selectedSQCName + '!');
+    personaliseHome(currentUser);
     showPage('tracker');
   }
 
@@ -948,12 +1053,13 @@
     currentUser = null;
     document.getElementById('navAuth').innerHTML =
       `<button class="nav-signin-btn" onclick="openSignIn()">Sign in 🌸</button>`;
+    document.getElementById('heroTitle').innerHTML = `Sisters<br>Quran Club`;
+    document.getElementById('heroTagline').textContent = 'Sisters coming together to talk about the wonderful words of Allah ✨';
+    document.getElementById('personalStats').style.display = 'none';
     closeDropdown();
     showPage('home');
     showToast('👋 Signed out successfully');
-    if (window.google) {
-      google.accounts.id.disableAutoSelect();
-    }
+    if (window.google) google.accounts.id.disableAutoSelect();
   }
 
   // Close dropdown when clicking outside
