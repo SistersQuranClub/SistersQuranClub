@@ -168,7 +168,67 @@
     .expand-btn{background:rgba(255,255,255,0.12);border:none;border-radius:20px;padding:6px 14px;color:rgba(255,255,255,0.8);font-family:'Nunito',sans-serif;font-size:12px;font-weight:700;cursor:pointer;transition:background 0.2s;margin-left:auto}
     .expand-btn:hover{background:rgba(255,255,255,0.2)}
 
-    /* Notification settings page */
+    /* ── BLOOM PAGE ── */
+    .bloom-wrap{min-height:calc(100vh - 70px);display:flex;flex-direction:column;align-items:center;padding:40px 24px 60px;background:radial-gradient(ellipse at 50% 30%,#fff0f8 0%,#fdf6f0 70%)}
+    .bloom-hero{text-align:center;margin-bottom:32px}
+    .bloom-date{font-size:12px;font-weight:700;letter-spacing:2px;color:var(--rose-light);text-transform:uppercase;margin-bottom:6px}
+    .bloom-title{font-family:'Cormorant Garamond',serif;font-size:clamp(28px,5vw,42px);color:var(--rose-deep);margin-bottom:6px}
+    .bloom-sub{font-size:14px;color:var(--text-soft);line-height:1.7;max-width:400px;margin:0 auto}
+
+    /* Flower SVG container */
+    .flower-stage{position:relative;width:320px;height:320px;margin:0 auto 32px;display:flex;align-items:center;justify-content:center}
+
+    /* Glow when full bloom */
+    .flower-stage.full-bloom::after{
+      content:'';position:absolute;inset:-20px;border-radius:50%;
+      background:radial-gradient(ellipse,rgba(196,116,138,0.25) 0%,transparent 70%);
+      animation:bloomGlow 2s ease-in-out infinite alternate;pointer-events:none
+    }
+    @keyframes bloomGlow{from{opacity:0.4;transform:scale(0.95)}to{opacity:1;transform:scale(1.05)}}
+
+    /* Particles */
+    .particle{position:absolute;width:6px;height:6px;border-radius:50%;pointer-events:none;animation:particleFall 3s ease-in infinite}
+    @keyframes particleFall{
+      0%{opacity:0;transform:translateY(-20px) scale(0)}
+      20%{opacity:1}
+      100%{opacity:0;transform:translateY(120px) translateX(var(--dx)) scale(0.5)}
+    }
+
+    /* Petal states */
+    .petal-path{transition:all 0.6s cubic-bezier(0.34,1.56,0.64,1)}
+    .petal-path.completed{filter:drop-shadow(0 2px 8px rgba(196,116,138,0.4))}
+
+    /* Sister status list */
+    .bloom-roster{width:100%;max-width:440px;background:white;border-radius:20px;border:1px solid var(--rose-pale);overflow:hidden;margin-bottom:20px}
+    .bloom-roster-header{padding:14px 18px;background:linear-gradient(135deg,var(--rose-pale),#fff0f8);font-family:'Cormorant Garamond',serif;font-size:16px;color:var(--rose-deep);display:flex;justify-content:space-between;align-items:center}
+    .bloom-count{font-size:13px;font-weight:700;color:var(--rose);background:var(--rose-pale);padding:3px 12px;border-radius:20px}
+    .bloom-sister{display:flex;align-items:center;gap:12px;padding:11px 18px;border-bottom:0.5px solid #fdf0f4}
+    .bloom-sister:last-child{border-bottom:none}
+    .petal-dot{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0;transition:all 0.4s}
+    .petal-dot.done{background:var(--rose-pale);box-shadow:0 0 0 2px var(--rose-light)}
+    .petal-dot.pending{background:#f5f5f5;opacity:0.5}
+    .sister-name{font-size:13px;font-weight:700;color:var(--text);flex:1}
+    .sister-status{font-size:11px;font-weight:700}
+    .sister-status.done{color:var(--rose)}
+    .sister-status.pending{color:#ccc}
+
+    /* Full bloom banner */
+    .full-bloom-banner{width:100%;max-width:440px;background:linear-gradient(135deg,#fce8ee,#fff0f8);border:1px solid var(--rose-light);border-radius:20px;padding:20px;text-align:center;display:none}
+    .full-bloom-banner.visible{display:block;animation:fadeUp 0.6s ease}
+    .full-bloom-banner .bloom-icon{font-size:40px;margin-bottom:8px}
+    .full-bloom-banner h3{font-family:'Cormorant Garamond',serif;font-size:24px;color:var(--rose-deep);margin-bottom:6px}
+    .full-bloom-banner p{font-size:13px;color:var(--text-soft);line-height:1.6}
+    @keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+
+    .bloom-refresh-btn{padding:10px 28px;background:white;color:var(--rose);border:1.5px solid var(--rose-light);border-radius:30px;font-family:'Nunito',sans-serif;font-size:13px;font-weight:700;cursor:pointer;margin-top:16px;transition:all 0.2s}
+    .bloom-refresh-btn:hover{background:var(--rose-pale)}
+
+    /* Progress bar */
+    .bloom-progress-wrap{width:100%;max-width:440px;margin-bottom:16px}
+    .bloom-progress-track{height:8px;background:#f0e0e8;border-radius:8px;overflow:hidden;margin-bottom:6px}
+    .bloom-progress-fill{height:100%;background:linear-gradient(90deg,var(--rose-light),var(--rose));border-radius:8px;transition:width 1s ease}
+    .bloom-progress-label{font-size:12px;color:var(--text-soft);font-weight:600;text-align:center}
+  </style>
     .notify-wrap{max-width:600px;margin:0 auto;padding:40px 24px 60px}
     .notify-hero{text-align:center;margin-bottom:32px}
     .notify-status{display:flex;align-items:center;gap:10px;background:white;border:1px solid var(--rose-pale);border-radius:14px;padding:14px 18px;margin-bottom:24px}
@@ -268,6 +328,7 @@
   <div class="nav-links">
     <button class="nav-link active" onclick="showPage('home')">Home</button>
     <button class="nav-link" onclick="showPage('resources')">Resources</button>
+    <button class="nav-link" onclick="showPage('bloom')">🌸 Bloom</button>
     <button class="nav-link" onclick="showPage('dua')">🤲 Duas</button>
     <button class="nav-link" onclick="showPage('notify')">🔔 Reminders</button>
     <button class="nav-link cta" onclick="showPage('tracker')">🌿 Garden</button>
@@ -349,6 +410,7 @@
     </div>
     <div class="hero-btns">
       <button class="btn-primary" onclick="showPage('resources')">📚 Explore Resources</button>
+      <button class="btn-secondary" onclick="showPage('bloom')">🌸 Today's Bloom</button>
       <button class="btn-secondary" onclick="showPage('dua')">🤲 Dua Blueprint</button>
       <button class="btn-secondary" onclick="showPage('tracker')">🌿 My Ibadah Garden</button>
     </div>
@@ -576,6 +638,57 @@
   </footer>
 </div>
 
+<!-- BLOOM PAGE -->
+<div class="page" id="page-bloom">
+  <div class="bloom-wrap">
+    <div class="bloom-hero">
+      <div class="bloom-date" id="bloomDayName">MONDAY</div>
+      <h2 class="bloom-title" id="bloomFlowerName">Today's Orchid 🌸</h2>
+      <p class="bloom-sub">Each sister who completes her Morning Adhkar fills one petal. When all sisters bloom, the flower comes to life! 🌿</p>
+    </div>
+
+    <!-- The Flower -->
+    <div class="flower-stage" id="flowerStage">
+      <svg id="flowerSVG" viewBox="-160 -160 320 320" width="320" height="320" xmlns="http://www.w3.org/2000/svg">
+        <!-- Petals rendered by JS -->
+        <g id="petalsGroup"></g>
+        <!-- Centre -->
+        <circle id="flowerCentre" cx="0" cy="0" r="28" fill="#fce8ee" stroke="#e8a0b0" stroke-width="2"/>
+        <circle cx="0" cy="0" r="18" fill="#f4b8c8" opacity="0.6"/>
+        <circle cx="0" cy="0" r="10" fill="#c4748a" opacity="0.8"/>
+      </svg>
+    </div>
+
+    <!-- Progress bar -->
+    <div class="bloom-progress-wrap">
+      <div class="bloom-progress-track">
+        <div class="bloom-progress-fill" id="bloomProgressFill" style="width:0%"></div>
+      </div>
+      <div class="bloom-progress-label" id="bloomProgressLabel">Loading...</div>
+    </div>
+
+    <!-- Full bloom banner -->
+    <div class="full-bloom-banner" id="fullBloomBanner">
+      <div class="bloom-icon">🌸✨🌸</div>
+      <h3>Full Bloom!</h3>
+      <p>SubhanAllah — every sister has completed her Morning Adhkar today! May Allah accept it from all of you. 🤲</p>
+    </div>
+
+    <!-- Sister roster -->
+    <div class="bloom-roster">
+      <div class="bloom-roster-header">
+        <span>Sisters' Petals 🌸</span>
+        <span class="bloom-count" id="bloomRosterCount">0/0</span>
+      </div>
+      <div id="bloomRoster">
+        <div style="padding:20px;text-align:center;color:#ccc;font-size:13px">🌱 Loading...</div>
+      </div>
+    </div>
+
+    <button class="bloom-refresh-btn" onclick="loadBloom()">↺ Refresh</button>
+  </div>
+</div>
+
 <!-- TRACKER PAGE -->
 <div class="page" id="page-tracker">
   <div class="tracker-wrap">
@@ -684,7 +797,181 @@
     document.getElementById('recordingsPanel').classList.toggle('open');
   }
 
-  /* ── PAGE NAVIGATION ── */
+  /* ══════════════════════════════════
+     COLLECTIVE BLOOM
+  ══════════════════════════════════ */
+  const FLOWERS = [
+    { name:'Orchid',        petals:5,  colors:['#c4748a','#d4889e','#b4607a','#e8a0b0','#9a4a62'], bg:'#fce8ee' },
+    { name:'Hibiscus',      petals:5,  colors:['#e05070','#f07090','#c04060','#f090a0','#d06080'], bg:'#fff0f4' },
+    { name:'Frangipani',    petals:5,  colors:['#f4d0a0','#f8e0b8','#e8c090','#fce8c8','#ddb878'], bg:'#fffaf0' },
+    { name:'Cherry Blossom',petals:5,  colors:['#f4b8c8','#fcd0dc','#e8a0b4','#fce0e8','#d890a8'], bg:'#fff5f8' },
+    { name:'Jasmine',       petals:5,  colors:['#f8f0e8','#fff8f0','#f0e8d8','#fff0e0','#e8d8c0'], bg:'#fffff8' },
+    { name:'Petunia',       petals:5,  colors:['#9060c0','#a870d0','#7848a8','#c090e0','#6038a0'], bg:'#f8f0ff' },
+    { name:'Rose',          petals:5,  colors:['#c03060','#d04070','#b02050','#e06080','#a01840'], bg:'#fff0f4' },
+  ];
+
+  const DAY_NAMES = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+  const DAY_EMOJIS = { Sunday:'🌹', Monday:'🌸', Tuesday:'🌺', Wednesday:'🌼', Thursday:'🌸', Friday:'✨', Saturday:'🪷' };
+
+  function getTodayFlower() {
+    const day = new Date().getDay(); // 0=Sun
+    // Map Sun=Rose(6), Mon=Orchid(0), Tue=Hibiscus(1), Wed=Frangipani(2),
+    //     Thu=CherryBlossom(3), Fri=Jasmine(4), Sat=Petunia(5)
+    const map = [6,0,1,2,3,4,5];
+    return FLOWERS[map[day]];
+  }
+
+  function buildPetalPath(index, total, rx, ry) {
+    // Each petal is an ellipse rotated around the centre
+    const angle = (index / total) * 2 * Math.PI - Math.PI / 2;
+    const cx    = Math.cos(angle) * (ry * 0.9);
+    const cy    = Math.sin(angle) * (ry * 0.9);
+    const rot   = (angle * 180) / Math.PI + 90;
+    return `<ellipse cx="${cx.toFixed(1)}" cy="${cy.toFixed(1)}"
+              rx="${rx}" ry="${ry}"
+              transform="rotate(${rot.toFixed(1)},${cx.toFixed(1)},${cy.toFixed(1)})"
+              class="petal-path" id="petal-${index}"/>`;
+  }
+
+  function renderFlower(flower, completed, members) {
+    const n      = members.length;
+    const group  = document.getElementById('petalsGroup');
+    const centre = document.getElementById('flowerCentre');
+    const stage  = document.getElementById('flowerStage');
+    group.innerHTML = '';
+
+    // Petal sizing — nice and large
+    const ry = 80, rx = 34;
+
+    members.forEach((name, i) => {
+      const color    = flower.colors[i % flower.colors.length];
+      const isDone   = completed[name] === true;
+      const petalSVG = document.createElementNS('http://www.w3.org/2000/svg','ellipse');
+      const angle    = (i / n) * 2 * Math.PI - Math.PI / 2;
+      const cx       = Math.cos(angle) * (ry * 0.85);
+      const cy       = Math.sin(angle) * (ry * 0.85);
+      const rot      = (angle * 180 / Math.PI) + 90;
+
+      petalSVG.setAttribute('cx', cx.toFixed(1));
+      petalSVG.setAttribute('cy', cy.toFixed(1));
+      petalSVG.setAttribute('rx', rx);
+      petalSVG.setAttribute('ry', ry);
+      petalSVG.setAttribute('transform', `rotate(${rot.toFixed(1)},${cx.toFixed(1)},${cy.toFixed(1)})`);
+      petalSVG.classList.add('petal-path');
+      if (isDone) petalSVG.classList.add('completed');
+      petalSVG.id = 'petal-' + i;
+
+      if (isDone) {
+        petalSVG.setAttribute('fill', color);
+        petalSVG.setAttribute('opacity', '0.92');
+        petalSVG.setAttribute('stroke', '#fff');
+        petalSVG.setAttribute('stroke-width', '1.5');
+        // Glassmorphism highlight
+        const highlight = document.createElementNS('http://www.w3.org/2000/svg','ellipse');
+        highlight.setAttribute('cx', (cx + Math.cos(angle)*6).toFixed(1));
+        highlight.setAttribute('cy', (cy + Math.sin(angle)*6).toFixed(1));
+        highlight.setAttribute('rx', (rx * 0.35).toFixed(1));
+        highlight.setAttribute('ry', (ry * 0.22).toFixed(1));
+        highlight.setAttribute('transform', `rotate(${rot.toFixed(1)},${cx.toFixed(1)},${cy.toFixed(1)})`);
+        highlight.setAttribute('fill', 'rgba(255,255,255,0.35)');
+        group.appendChild(petalSVG);
+        group.appendChild(highlight);
+      } else {
+        petalSVG.setAttribute('fill', 'none');
+        petalSVG.setAttribute('stroke', color);
+        petalSVG.setAttribute('stroke-width', '1.5');
+        petalSVG.setAttribute('opacity', '0.3');
+        petalSVG.setAttribute('stroke-dasharray', '4,3');
+        group.appendChild(petalSVG);
+      }
+    });
+
+    // Update centre colour
+    centre.setAttribute('fill', flower.bg);
+
+    // Full bloom?
+    const allDone = members.every(m => completed[m]);
+    if (allDone && members.length > 0) {
+      stage.classList.add('full-bloom');
+      document.getElementById('fullBloomBanner').classList.add('visible');
+      spawnParticles(flower);
+    } else {
+      stage.classList.remove('full-bloom');
+      document.getElementById('fullBloomBanner').classList.remove('visible');
+    }
+  }
+
+  function spawnParticles(flower) {
+    const stage = document.getElementById('flowerStage');
+    // Remove old particles
+    stage.querySelectorAll('.particle').forEach(p => p.remove());
+    const colors = [...flower.colors, '#fce8ee', '#fff0f8'];
+    for (let i = 0; i < 18; i++) {
+      const p = document.createElement('div');
+      p.className = 'particle';
+      p.style.cssText = `
+        left:${30 + Math.random()*40}%;
+        top:${20 + Math.random()*30}%;
+        background:${colors[Math.floor(Math.random()*colors.length)]};
+        --dx:${(Math.random()-0.5)*60}px;
+        animation-delay:${Math.random()*2}s;
+        animation-duration:${2+Math.random()*2}s;
+        opacity:0;
+      `;
+      stage.appendChild(p);
+    }
+  }
+
+  function renderRoster(members, completed, flower) {
+    const roster = document.getElementById('bloomRoster');
+    const count  = members.filter(m => completed[m]).length;
+    document.getElementById('bloomRosterCount').textContent = `${count}/${members.length}`;
+    document.getElementById('bloomProgressFill').style.width =
+      members.length ? `${(count/members.length)*100}%` : '0%';
+    document.getElementById('bloomProgressLabel').textContent =
+      members.length
+        ? `${count} of ${members.length} sisters have bloomed today 🌸`
+        : 'No members found';
+
+    roster.innerHTML = members.map((name, i) => {
+      const done  = completed[name];
+      const color = flower.colors[i % flower.colors.length];
+      return `<div class="bloom-sister">
+        <div class="petal-dot ${done?'done':'pending'}" style="${done?`background:${color}20;box-shadow:0 0 0 2px ${color}`:''}">
+          ${done ? '🌸' : '○'}
+        </div>
+        <span class="sister-name">${name}</span>
+        <span class="sister-status ${done?'done':'pending'}">${done?'Completed ✓':'Pending'}</span>
+      </div>`;
+    }).join('');
+  }
+
+  async function loadBloom() {
+    const day     = new Date().getDay();
+    const flower  = getTodayFlower();
+    const dayName = DAY_NAMES[day];
+    const emoji   = DAY_EMOJIS[dayName] || '🌸';
+
+    document.getElementById('bloomDayName').textContent  = dayName.toUpperCase();
+    document.getElementById('bloomFlowerName').textContent = `Today's ${flower.name} ${emoji}`;
+    document.getElementById('bloomRoster').innerHTML =
+      '<div style="padding:20px;text-align:center;color:#ccc;font-size:13px">🌱 Loading...</div>';
+    document.getElementById('bloomProgressLabel').textContent = 'Loading...';
+
+    try {
+      const res  = await fetch(API_URL + '?action=todayAdhkar');
+      const data = await res.json();
+      const { members, completed } = data;
+
+      renderFlower(flower, completed, members);
+      renderRoster(members, completed, flower);
+    } catch(err) {
+      document.getElementById('bloomRoster').innerHTML =
+        `<div style="padding:20px;text-align:center;color:#e57373;font-size:13px">⚠️ Could not load bloom data.<br>Check your connection.</div>`;
+    }
+  }
+
+  /* ══ PAGE NAVIGATION ══ */
   function showPage(name) {
     document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
     document.querySelectorAll('.nav-link').forEach(b => b.classList.remove('active'));
@@ -692,14 +979,15 @@
     document.querySelectorAll('.nav-link').forEach(b => {
       if (b.textContent.toLowerCase().includes(name) ||
          (name === 'tracker' && b.textContent.includes('Garden')) ||
-         (name === 'dua' && b.textContent.includes('Duas')) ||
-         (name === 'notify' && b.textContent.includes('Reminders')) ||
-         (name === 'home' && b.textContent === 'Home')) {
+         (name === 'dua'     && b.textContent.includes('Duas')) ||
+         (name === 'notify'  && b.textContent.includes('Reminders')) ||
+         (name === 'bloom'   && b.textContent.includes('Bloom')) ||
+         (name === 'home'    && b.textContent === 'Home')) {
         b.classList.add('active');
       }
     });
     if (name === 'notify') loadNotifyPrefs();
-    // If going to tracker and signed in, pass name via URL hash
+    if (name === 'bloom')  loadBloom();
     if (name === 'tracker' && currentUser?.sqcName) {
       const iframe = document.querySelector('#page-tracker iframe');
       if (iframe && !iframe.src.includes('member=')) {
