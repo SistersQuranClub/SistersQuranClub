@@ -703,6 +703,9 @@
 </div>
 
 <script>
+  // ── GLOBAL CONFIG ──
+  const API_URL = 'https://script.google.com/macros/s/AKfycbwNoIeJkygzl5DWAWKg1qKy2KuMynzPgoMW9SI9MYYFQkwyei-U0HLqRVxW4fdfTQX1/exec';
+
   function showPage(name) {
     document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
     document.querySelectorAll('.nav-link').forEach(b => b.classList.remove('active'));
@@ -951,22 +954,29 @@
     const dayName = DAY_NAMES[day];
     const emoji   = DAY_EMOJIS[dayName] || '🌸';
 
-    document.getElementById('bloomDayName').textContent  = dayName.toUpperCase();
+    document.getElementById('bloomDayName').textContent    = dayName.toUpperCase();
     document.getElementById('bloomFlowerName').textContent = `Today's ${flower.name} ${emoji}`;
     document.getElementById('bloomRoster').innerHTML =
       '<div style="padding:20px;text-align:center;color:#ccc;font-size:13px">🌱 Loading...</div>';
     document.getElementById('bloomProgressLabel').textContent = 'Loading...';
 
     try {
-      const res  = await fetch(API_URL + '?action=todayAdhkar');
+      const url = API_URL + '?action=todayAdhkar';
+      const res  = await fetch(url);
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
       const data = await res.json();
+      if (!data.members || !data.completed) throw new Error('Invalid data: ' + JSON.stringify(data));
       const { members, completed } = data;
-
       renderFlower(flower, completed, members);
       renderRoster(members, completed, flower);
     } catch(err) {
       document.getElementById('bloomRoster').innerHTML =
-        `<div style="padding:20px;text-align:center;color:#e57373;font-size:13px">⚠️ Could not load bloom data.<br>Check your connection.</div>`;
+        `<div style="padding:20px;text-align:center;color:#e57373;font-size:13px">
+          ⚠️ Could not load bloom data.<br>
+          <small style="color:#ccc">${err.message}</small><br><br>
+          <button onclick="loadBloom()" style="padding:8px 16px;background:#c4748a;color:white;border:none;border-radius:20px;font-size:12px;cursor:pointer">Try again</button>
+        </div>`;
+      document.getElementById('bloomProgressLabel').textContent = 'Error loading data';
     }
   }
 
@@ -1190,7 +1200,6 @@
 
   /* ── GOOGLE SIGN IN ── */
   const CLIENT_ID = '847784187984-s9vii931ro5jod4cr2240vmnqlko4suv.apps.googleusercontent.com';
-  const API_URL   = 'https://script.google.com/macros/s/AKfycbwNoIeJkygzl5DWAWKg1qKy2KuMynzPgoMW9SI9MYYFQkwyei-U0HLqRVxW4fdfTQX1/exec';
 
   let currentUser = null;
   let selectedSQCName = null;
