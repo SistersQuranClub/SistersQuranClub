@@ -4,10 +4,13 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="SQC">
   <meta name="theme-color" content="#c4748a">
   <link rel="manifest" href="manifest.json">
   <title>Sisters Quran Club</title>
-  <script src="https://accounts.google.com/gsi/client" async defer></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Nunito:wght@400;500;600;700&display=swap" rel="stylesheet">
   <script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
   <script>
     window.OneSignalDeferred = window.OneSignalDeferred || [];
@@ -19,12 +22,10 @@
         promptOptions: {
           slidedown: {
             prompts: [{
-              type: "push",
-              autoPrompt: false,
+              type: "push", autoPrompt: false,
               text: {
-                actionMessage: "🌿 Allow SQC to send you garden reminders and Islamic reminders!",
-                acceptButton: "Allow 🌸",
-                cancelButton: "Maybe later"
+                actionMessage: "🌿 Allow SQC to send you garden reminders!",
+                acceptButton: "Allow 🌸", cancelButton: "Maybe later"
               }
             }]
           }
@@ -32,19 +33,16 @@
       });
     });
   </script>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Nunito:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
     *{box-sizing:border-box;margin:0;padding:0}
     :root{
       --rose:#c4748a;--rose-light:#e8a0b0;--rose-pale:#fce8ee;--rose-deep:#9a4a62;
-      --cream:#fdf6f0;--warm:#fff0f3;--gold:#c8a96e;--leaf:#5a7a5a;
-      --text:#3a2a2a;--text-soft:#7a5a60;
+      --cream:#fdf6f0;--gold:#c8a96e;--leaf:#5a7a5a;--text:#3a2a2a;--text-soft:#7a5a60;
     }
     html{scroll-behavior:smooth}
     body{font-family:'Nunito',sans-serif;background:var(--cream);color:var(--text);overflow-x:hidden}
 
-    /* ── FLORAL DECORATIONS ── */
+    /* ── FLORAL BG ── */
     .floral-bg{position:fixed;top:0;left:0;right:0;bottom:0;pointer-events:none;z-index:0;overflow:hidden}
     .petal{position:absolute;opacity:0.06;font-size:80px;animation:float 20s infinite ease-in-out}
     .petal:nth-child(1){top:5%;left:2%;animation-delay:0s;font-size:100px}
@@ -56,57 +54,90 @@
     @keyframes float{0%,100%{transform:translateY(0) rotate(0deg)}50%{transform:translateY(-20px) rotate(10deg)}}
 
     /* ── NAV ── */
-    nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:14px 24px;display:flex;justify-content:space-between;align-items:center;background:rgba(253,246,240,0.92);backdrop-filter:blur(12px);border-bottom:1px solid rgba(196,116,138,0.15)}
-    .nav-logo{display:flex;align-items:center;gap:10px}
-    .nav-logo-mark{width:36px;height:36px}
-    .nav-logo-text{font-family:'Cormorant Garamond',serif;font-size:18px;font-weight:600;color:var(--rose-deep);letter-spacing:0.3px}
-    .nav-links{display:flex;gap:6px}
-    .nav-link{padding:7px 14px;border-radius:20px;font-size:12px;font-weight:700;color:var(--text-soft);cursor:pointer;border:none;background:transparent;font-family:'Nunito',sans-serif;transition:all 0.2s;text-decoration:none}
+    nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:12px 24px;display:flex;justify-content:space-between;align-items:center;background:rgba(253,246,240,0.92);backdrop-filter:blur(12px);border-bottom:1px solid rgba(196,116,138,0.15)}
+    .nav-logo{display:flex;align-items:center;gap:10px;cursor:pointer}
+    .nav-logo img{width:36px;height:36px;border-radius:50%;object-fit:cover}
+    .nav-logo-text{font-family:'Cormorant Garamond',serif;font-size:18px;font-weight:600;color:var(--rose-deep)}
+    .nav-links{display:flex;gap:4px;align-items:center;flex-wrap:wrap}
+    .nav-link{padding:7px 13px;border-radius:20px;font-size:12px;font-weight:700;color:var(--text-soft);cursor:pointer;border:none;background:transparent;font-family:'Nunito',sans-serif;transition:all 0.2s}
     .nav-link:hover,.nav-link.active{background:var(--rose-pale);color:var(--rose-deep)}
     .nav-link.cta{background:var(--rose);color:white}
     .nav-link.cta:hover{background:var(--rose-deep)}
+    .nav-gardener{display:flex;align-items:center;gap:8px;padding:5px 14px 5px 6px;border-radius:20px;background:var(--rose-pale);border:1.5px solid var(--rose-light);cursor:pointer}
+    .nav-gardener-avatar{width:28px;height:28px;border-radius:50%;background:var(--rose);display:flex;align-items:center;justify-content:center;color:white;font-size:13px;font-weight:700}
+    .nav-gardener-name{font-size:12px;font-weight:700;color:var(--rose-deep)}
 
     /* ── PAGES ── */
     .page{display:none;min-height:100vh;padding-top:70px;position:relative;z-index:1}
     .page.active{display:block}
 
-    /* ── HOME PAGE ── */
-    .hero{min-height:calc(100vh - 70px);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:40px 24px;text-align:center;position:relative}
-    .hero-logo{width:160px;height:160px;margin:0 auto 28px;animation:fadeUp 0.8s ease both}
+    /* ── GARDENER NAME MODAL ── */
+    .gardener-modal{position:fixed;inset:0;background:rgba(60,20,30,0.6);backdrop-filter:blur(8px);z-index:200;display:flex;align-items:center;justify-content:center;padding:24px}
+    .gardener-modal.hidden{display:none}
+    .gardener-box{background:white;border-radius:24px;padding:36px 28px;max-width:380px;width:100%;text-align:center;box-shadow:0 20px 60px rgba(196,116,138,0.25)}
+    .gardener-box img{width:90px;height:90px;border-radius:50%;object-fit:cover;margin:0 auto 16px;display:block}
+    .gardener-box h2{font-family:'Cormorant Garamond',serif;font-size:28px;color:var(--rose-deep);margin-bottom:8px}
+    .gardener-box p{font-size:13px;color:var(--text-soft);line-height:1.7;margin-bottom:24px}
+    .gardener-input{width:100%;padding:13px 16px;border:1.5px solid var(--rose-pale);border-radius:12px;font-family:'Nunito',sans-serif;font-size:15px;color:var(--text);background:var(--cream);outline:none;margin-bottom:12px;text-align:center}
+    .gardener-input:focus{border-color:var(--rose-light)}
+    .gardener-btn{width:100%;padding:13px;background:var(--rose);color:white;border:none;border-radius:12px;font-family:'Nunito',sans-serif;font-size:15px;font-weight:700;cursor:pointer;transition:background 0.2s}
+    .gardener-btn:hover{background:var(--rose-deep)}
+    .gardener-hint{font-size:11px;color:#ccc;margin-top:10px}
+    .gardener-error{font-size:12px;color:#e57373;margin-bottom:8px;display:none}
+
+    /* ── HOME ── */
+    .hero{min-height:calc(100vh - 70px);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:40px 24px;text-align:center}
+    .hero-salam{font-family:'Cormorant Garamond',serif;font-size:clamp(14px,3vw,18px);color:var(--gold);letter-spacing:2px;margin-bottom:6px;font-style:italic}
+    .hero-bismillah{font-size:clamp(22px,4vw,30px);color:var(--gold);margin-bottom:16px;letter-spacing:2px}
+    .hero-title{font-family:'Cormorant Garamond',serif;font-size:clamp(36px,8vw,58px);font-weight:600;color:var(--rose-deep);line-height:1.1;margin-bottom:12px;animation:fadeUp 0.8s ease both}
+    .hero-verse{font-family:'Cormorant Garamond',serif;font-size:16px;color:var(--text-soft);font-style:italic;margin-bottom:6px;max-width:420px;line-height:1.7}
+    .hero-ref{font-size:12px;color:var(--rose-light);font-weight:700;letter-spacing:1px;margin-bottom:20px}
+    .hero-tagline{font-size:14px;color:var(--text-soft);margin-bottom:28px;max-width:360px;line-height:1.7}
     @keyframes fadeUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
-    .hero-bismillah{font-family:'Cormorant Garamond',serif;font-size:28px;color:var(--gold);margin-bottom:16px;animation:fadeUp 0.8s 0.1s ease both;letter-spacing:2px}
-    .hero-title{font-family:'Cormorant Garamond',serif;font-size:clamp(36px,8vw,56px);font-weight:600;color:var(--rose-deep);line-height:1.1;margin-bottom:12px;animation:fadeUp 0.8s 0.2s ease both}
-    .hero-verse{font-family:'Cormorant Garamond',serif;font-size:16px;color:var(--text-soft);font-style:italic;margin-bottom:6px;animation:fadeUp 0.8s 0.3s ease both;max-width:420px;line-height:1.7}
-    .hero-ref{font-size:12px;color:var(--rose-light);font-weight:700;letter-spacing:1px;margin-bottom:28px;animation:fadeUp 0.8s 0.35s ease both}
-    .hero-tagline{font-size:15px;color:var(--text-soft);margin-bottom:36px;animation:fadeUp 0.8s 0.4s ease both;max-width:360px;line-height:1.7}
-    .hero-btns{display:flex;gap:12px;flex-wrap:wrap;justify-content:center;animation:fadeUp 0.8s 0.5s ease both}
-    .btn-primary{padding:13px 28px;background:var(--rose);color:white;border:none;border-radius:30px;font-family:'Nunito',sans-serif;font-size:14px;font-weight:700;cursor:pointer;transition:all 0.2s;letter-spacing:0.3px}
+
+    /* Personal greeting */
+    .hero-personal{display:none;background:white;border-radius:20px;border:1px solid var(--rose-pale);padding:16px 24px;margin-bottom:20px;text-align:left;width:100%;max-width:340px}
+    .hero-personal.visible{display:block}
+    .hero-personal-title{font-family:'Cormorant Garamond',serif;font-size:16px;color:var(--rose-deep);margin-bottom:10px}
+    .hero-personal-stats{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+    .hp-stat{text-align:center}
+    .hp-num{font-size:22px;font-weight:700;color:var(--rose);font-family:'Cormorant Garamond',serif}
+    .hp-lbl{font-size:10px;color:#aaa;margin-top:1px}
+
+    /* Community links */
+    .community-cards{display:flex;flex-direction:column;gap:10px;width:100%;max-width:340px;margin-bottom:24px}
+    .community-card{display:flex;align-items:center;gap:12px;background:white;border:1px solid var(--rose-pale);border-radius:14px;padding:12px 16px;text-decoration:none;color:var(--text);transition:all 0.2s}
+    .community-card:hover{border-color:var(--rose-light);transform:translateX(4px)}
+    .community-icon{width:38px;height:38px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}
+    .community-info .c-title{font-size:13px;font-weight:700;color:var(--text)}
+    .community-info .c-sub{font-size:11px;color:var(--text-soft);margin-top:1px}
+    .community-arrow{margin-left:auto;color:var(--rose-light);font-size:16px}
+
+    .hero-btns{display:flex;gap:10px;flex-wrap:wrap;justify-content:center}
+    .btn-primary{padding:13px 28px;background:var(--rose);color:white;border:none;border-radius:30px;font-family:'Nunito',sans-serif;font-size:14px;font-weight:700;cursor:pointer;transition:all 0.2s}
     .btn-primary:hover{background:var(--rose-deep);transform:translateY(-2px)}
     .btn-secondary{padding:13px 28px;background:white;color:var(--rose);border:2px solid var(--rose-pale);border-radius:30px;font-family:'Nunito',sans-serif;font-size:14px;font-weight:700;cursor:pointer;transition:all 0.2s}
     .btn-secondary:hover{border-color:var(--rose);transform:translateY(-2px)}
 
-    /* About section */
+    /* About */
     .about-section{padding:60px 24px;max-width:800px;margin:0 auto}
-    .section-header{text-align:center;margin-bottom:40px}
     .section-label{font-size:11px;font-weight:700;letter-spacing:2px;color:var(--rose);text-transform:uppercase;margin-bottom:8px}
     .section-title{font-family:'Cormorant Garamond',serif;font-size:clamp(28px,5vw,40px);color:var(--rose-deep);line-height:1.2}
-    .about-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px}
-    @media(max-width:600px){.about-grid{grid-template-columns:1fr}}
+    .about-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-top:32px}
+    @media(max-width:580px){.about-grid{grid-template-columns:1fr}}
     .about-card{background:white;border-radius:20px;padding:24px;border:1px solid var(--rose-pale);position:relative;overflow:hidden}
     .about-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--rose-light),var(--rose))}
     .about-card-icon{font-size:28px;margin-bottom:12px}
     .about-card-title{font-family:'Cormorant Garamond',serif;font-size:18px;font-weight:600;color:var(--rose-deep);margin-bottom:8px}
     .about-card-text{font-size:13px;color:var(--text-soft);line-height:1.7}
-
-    /* Divider */
     .floral-divider{text-align:center;padding:20px 0;font-size:20px;color:var(--rose-light);letter-spacing:8px}
 
-    /* ── RESOURCES PAGE ── */
+    /* ── RESOURCES ── */
     .resources-wrap{max-width:700px;margin:0 auto;padding:40px 24px 60px}
     .resources-hero{text-align:center;margin-bottom:40px}
     .resource-category{margin-bottom:32px}
     .category-title{font-family:'Cormorant Garamond',serif;font-size:22px;color:var(--rose-deep);margin-bottom:14px;display:flex;align-items:center;gap:8px;padding-bottom:8px;border-bottom:1px solid var(--rose-pale)}
-    .resource-card{background:white;border-radius:16px;border:1px solid var(--rose-pale);padding:16px 20px;margin-bottom:10px;display:flex;align-items:center;gap:14px;text-decoration:none;color:var(--text);transition:all 0.2s;cursor:pointer}
+    .resource-card{background:white;border-radius:16px;border:1px solid var(--rose-pale);padding:16px 20px;margin-bottom:10px;display:flex;align-items:center;gap:14px;text-decoration:none;color:var(--text);transition:all 0.2s}
     .resource-card:hover{border-color:var(--rose-light);transform:translateX(4px);box-shadow:0 4px 20px rgba(196,116,138,0.1)}
     .resource-icon{width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}
     .resource-icon.pink{background:#fce8ee}
@@ -118,14 +149,115 @@
     .resource-title{font-size:14px;font-weight:700;color:var(--text);margin-bottom:2px}
     .resource-sub{font-size:12px;color:var(--text-soft)}
     .resource-arrow{font-size:16px;color:var(--rose-light)}
+    .recordings-toggle{width:100%;background:white;border:1px solid var(--rose-pale);border-radius:16px;padding:16px 20px;display:flex;align-items:center;gap:14px;cursor:pointer;font-family:'Nunito',sans-serif;transition:all 0.2s;margin-bottom:10px}
+    .recordings-toggle:hover{border-color:var(--rose-light)}
+    .recordings-toggle .r-icon{width:44px;height:44px;border-radius:12px;background:#f3e5f5;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}
+    .recordings-toggle .r-info{flex:1;text-align:left}
+    .recordings-toggle .r-title{font-size:14px;font-weight:700;color:var(--text)}
+    .recordings-toggle .r-sub{font-size:12px;color:var(--text-soft)}
+    .recordings-toggle .r-chevron{font-size:18px;color:var(--rose-light);transition:transform 0.3s}
+    .recordings-toggle.open .r-chevron{transform:rotate(180deg)}
+    .recordings-panel{display:none;flex-direction:column;gap:16px;padding:4px 0 12px}
+    .recordings-panel.open{display:flex}
+    .media-card{background:white;border-radius:16px;border:1px solid var(--rose-pale);overflow:hidden}
+    .media-info{padding:14px 16px 10px;display:flex;align-items:flex-start;justify-content:space-between;gap:10px}
+    .media-title{font-size:14px;font-weight:700;color:var(--text);margin-bottom:3px}
+    .media-sub{font-size:12px;color:var(--text-soft)}
+    .media-open{display:inline-flex;align-items:center;gap:5px;font-size:11px;font-weight:700;color:var(--rose);text-decoration:none;background:var(--rose-pale);padding:4px 10px;border-radius:20px;white-space:nowrap;flex-shrink:0}
+    .video-wrap{position:relative;background:#1a0a10;border-radius:0 0 16px 16px;overflow:hidden}
+    .video-wrap iframe{width:100%;height:0;display:block;transition:height 0.4s ease}
+    .video-wrap iframe.expanded{height:240px}
+    .video-controls{display:flex;align-items:center;gap:12px;padding:10px 14px;background:#2a1020}
+    .ctrl-btn{background:var(--rose);border:none;border-radius:50%;width:36px;height:36px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:14px;color:white;transition:background 0.2s;flex-shrink:0}
+    .ctrl-btn:hover{background:var(--rose-deep)}
+    .expand-btn{background:rgba(255,255,255,0.12);border:none;border-radius:20px;padding:6px 14px;color:rgba(255,255,255,0.8);font-family:'Nunito',sans-serif;font-size:12px;font-weight:700;cursor:pointer;margin-left:auto}
 
-    /* ── TRACKER PAGE ── */
+    /* ── BLOOM ── */
+    .bloom-wrap{min-height:calc(100vh - 70px);display:flex;flex-direction:column;align-items:center;padding:40px 24px 60px;background:radial-gradient(ellipse at 50% 30%,#fff0f8 0%,#fdf6f0 70%)}
+    .bloom-hero{text-align:center;margin-bottom:24px}
+    .bloom-day{font-size:12px;font-weight:700;letter-spacing:2px;color:var(--rose-light);text-transform:uppercase;margin-bottom:6px}
+    .bloom-title{font-family:'Cormorant Garamond',serif;font-size:clamp(26px,5vw,38px);color:var(--rose-deep);margin-bottom:6px}
+    .bloom-sub{font-size:13px;color:var(--text-soft);line-height:1.7;max-width:380px;margin:0 auto}
+    .bloom-threshold{display:inline-block;background:var(--rose-pale);color:var(--rose-deep);font-size:12px;font-weight:700;padding:4px 14px;border-radius:20px;margin-top:8px}
+
+    /* Swipeable flower tabs */
+    .bloom-tabs{display:flex;gap:8px;justify-content:center;margin-bottom:20px}
+    .bloom-tab{padding:8px 20px;border-radius:20px;border:1.5px solid var(--rose-pale);background:white;font-family:'Nunito',sans-serif;font-size:13px;font-weight:700;color:var(--text-soft);cursor:pointer;transition:all 0.2s}
+    .bloom-tab.active{background:var(--rose);color:white;border-color:var(--rose)}
+    .bloom-flowers{overflow:hidden;width:100%;max-width:360px;position:relative}
+    .bloom-flower-slide{display:flex;transition:transform 0.4s cubic-bezier(0.34,1.2,0.64,1)}
+    .bloom-flower-panel{min-width:100%;display:flex;flex-direction:column;align-items:center}
+
+    /* Flower stage */
+    .flower-stage{position:relative;width:300px;height:300px;margin:0 auto 20px;display:flex;align-items:center;justify-content:center}
+    .flower-stage.full-bloom::after{content:'';position:absolute;inset:-20px;border-radius:50%;background:radial-gradient(ellipse,rgba(196,116,138,0.25) 0%,transparent 70%);animation:bloomGlow 2s ease-in-out infinite alternate;pointer-events:none}
+    @keyframes bloomGlow{from{opacity:0.4;transform:scale(0.95)}to{opacity:1;transform:scale(1.05)}}
+    .particle{position:absolute;width:6px;height:6px;border-radius:50%;pointer-events:none;animation:particleFall 3s ease-in infinite}
+    @keyframes particleFall{0%{opacity:0;transform:translateY(-20px) scale(0)}20%{opacity:1}100%{opacity:0;transform:translateY(120px) translateX(var(--dx)) scale(0.5)}}
+    .petal-path{transition:all 0.6s cubic-bezier(0.34,1.56,0.64,1)}
+
+    /* Progress */
+    .bloom-progress-wrap{width:100%;max-width:340px;margin-bottom:12px}
+    .bloom-progress-track{height:8px;background:#f0e0e8;border-radius:8px;overflow:hidden;margin-bottom:6px}
+    .bloom-progress-fill{height:100%;background:linear-gradient(90deg,var(--rose-light),var(--rose));border-radius:8px;transition:width 1s ease}
+    .bloom-progress-label{font-size:12px;color:var(--text-soft);font-weight:600;text-align:center}
+
+    /* Full bloom banner */
+    .full-bloom-banner{width:100%;max-width:360px;background:linear-gradient(135deg,#fce8ee,#fff0f8);border:1px solid var(--rose-light);border-radius:20px;padding:18px;text-align:center;display:none;margin-bottom:16px}
+    .full-bloom-banner.visible{display:block;animation:fadeUp 0.6s ease}
+    @keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+    .full-bloom-banner h3{font-family:'Cormorant Garamond',serif;font-size:22px;color:var(--rose-deep);margin:8px 0 6px}
+    .full-bloom-banner p{font-size:12px;color:var(--text-soft);line-height:1.6}
+
+    /* Roster */
+    .bloom-roster{width:100%;max-width:360px;background:white;border-radius:20px;border:1px solid var(--rose-pale);overflow:hidden;margin-bottom:16px}
+    .bloom-roster-header{padding:12px 16px;background:linear-gradient(135deg,var(--rose-pale),#fff0f8);font-family:'Cormorant Garamond',serif;font-size:16px;color:var(--rose-deep);display:flex;justify-content:space-between;align-items:center}
+    .bloom-count{font-size:12px;font-weight:700;color:var(--rose);background:var(--rose-pale);padding:3px 10px;border-radius:20px}
+    .bloom-sister{display:flex;align-items:center;gap:10px;padding:10px 16px;border-bottom:0.5px solid #fdf0f4}
+    .bloom-sister:last-child{border-bottom:none}
+    .petal-dot{width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;flex-shrink:0;transition:all 0.4s}
+    .sister-name{font-size:13px;font-weight:700;color:var(--text);flex:1}
+    .sister-status{font-size:11px;font-weight:700}
+    .sister-status.done{color:var(--rose)}
+    .sister-status.pending{color:#ccc}
+    .bloom-refresh-btn{padding:10px 28px;background:white;color:var(--rose);border:1.5px solid var(--rose-light);border-radius:30px;font-family:'Nunito',sans-serif;font-size:13px;font-weight:700;cursor:pointer;transition:all 0.2s}
+    .bloom-refresh-btn:hover{background:var(--rose-pale)}
+
+    /* ── TRACKER ── */
     .tracker-wrap{width:100%;height:calc(100vh - 70px)}
     .tracker-wrap iframe{width:100%;height:100%;border:none}
-    .tracker-placeholder{display:flex;flex-direction:column;align-items:center;justify-content:center;height:calc(100vh - 70px);text-align:center;padding:40px}
-    .tracker-placeholder .big-icon{font-size:60px;margin-bottom:20px}
-    .tracker-placeholder h2{font-family:'Cormorant Garamond',serif;font-size:32px;color:var(--rose-deep);margin-bottom:12px}
-    .tracker-placeholder p{font-size:14px;color:var(--text-soft);max-width:320px;line-height:1.7;margin-bottom:24px}
+
+    /* ── DUA ── */
+    .dua-wrap{width:100%;height:calc(100vh - 70px)}
+    .dua-wrap iframe{width:100%;height:100%;border:none}
+
+    /* ── NOTIFY ── */
+    .notify-wrap{max-width:600px;margin:0 auto;padding:40px 24px 60px}
+    .notify-status{display:flex;align-items:center;gap:10px;background:white;border:1px solid var(--rose-pale);border-radius:14px;padding:14px 18px;margin-bottom:24px}
+    .notify-status-dot{width:10px;height:10px;border-radius:50%;background:#ccc;flex-shrink:0}
+    .notify-status-dot.on{background:#4caf50;box-shadow:0 0 0 3px #e8f5e9}
+    .notify-card{background:white;border-radius:16px;border:1px solid var(--rose-pale);padding:20px;margin-bottom:16px}
+    .notify-card-title{font-family:'Cormorant Garamond',serif;font-size:18px;color:var(--rose-deep);margin-bottom:4px}
+    .notify-card-sub{font-size:12px;color:var(--text-soft);margin-bottom:16px;line-height:1.5}
+    .toggle-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
+    .toggle-label{font-size:13px;font-weight:600;color:var(--text)}
+    .toggle{position:relative;width:44px;height:24px;cursor:pointer}
+    .toggle input{opacity:0;width:0;height:0}
+    .slider{position:absolute;inset:0;background:#ddd;border-radius:24px;transition:0.3s}
+    .slider:before{content:'';position:absolute;width:18px;height:18px;left:3px;top:3px;background:white;border-radius:50%;transition:0.3s}
+    input:checked+.slider{background:var(--rose)}
+    input:checked+.slider:before{transform:translateX(20px)}
+    .time-input{width:100%;padding:10px 12px;border:1.5px solid var(--rose-pale);border-radius:10px;font-family:'Nunito',sans-serif;font-size:13px;color:var(--text);background:var(--cream);outline:none;margin-bottom:14px}
+    .content-chips{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:4px}
+    .content-chip{padding:7px 14px;border-radius:20px;border:1.5px solid var(--rose-pale);background:white;font-size:12px;font-weight:600;color:var(--text-soft);cursor:pointer;transition:all 0.2s}
+    .content-chip.active{border-color:var(--rose);background:var(--rose-pale);color:var(--rose-deep)}
+    .preview-box{background:linear-gradient(135deg,var(--rose-pale),#fff0f8);border-radius:12px;padding:14px;margin-top:14px;border:1px solid var(--rose-pale)}
+    .preview-notif{display:flex;align-items:flex-start;gap:10px}
+    .preview-title{font-size:13px;font-weight:700;color:var(--text);margin-bottom:3px}
+    .preview-body{font-size:12px;color:var(--text-soft);line-height:1.5}
+    .preview-label{font-size:10px;color:var(--rose-light);font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-bottom:8px}
+    .save-notify-btn{width:100%;padding:13px;background:var(--rose);color:white;border:none;border-radius:14px;font-family:'Nunito',sans-serif;font-size:14px;font-weight:700;cursor:pointer;margin-top:8px}
+    .onesignal-customlink-container{margin-bottom:16px}
 
     /* ── FOOTER ── */
     footer{background:var(--rose-deep);color:white;text-align:center;padding:32px 24px;position:relative;z-index:1}
@@ -136,192 +268,40 @@
     footer .footer-link:hover{color:white}
     footer .footer-copy{font-size:11px;opacity:0.4}
 
+    /* ── TOAST ── */
+    .toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--rose-deep);color:white;padding:12px 24px;border-radius:14px;font-size:13px;font-weight:700;opacity:0;transition:all 0.3s;z-index:300;white-space:nowrap;pointer-events:none}
+    .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
     /* ── MOBILE ── */
     @media(max-width:480px){
       .nav-logo-text{display:none}
       .nav-link{padding:6px 10px;font-size:11px}
-      .hero-bismillah{font-size:22px}
     }
-    /* Media viewer */
-    .recordings-toggle{width:100%;background:white;border:1px solid var(--rose-pale);border-radius:16px;padding:16px 20px;display:flex;align-items:center;gap:14px;cursor:pointer;font-family:'Nunito',sans-serif;transition:all 0.2s;margin-bottom:10px}
-    .recordings-toggle:hover{border-color:var(--rose-light);box-shadow:0 4px 20px rgba(196,116,138,0.1)}
-    .recordings-toggle .r-icon{width:44px;height:44px;border-radius:12px;background:#f3e5f5;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}
-    .recordings-toggle .r-info{flex:1;text-align:left}
-    .recordings-toggle .r-title{font-size:14px;font-weight:700;color:var(--text)}
-    .recordings-toggle .r-sub{font-size:12px;color:var(--text-soft);margin-top:2px}
-    .recordings-toggle .r-chevron{font-size:18px;color:var(--rose-light);transition:transform 0.3s}
-    .recordings-toggle.open .r-chevron{transform:rotate(180deg)}
-    .recordings-panel{display:none;flex-direction:column;gap:16px;padding:4px 0 12px}
-    .recordings-panel.open{display:flex}
-    .media-card{background:white;border-radius:16px;border:1px solid var(--rose-pale);overflow:hidden}
-    .media-info{padding:14px 16px 10px;display:flex;align-items:flex-start;justify-content:space-between;gap:10px}
-    .media-title{font-size:14px;font-weight:700;color:var(--text);margin-bottom:3px}
-    .media-sub{font-size:12px;color:var(--text-soft)}
-    .media-open{display:inline-flex;align-items:center;gap:5px;font-size:11px;font-weight:700;color:var(--rose);text-decoration:none;background:var(--rose-pale);padding:4px 10px;border-radius:20px;white-space:nowrap;flex-shrink:0}
-    /* Custom video player */
-    .video-wrap{position:relative;background:#1a0a10;border-radius:0 0 16px 16px;overflow:hidden}
-    .video-wrap iframe{width:100%;height:0;display:block;transition:height 0.4s ease}
-    .video-wrap iframe.expanded{height:240px}
-    .video-controls{display:flex;align-items:center;gap:12px;padding:10px 14px;background:#2a1020}
-    .ctrl-btn{background:var(--rose);border:none;border-radius:50%;width:36px;height:36px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:14px;color:white;transition:background 0.2s;flex-shrink:0}
-    .ctrl-btn:hover{background:var(--rose-deep)}
-    .expand-btn{background:rgba(255,255,255,0.12);border:none;border-radius:20px;padding:6px 14px;color:rgba(255,255,255,0.8);font-family:'Nunito',sans-serif;font-size:12px;font-weight:700;cursor:pointer;transition:background 0.2s;margin-left:auto}
-    .expand-btn:hover{background:rgba(255,255,255,0.2)}
-
-    /* ── BLOOM PAGE ── */
-    .bloom-wrap{min-height:calc(100vh - 70px);display:flex;flex-direction:column;align-items:center;padding:40px 24px 60px;background:radial-gradient(ellipse at 50% 30%,#fff0f8 0%,#fdf6f0 70%)}
-    .bloom-hero{text-align:center;margin-bottom:32px}
-    .bloom-date{font-size:12px;font-weight:700;letter-spacing:2px;color:var(--rose-light);text-transform:uppercase;margin-bottom:6px}
-    .bloom-title{font-family:'Cormorant Garamond',serif;font-size:clamp(28px,5vw,42px);color:var(--rose-deep);margin-bottom:6px}
-    .bloom-sub{font-size:14px;color:var(--text-soft);line-height:1.7;max-width:400px;margin:0 auto}
-
-    /* Flower SVG container */
-    .flower-stage{position:relative;width:320px;height:320px;margin:0 auto 32px;display:flex;align-items:center;justify-content:center}
-
-    /* Glow when full bloom */
-    .flower-stage.full-bloom::after{
-      content:'';position:absolute;inset:-20px;border-radius:50%;
-      background:radial-gradient(ellipse,rgba(196,116,138,0.25) 0%,transparent 70%);
-      animation:bloomGlow 2s ease-in-out infinite alternate;pointer-events:none
-    }
-    @keyframes bloomGlow{from{opacity:0.4;transform:scale(0.95)}to{opacity:1;transform:scale(1.05)}}
-
-    /* Particles */
-    .particle{position:absolute;width:6px;height:6px;border-radius:50%;pointer-events:none;animation:particleFall 3s ease-in infinite}
-    @keyframes particleFall{
-      0%{opacity:0;transform:translateY(-20px) scale(0)}
-      20%{opacity:1}
-      100%{opacity:0;transform:translateY(120px) translateX(var(--dx)) scale(0.5)}
-    }
-
-    /* Petal states */
-    .petal-path{transition:all 0.6s cubic-bezier(0.34,1.56,0.64,1)}
-    .petal-path.completed{filter:drop-shadow(0 2px 8px rgba(196,116,138,0.4))}
-
-    /* Sister status list */
-    .bloom-roster{width:100%;max-width:440px;background:white;border-radius:20px;border:1px solid var(--rose-pale);overflow:hidden;margin-bottom:20px}
-    .bloom-roster-header{padding:14px 18px;background:linear-gradient(135deg,var(--rose-pale),#fff0f8);font-family:'Cormorant Garamond',serif;font-size:16px;color:var(--rose-deep);display:flex;justify-content:space-between;align-items:center}
-    .bloom-count{font-size:13px;font-weight:700;color:var(--rose);background:var(--rose-pale);padding:3px 12px;border-radius:20px}
-    .bloom-sister{display:flex;align-items:center;gap:12px;padding:11px 18px;border-bottom:0.5px solid #fdf0f4}
-    .bloom-sister:last-child{border-bottom:none}
-    .petal-dot{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0;transition:all 0.4s}
-    .petal-dot.done{background:var(--rose-pale);box-shadow:0 0 0 2px var(--rose-light)}
-    .petal-dot.pending{background:#f5f5f5;opacity:0.5}
-    .sister-name{font-size:13px;font-weight:700;color:var(--text);flex:1}
-    .sister-status{font-size:11px;font-weight:700}
-    .sister-status.done{color:var(--rose)}
-    .sister-status.pending{color:#ccc}
-
-    /* Full bloom banner */
-    .full-bloom-banner{width:100%;max-width:440px;background:linear-gradient(135deg,#fce8ee,#fff0f8);border:1px solid var(--rose-light);border-radius:20px;padding:20px;text-align:center;display:none}
-    .full-bloom-banner.visible{display:block;animation:fadeUp 0.6s ease}
-    .full-bloom-banner .bloom-icon{font-size:40px;margin-bottom:8px}
-    .full-bloom-banner h3{font-family:'Cormorant Garamond',serif;font-size:24px;color:var(--rose-deep);margin-bottom:6px}
-    .full-bloom-banner p{font-size:13px;color:var(--text-soft);line-height:1.6}
-    @keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
-
-    .bloom-refresh-btn{padding:10px 28px;background:white;color:var(--rose);border:1.5px solid var(--rose-light);border-radius:30px;font-family:'Nunito',sans-serif;font-size:13px;font-weight:700;cursor:pointer;margin-top:16px;transition:all 0.2s}
-    .bloom-refresh-btn:hover{background:var(--rose-pale)}
-
-    /* Progress bar */
-    .bloom-progress-wrap{width:100%;max-width:440px;margin-bottom:16px}
-    .bloom-progress-track{height:8px;background:#f0e0e8;border-radius:8px;overflow:hidden;margin-bottom:6px}
-    .bloom-progress-fill{height:100%;background:linear-gradient(90deg,var(--rose-light),var(--rose));border-radius:8px;transition:width 1s ease}
-    .bloom-progress-label{font-size:12px;color:var(--text-soft);font-weight:600;text-align:center}
-    /* Notification settings page */
-    .notify-hero{text-align:center;margin-bottom:32px}
-    .notify-status{display:flex;align-items:center;gap:10px;background:white;border:1px solid var(--rose-pale);border-radius:14px;padding:14px 18px;margin-bottom:24px}
-    .notify-status-dot{width:10px;height:10px;border-radius:50%;background:#ccc;flex-shrink:0}
-    .notify-status-dot.on{background:#4caf50;box-shadow:0 0 0 3px #e8f5e9}
-    .notify-status-dot.off{background:#e57373;box-shadow:0 0 0 3px #ffebee}
-    .notify-status-text{font-size:13px;font-weight:600;color:var(--text-soft);flex:1}
-    .notify-card{background:white;border-radius:16px;border:1px solid var(--rose-pale);padding:20px;margin-bottom:16px}
-    .notify-card-title{font-family:'Cormorant Garamond',serif;font-size:18px;color:var(--rose-deep);margin-bottom:4px;display:flex;align-items:center;gap:8px}
-    .notify-card-sub{font-size:12px;color:var(--text-soft);margin-bottom:16px;line-height:1.5}
-    .toggle-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
-    .toggle-label{font-size:13px;font-weight:600;color:var(--text)}
-    .toggle{position:relative;width:44px;height:24px;cursor:pointer}
-    .toggle input{opacity:0;width:0;height:0}
-    .slider{position:absolute;inset:0;background:#ddd;border-radius:24px;transition:0.3s}
-    .slider:before{content:'';position:absolute;width:18px;height:18px;left:3px;top:3px;background:white;border-radius:50%;transition:0.3s}
-    input:checked+.slider{background:var(--rose)}
-    input:checked+.slider:before{transform:translateX(20px)}
-    .time-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px}
-    .time-option{padding:10px;border:1.5px solid var(--rose-pale);border-radius:10px;text-align:center;cursor:pointer;transition:all 0.2s;font-size:12px;font-weight:600;color:var(--text-soft)}
-    .time-option.active{border-color:var(--rose);background:var(--rose-pale);color:var(--rose-deep)}
-    .time-input{width:100%;padding:10px 12px;border:1.5px solid var(--rose-pale);border-radius:10px;font-family:'Nunito',sans-serif;font-size:13px;color:var(--text);background:var(--cream);outline:none}
-    .time-input:focus{border-color:var(--rose-light)}
-    .content-chips{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:4px}
-    .content-chip{padding:7px 14px;border-radius:20px;border:1.5px solid var(--rose-pale);background:white;font-size:12px;font-weight:600;color:var(--text-soft);cursor:pointer;transition:all 0.2s}
-    .content-chip.active{border-color:var(--rose);background:var(--rose-pale);color:var(--rose-deep)}
-    .preview-box{background:linear-gradient(135deg,var(--rose-pale),#fff0f8);border-radius:12px;padding:14px;margin-top:14px;border:1px solid var(--rose-pale)}
-    .preview-notif{display:flex;align-items:flex-start;gap:10px}
-    .preview-icon{font-size:24px;margin-top:2px}
-    .preview-title{font-size:13px;font-weight:700;color:var(--text);margin-bottom:3px}
-    .preview-body{font-size:12px;color:var(--text-soft);line-height:1.5}
-    .preview-label{font-size:10px;color:var(--rose-light);font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-bottom:8px}
-    .save-notify-btn{width:100%;padding:13px;background:var(--rose);color:white;border:none;border-radius:14px;font-family:'Nunito',sans-serif;font-size:14px;font-weight:700;cursor:pointer;margin-top:8px;transition:background 0.2s}
-    .save-notify-btn:hover{background:var(--rose-deep)}
-    .onesignal-customlink-container{margin-bottom:16px}
-    /* ── SIGN IN ── */
-    .signin-modal{position:fixed;inset:0;background:rgba(60,20,30,0.55);backdrop-filter:blur(6px);z-index:200;display:flex;align-items:center;justify-content:center;padding:24px}
-    .signin-modal.hidden{display:none}
-    .signin-box{background:white;border-radius:24px;padding:36px 28px;max-width:380px;width:100%;text-align:center;box-shadow:0 20px 60px rgba(196,116,138,0.25)}
-    .signin-logo{width:80px;height:80px;border-radius:50%;object-fit:cover;margin:0 auto 16px;display:block}
-    .signin-title{font-family:'Cormorant Garamond',serif;font-size:26px;color:var(--rose-deep);margin-bottom:6px}
-    .signin-sub{font-size:13px;color:var(--text-soft);margin-bottom:24px;line-height:1.6}
-    .signin-divider{display:flex;align-items:center;gap:12px;margin:20px 0;color:#ccc;font-size:12px}
-    .signin-divider::before,.signin-divider::after{content:'';flex:1;height:1px;background:#f0e0e8}
-    .skip-btn{width:100%;padding:11px;background:transparent;border:1.5px solid var(--rose-pale);border-radius:12px;font-family:'Nunito',sans-serif;font-size:13px;color:var(--text-soft);cursor:pointer;margin-top:8px}
-    .skip-btn:hover{border-color:var(--rose-light)}
-
-    /* Name picker (shown after Google sign-in for new users) */
-    .name-picker{display:none}
-    .name-picker.visible{display:block}
-    .name-picker-title{font-family:'Cormorant Garamond',serif;font-size:20px;color:var(--rose-deep);margin-bottom:8px}
-    .name-picker-sub{font-size:13px;color:var(--text-soft);margin-bottom:16px;line-height:1.5}
-    .name-picker-grid{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-bottom:16px}
-    .name-pick-btn{padding:8px 18px;border-radius:20px;border:1.5px solid var(--rose-light);background:white;font-family:'Nunito',sans-serif;font-size:13px;font-weight:600;color:var(--rose);cursor:pointer;transition:all 0.18s}
-    .name-pick-btn.active{background:var(--rose);color:white;border-color:var(--rose)}
-    .confirm-name-btn{width:100%;padding:12px;background:var(--rose);color:white;border:none;border-radius:12px;font-family:'Nunito',sans-serif;font-size:14px;font-weight:700;cursor:pointer;opacity:0.5;pointer-events:none;transition:all 0.2s}
-    .confirm-name-btn.ready{opacity:1;pointer-events:all}
-
-    /* Nav profile */
-    .nav-profile{display:flex;align-items:center;gap:8px;cursor:pointer;padding:4px 12px 4px 4px;border-radius:20px;border:1.5px solid var(--rose-pale);background:white;transition:all 0.2s}
-    .nav-profile:hover{border-color:var(--rose-light)}
-    .nav-profile img{width:28px;height:28px;border-radius:50%;object-fit:cover}
-    .nav-profile span{font-size:12px;font-weight:700;color:var(--rose-deep)}
-    .nav-signin-btn{padding:7px 16px;border-radius:20px;background:var(--rose);color:white;border:none;font-family:'Nunito',sans-serif;font-size:12px;font-weight:700;cursor:pointer}
-
-    /* Profile dropdown */
-    .profile-dropdown{position:absolute;top:60px;right:16px;background:white;border-radius:16px;border:1px solid var(--rose-pale);box-shadow:0 8px 32px rgba(196,116,138,0.15);padding:12px;min-width:200px;z-index:150;display:none}
-    .profile-dropdown.open{display:block}
-    .profile-dropdown-header{display:flex;align-items:center;gap:10px;padding-bottom:10px;border-bottom:1px solid var(--rose-pale);margin-bottom:8px}
-    .profile-dropdown-header img{width:40px;height:40px;border-radius:50%;object-fit:cover}
-    .profile-dropdown-name{font-size:13px;font-weight:700;color:var(--text)}
-    .profile-dropdown-email{font-size:11px;color:var(--text-soft)}
-    .profile-dropdown-item{display:flex;align-items:center;gap:8px;padding:8px 4px;font-size:13px;color:var(--text-soft);cursor:pointer;border-radius:8px;transition:background 0.15s}
-    .profile-dropdown-item:hover{background:var(--rose-pale);color:var(--rose-deep)}
-    .signout-btn{width:100%;text-align:left;background:none;border:none;font-family:'Nunito',sans-serif;padding:0;cursor:pointer;color:#e57373;font-size:13px;font-weight:600;display:flex;align-items:center;gap:8px;padding:8px 4px;border-radius:8px;transition:background 0.15s}
-    .signout-btn:hover{background:#fff5f5}
   </style>
 </head>
 <body>
-
-<!-- Floating petals -->
 <div class="floral-bg">
-  <div class="petal">🌸</div>
-  <div class="petal">🌺</div>
-  <div class="petal">🌷</div>
-  <div class="petal">🌸</div>
-  <div class="petal">🌹</div>
-  <div class="petal">🌸</div>
+  <div class="petal">🌸</div><div class="petal">🌺</div><div class="petal">🌷</div>
+  <div class="petal">🌸</div><div class="petal">🌹</div><div class="petal">🌸</div>
 </div>
 
-<!-- Nav -->
+<!-- GARDENER NAME MODAL -->
+<div class="gardener-modal" id="gardenerModal">
+  <div class="gardener-box">
+    <img src="logo.png" alt="SQC">
+    <h2>As Salamu Alaikum 🌸</h2>
+    <p>Welcome to the Sisters Quran Club! Choose your <strong>Gardener Name</strong> — this is how you'll appear in the community garden. You can use your real name or a flower name!</p>
+    <div class="gardener-error" id="gardenerError">Please enter a name to continue</div>
+    <input type="text" class="gardener-input" id="gardenerInput" placeholder="e.g. Taz, or Jasmine 🌸" maxlength="30">
+    <button class="gardener-btn" onclick="setGardenerName()">🌱 Enter My Garden</button>
+    <div class="gardener-hint">Your name is saved on this device only</div>
+  </div>
+</div>
+
+<!-- NAV -->
 <nav>
-  <div class="nav-logo">
-    <img src="logo.png" class="nav-logo-mark" alt="SQC Logo" style="width:36px;height:36px;border-radius:50%;object-fit:cover">
+  <div class="nav-logo" onclick="showPage('home')">
+    <img src="logo.png" alt="SQC Logo">
     <span class="nav-logo-text">Sisters Quran Club</span>
   </div>
   <div class="nav-links">
@@ -330,96 +310,66 @@
     <button class="nav-link" onclick="showPage('bloom')">🌸 Bloom</button>
     <button class="nav-link" onclick="showPage('dua')">🤲 Duas</button>
     <button class="nav-link" onclick="showPage('notify')">🔔 Reminders</button>
-    <button class="nav-link cta" onclick="showPage('tracker')">🌿 Garden</button>
-    <!-- Profile / Sign in -->
-    <div id="navAuth">
-      <button class="nav-signin-btn" onclick="openSignIn()">Sign in 🌸</button>
-    </div>
-  </div>
-  <!-- Profile dropdown -->
-  <div class="profile-dropdown" id="profileDropdown">
-    <div class="profile-dropdown-header">
-      <img id="dropdownAvatar" src="" alt="">
-      <div>
-        <div class="profile-dropdown-name" id="dropdownName"></div>
-        <div class="profile-dropdown-email" id="dropdownEmail"></div>
+    <button class="nav-link cta" onclick="showPage('tracker')">🌿 My Garden</button>
+    <div id="navGardener" style="display:none">
+      <div class="nav-gardener" onclick="showPage('tracker')">
+        <div class="nav-gardener-avatar" id="navAvatar">T</div>
+        <span class="nav-gardener-name" id="navName">Gardener</span>
       </div>
     </div>
-    <div class="profile-dropdown-item" onclick="showPage('tracker');closeDropdown()">🌿 My Garden</div>
-    <div class="profile-dropdown-item" onclick="showPage('notify');closeDropdown()">🔔 Reminders</div>
-    <div class="profile-dropdown-item" onclick="showPage('resources');closeDropdown()">📚 Resources</div>
-    <button class="signout-btn" onclick="signOut()">🚪 Sign out</button>
   </div>
 </nav>
-
-<!-- SIGN IN MODAL -->
-<div class="signin-modal hidden" id="signinModal">
-  <div class="signin-box">
-    <img src="logo.png" class="signin-logo" alt="SQC">
-
-    <!-- Step 1: Sign in -->
-    <div id="signinStep1">
-      <div class="signin-title">Welcome, Sister 🌸</div>
-      <div class="signin-sub">Sign in to access your personal Ibadah Garden, reminders and more</div>
-      <!-- Google Sign-In button rendered here -->
-      <div id="googleSignInBtn" style="display:flex;justify-content:center;margin-bottom:8px"></div>
-      <div class="signin-divider">or</div>
-      <button class="skip-btn" onclick="closeSignIn()">Continue as guest</button>
-    </div>
-
-    <!-- Step 2: Pick SQC name (new users only) -->
-    <div id="signinStep2" class="name-picker">
-      <div class="name-picker-title">Almost there! 🌿</div>
-      <div class="name-picker-sub">Which name do you go by in the Sisters Quran Club? This links your Google account to your garden.</div>
-      <div class="name-picker-grid" id="namePickerGrid"></div>
-      <!-- Add new name option -->
-      <div style="margin:12px 0 14px">
-        <div style="font-size:11px;color:#bbb;font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-bottom:8px">Don't see your name?</div>
-        <div style="display:flex;gap:8px">
-          <input type="text" id="newNameInput" placeholder="Type your name..." style="flex:1;padding:9px 12px;border:1.5px solid #f0d0da;border-radius:10px;font-family:'Nunito',sans-serif;font-size:13px;outline:none" oninput="handleNewNameInput()">
-          <button onclick="addNewName()" id="addNameBtn" style="padding:9px 14px;background:#c4748a;color:white;border:none;border-radius:10px;font-family:'Nunito',sans-serif;font-size:13px;font-weight:700;cursor:pointer;opacity:0.5;pointer-events:none">Add</button>
-        </div>
-      </div>
-      <button class="confirm-name-btn" id="confirmNameBtn" onclick="confirmName()">🌸 Open My Garden</button>
-    </div>
-  </div>
-</div>
 
 <!-- HOME PAGE -->
 <div class="page active" id="page-home">
   <div class="hero">
-
-    <img src="logo.png" class="hero-logo" alt="Sisters Quran Club Logo" style="width:180px;height:180px;border-radius:50%;object-fit:cover;box-shadow:0 8px 32px rgba(196,116,138,0.2)">
-
+    <img src="logo.png" alt="SQC Logo" style="width:160px;height:160px;border-radius:50%;object-fit:cover;box-shadow:0 8px 32px rgba(196,116,138,0.2);margin-bottom:20px">
+    <div class="hero-salam">As Salamu Alaikum Wa Rahmatullahi Wa Barakatuh</div>
     <div class="hero-bismillah">بِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيمِ</div>
     <h1 class="hero-title" id="heroTitle">Sisters<br>Quran Club</h1>
     <p class="hero-verse">"This is the Book about which there is no doubt, a guidance for those conscious of Allah"</p>
     <p class="hero-ref">AL-QURAN 2:2</p>
     <p class="hero-tagline" id="heroTagline">Sisters coming together to talk about the wonderful words of Allah ✨</p>
 
-    <!-- Personalised stats card (shown when signed in) -->
-    <div id="personalStats" style="display:none;background:white;border-radius:20px;border:1px solid #f0d0da;padding:18px 24px;margin-bottom:20px;text-align:left;width:100%;max-width:340px">
-      <div style="font-family:'Cormorant Garamond',serif;font-size:16px;color:#9a4a62;margin-bottom:12px">🌿 Your garden this week</div>
-      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;text-align:center">
-        <div><div style="font-size:22px;font-weight:700;color:#c4748a;font-family:'Cormorant Garamond',serif" id="statPlants">—</div><div style="font-size:10px;color:#aaa">Plants</div></div>
-        <div><div style="font-size:22px;font-weight:700;color:#c4748a;font-family:'Cormorant Garamond',serif" id="statQuran">—</div><div style="font-size:10px;color:#aaa">Quran</div></div>
-        <div><div style="font-size:22px;font-weight:700;color:#c4748a;font-family:'Cormorant Garamond',serif" id="statAdhkar">—</div><div style="font-size:10px;color:#aaa">Adhkar</div></div>
+    <!-- Personal stats (shown when signed in) -->
+    <div class="hero-personal" id="heroPersonal">
+      <div class="hero-personal-title">🌿 Your garden this week</div>
+      <div class="hero-personal-stats">
+        <div class="hp-stat"><div class="hp-num" id="hpMorning">—</div><div class="hp-lbl">Morning Adhkar</div></div>
+        <div class="hp-stat"><div class="hp-num" id="hpEvening">—</div><div class="hp-lbl">Evening Adhkar</div></div>
       </div>
-      <div id="nextBadge" style="margin-top:10px;font-size:12px;color:#b07888;text-align:center"></div>
     </div>
+
+    <!-- Community links -->
+    <div class="community-cards">
+      <a class="community-card" href="https://t.zip/g/qoYap9THvOhMY1ra?ref=u0izNzq1cV" target="_blank">
+        <div class="community-icon" style="background:#e8f4fd">🎙️</div>
+        <div class="community-info">
+          <div class="c-title">Join SQC on Tarteel</div>
+          <div class="c-sub">Quran recitation group — tap to join</div>
+        </div>
+        <span class="community-arrow">→</span>
+      </a>
+      <a class="community-card" href="https://chat.whatsapp.com/L1y8ppP0YCIIrrkTmSjTbZ?s=cl&p=a&mlu=4&ilr=4" target="_blank">
+        <div class="community-icon" style="background:#e8f5e9">💬</div>
+        <div class="community-info">
+          <div class="c-title">Join the WhatsApp Group</div>
+          <div class="c-sub">SQC community chat — tap to join</div>
+        </div>
+        <span class="community-arrow">→</span>
+      </a>
+    </div>
+
     <div class="hero-btns">
-      <button class="btn-primary" onclick="showPage('resources')">📚 Explore Resources</button>
-      <button class="btn-secondary" onclick="showPage('bloom')">🌸 Today's Bloom</button>
-      <button class="btn-secondary" onclick="showPage('dua')">🤲 Dua Blueprint</button>
-      <button class="btn-secondary" onclick="showPage('tracker')">🌿 My Ibadah Garden</button>
+      <button class="btn-primary" onclick="showPage('bloom')">🌸 Today's Bloom</button>
+      <button class="btn-secondary" onclick="showPage('resources')">📚 Resources</button>
+      <button class="btn-secondary" onclick="showPage('tracker')">🌿 My Garden</button>
     </div>
   </div>
 
   <div class="floral-divider">🌸 ✦ 🌸 ✦ 🌸</div>
-
-  <!-- About Section -->
   <div class="about-section">
-    <div class="section-header">
+    <div style="text-align:center;margin-bottom:32px">
       <div class="section-label">About Us</div>
       <h2 class="section-title">Welcome to The Sisters Quran Club</h2>
     </div>
@@ -437,7 +387,7 @@
       <div class="about-card">
         <div class="about-card-icon">🤝</div>
         <div class="about-card-title">Team Challenges</div>
-        <div class="about-card-text">We believe we can achieve more by working together. From Ramadan challenges to Trivia Tuesdays — teamwork makes the dream work! 🌸</div>
+        <div class="about-card-text">We believe we can achieve more by working together — from Ramadan challenges to Trivia Tuesdays. Teamwork makes the dream work! 🌸</div>
       </div>
       <div class="about-card">
         <div class="about-card-icon">📅</div>
@@ -446,191 +396,80 @@
       </div>
     </div>
   </div>
-
   <div class="floral-divider">🌷 ✦ 🌷 ✦ 🌷</div>
-
   <footer>
     <div class="footer-logo">Sisters Quran Club 🌸</div>
     <div class="footer-verse">"This is the Book about which there is no doubt" — Al-Quran 2:2</div>
     <div class="footer-links">
       <a class="footer-link" onclick="showPage('home')">Home</a>
       <a class="footer-link" onclick="showPage('resources')">Resources</a>
-      <a class="footer-link" onclick="showPage('dua')">Dua Blueprint</a>
-      <a class="footer-link" onclick="showPage('tracker')">Ibadah Garden</a>
+      <a class="footer-link" onclick="showPage('bloom')">Bloom</a>
+      <a class="footer-link" onclick="showPage('tracker')">My Garden</a>
       <a class="footer-link" href="mailto:sqc.quranclub@gmail.com">Contact Us</a>
     </div>
     <div class="footer-copy">© 2025 Sisters Quran Club · sqc.quranclub@gmail.com</div>
   </footer>
 </div>
+
+<!-- RESOURCES PAGE -->
 <div class="page" id="page-resources">
   <div class="resources-wrap">
     <div class="resources-hero">
       <div class="section-label">Knowledge is Light</div>
       <h2 class="section-title">SQC Resources</h2>
-      <p style="font-size:14px;color:var(--text-soft);margin-top:10px;line-height:1.7">Everything you need in one place — slides, recordings, duas and more 🌿</p>
+      <p style="font-size:14px;color:var(--text-soft);margin-top:10px;line-height:1.7">Everything you need in one place 🌿</p>
     </div>
-
-    <!-- Darasa & Recordings -->
     <div class="resource-category">
       <div class="category-title">📚 Darasa & Meetings</div>
       <a class="resource-card" href="https://drive.google.com/drive/folders/1Agn5YBcJOYv0_YNjSxwIVXUPzTCf_1FM" target="_blank">
         <div class="resource-icon pink">📑</div>
-        <div class="resource-info">
-          <div class="resource-title">Darasa Slides</div>
-          <div class="resource-sub">All past meeting presentation slides</div>
-        </div>
+        <div class="resource-info"><div class="resource-title">Darasa Slides</div><div class="resource-sub">All past meeting presentation slides</div></div>
         <div class="resource-arrow">→</div>
       </a>
     </div>
-
-    <!-- Recordings with collapsible embedded viewer -->
     <div class="resource-category">
       <div class="category-title">🎙️ Recordings</div>
       <button class="recordings-toggle" onclick="toggleRecordings(this)">
         <div class="r-icon">🎙️</div>
-        <div class="r-info">
-          <div class="r-title">SQC Recordings</div>
-          <div class="r-sub">Click to browse and watch past sessions</div>
-        </div>
+        <div class="r-info"><div class="r-title">SQC Recordings</div><div class="r-sub">Click to browse and watch past sessions</div></div>
         <span class="r-chevron">⌄</span>
       </button>
       <div class="recordings-panel" id="recordingsPanel"></div>
     </div>
-
-    <!-- Quran -->
     <div class="resource-category">
       <div class="category-title">📖 Quran</div>
       <a class="resource-card" href="https://drive.google.com/drive/folders/1Ay9NWbDvLAWJlxV5Xkm_GhowJyQLuT-V" target="_blank">
         <div class="resource-icon gold">📿</div>
-        <div class="resource-info">
-          <div class="resource-title">Quran (Digital)</div>
-          <div class="resource-sub">Digital Quran resources and references</div>
-        </div>
+        <div class="resource-info"><div class="resource-title">Quran (Digital)</div><div class="resource-sub">Digital Quran resources and references</div></div>
         <div class="resource-arrow">→</div>
       </a>
       <a class="resource-card" href="https://drive.google.com/drive/folders/1CyB6pOWe8z3KFrHKs43MTlAhEhyv9NVQ" target="_blank">
         <div class="resource-icon pink">🎧</div>
-        <div class="resource-info">
-          <div class="resource-title">Podcasts</div>
-          <div class="resource-sub">Islamic podcasts and audio content</div>
-        </div>
+        <div class="resource-info"><div class="resource-title">Podcasts</div><div class="resource-sub">Islamic podcasts and audio content</div></div>
         <div class="resource-arrow">→</div>
       </a>
     </div>
-
-    <!-- Duas & Help -->
     <div class="resource-category">
       <div class="category-title">🤲 Duas & Support</div>
       <a class="resource-card" href="https://docs.google.com/document/d/1QFWAlRZqpc_6DVTvVJbl6F3zhtMr9sVX59WOUoESt2w/edit" target="_blank">
         <div class="resource-icon green">🌿</div>
-        <div class="resource-info">
-          <div class="resource-title">Dua Collection</div>
-          <div class="resource-sub">A curated collection of duas for all occasions</div>
-        </div>
+        <div class="resource-info"><div class="resource-title">Dua Collection</div><div class="resource-sub">A curated collection of duas for all occasions</div></div>
         <div class="resource-arrow">→</div>
       </a>
       <a class="resource-card" href="https://docs.google.com/forms/d/e/1FAIpQLSfiuL9c9qgydAtQcCbnzCdXCj-GcMAI6sMJozXkkkUTCqjYBw/viewform" target="_blank">
         <div class="resource-icon blue">💬</div>
-        <div class="resource-info">
-          <div class="resource-title">Help Center / Queries</div>
-          <div class="resource-sub">Have a question? Submit it here</div>
-        </div>
+        <div class="resource-info"><div class="resource-title">Help Center / Queries</div><div class="resource-sub">Have a question? Submit it here</div></div>
         <div class="resource-arrow">→</div>
       </a>
     </div>
-
   </div>
-
   <footer>
     <div class="footer-logo">Sisters Quran Club 🌸</div>
     <div class="footer-verse">"This is the Book about which there is no doubt" — Al-Quran 2:2</div>
     <div class="footer-links">
       <a class="footer-link" onclick="showPage('home')">Home</a>
       <a class="footer-link" onclick="showPage('resources')">Resources</a>
-      <a class="footer-link" onclick="showPage('tracker')">Ibadah Garden</a>
-      <a class="footer-link" href="mailto:sqc.quranclub@gmail.com">Contact Us</a>
-    </div>
-    <div class="footer-copy">© 2025 Sisters Quran Club · sqc.quranclub@gmail.com</div>
-  </footer>
-</div>
-
-<!-- NOTIFICATION SETTINGS PAGE -->
-<div class="page" id="page-notify">
-  <div class="notify-wrap">
-    <div class="notify-hero">
-      <div class="section-label">Stay Connected</div>
-      <h2 class="section-title">Garden Reminders 🔔</h2>
-      <p style="font-size:14px;color:var(--text-soft);margin-top:10px;line-height:1.7">Set up personalised reminders to tend your garden and stay consistent in your ibadah 🌿</p>
-    </div>
-
-    <!-- Subscription status -->
-    <div class="notify-status" id="notifyStatus">
-      <div class="notify-status-dot off" id="notifyDot"></div>
-      <span class="notify-status-text" id="notifyStatusText">Notifications not enabled yet</span>
-    </div>
-
-    <!-- Enable notifications -->
-    <div class="notify-card">
-      <div class="notify-card-title">📲 Enable Notifications</div>
-      <div class="notify-card-sub">Click below to allow SQC to send you reminders. You can turn this off anytime from your browser settings.</div>
-      <div class='onesignal-customlink-container'></div>
-    </div>
-
-    <!-- Schedule -->
-    <div class="notify-card">
-      <div class="notify-card-title">🗓️ Reminder Schedule</div>
-      <div class="notify-card-sub">Choose when you'd like to receive your garden reminders.</div>
-      <div class="toggle-row">
-        <span class="toggle-label">Daily reminder</span>
-        <label class="toggle"><input type="checkbox" id="dailyToggle" onchange="updatePreview()"><span class="slider"></span></label>
-      </div>
-      <div class="toggle-row">
-        <span class="toggle-label">Weekly reminder (Fridays)</span>
-        <label class="toggle"><input type="checkbox" id="weeklyToggle" onchange="updatePreview()"><span class="slider"></span></label>
-      </div>
-      <label style="font-size:12px;font-weight:700;color:var(--text-soft);display:block;margin-bottom:8px">Preferred time</label>
-      <input type="time" class="time-input" id="notifyTime" value="08:00" onchange="updatePreview()">
-    </div>
-
-    <!-- Content preferences -->
-    <div class="notify-card">
-      <div class="notify-card-title">✨ What to include</div>
-      <div class="notify-card-sub">Customise what your reminders contain.</div>
-      <div class="content-chips">
-        <div class="content-chip active" onclick="toggleChip(this)" data-type="garden">🌿 Garden update</div>
-        <div class="content-chip active" onclick="toggleChip(this)" data-type="hadith">📖 Hadith</div>
-        <div class="content-chip active" onclick="toggleChip(this)" data-type="verse">🤲 Quranic verse</div>
-        <div class="content-chip active" onclick="toggleChip(this)" data-type="dua">💫 Daily dua</div>
-      </div>
-    </div>
-
-    <!-- Preview -->
-    <div class="notify-card">
-      <div class="notify-card-title">👁️ Notification Preview</div>
-      <div class="notify-card-sub">This is how your reminder will look.</div>
-      <div class="preview-box">
-        <div class="preview-label">Notification preview</div>
-        <div class="preview-notif">
-          <div class="preview-icon">🌸</div>
-          <div>
-            <div class="preview-title" id="previewTitle">Sisters Quran Club 🌿</div>
-            <div class="preview-body" id="previewBody">Assalamu Alaikum! Time to tend your garden 🌱 "The best deeds are those done regularly, even if they are small." — Prophet Muhammad ﷺ</div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <button class="save-notify-btn" onclick="saveNotifyPrefs()">💾 Save My Preferences</button>
-  </div>
-
-  <footer>
-    <div class="footer-logo">Sisters Quran Club 🌸</div>
-    <div class="footer-verse">"This is the Book about which there is no doubt" — Al-Quran 2:2</div>
-    <div class="footer-links">
-      <a class="footer-link" onclick="showPage('home')">Home</a>
-      <a class="footer-link" onclick="showPage('resources')">Resources</a>
-      <a class="footer-link" onclick="showPage('dua')">Dua Blueprint</a>
-      <a class="footer-link" onclick="showPage('tracker')">Ibadah Garden</a>
+      <a class="footer-link" onclick="showPage('tracker')">My Garden</a>
       <a class="footer-link" href="mailto:sqc.quranclub@gmail.com">Contact Us</a>
     </div>
     <div class="footer-copy">© 2025 Sisters Quran Club · sqc.quranclub@gmail.com</div>
@@ -641,763 +480,510 @@
 <div class="page" id="page-bloom">
   <div class="bloom-wrap">
     <div class="bloom-hero">
-      <div class="bloom-date" id="bloomDayName">MONDAY</div>
-      <h2 class="bloom-title" id="bloomFlowerName">Today's Orchid 🌸</h2>
-      <p class="bloom-sub">Each sister who completes her Morning Adhkar fills one petal. When all sisters bloom, the flower comes to life! 🌿</p>
+      <div class="bloom-day" id="bloomDayName">MONDAY</div>
+      <h2 class="bloom-title">Today's Collective Bloom 🌸</h2>
+      <p class="bloom-sub">Each sister who completes her adhkar fills one petal. Swipe between Morning and Evening!</p>
+      <div class="bloom-threshold">🌸 Blooms when 5 sisters complete</div>
     </div>
 
-    <!-- The Flower -->
-    <div class="flower-stage" id="flowerStage">
-      <svg id="flowerSVG" viewBox="-160 -160 320 320" width="320" height="320" xmlns="http://www.w3.org/2000/svg">
-        <!-- Petals rendered by JS -->
-        <g id="petalsGroup"></g>
-        <!-- Centre -->
-        <circle id="flowerCentre" cx="0" cy="0" r="28" fill="#fce8ee" stroke="#e8a0b0" stroke-width="2"/>
-        <circle cx="0" cy="0" r="18" fill="#f4b8c8" opacity="0.6"/>
-        <circle cx="0" cy="0" r="10" fill="#c4748a" opacity="0.8"/>
-      </svg>
+    <!-- Tabs -->
+    <div class="bloom-tabs">
+      <button class="bloom-tab active" onclick="switchBloomTab(0)">🌅 Morning Adhkar</button>
+      <button class="bloom-tab" onclick="switchBloomTab(1)">🌙 Evening Adhkar</button>
     </div>
 
-    <!-- Progress bar -->
-    <div class="bloom-progress-wrap">
-      <div class="bloom-progress-track">
-        <div class="bloom-progress-fill" id="bloomProgressFill" style="width:0%"></div>
+    <!-- Swipeable flowers -->
+    <div class="bloom-flowers" id="bloomFlowers">
+      <div class="bloom-flower-slide" id="bloomSlide">
+        <!-- Morning flower -->
+        <div class="bloom-flower-panel">
+          <div class="flower-stage" id="flowerStageMorning">
+            <svg id="flowerSVGMorning" viewBox="-150 -150 300 300" width="300" height="300" xmlns="http://www.w3.org/2000/svg">
+              <g id="petalsGroupMorning"></g>
+              <circle cx="0" cy="0" r="26" fill="#fce8ee" stroke="#e8a0b0" stroke-width="2"/>
+              <circle cx="0" cy="0" r="16" fill="#f4b8c8" opacity="0.6"/>
+              <circle cx="0" cy="0" r="8" fill="#c4748a" opacity="0.8"/>
+            </svg>
+          </div>
+          <div class="bloom-progress-wrap">
+            <div class="bloom-progress-track"><div class="bloom-progress-fill" id="morningProgressFill" style="width:0%"></div></div>
+            <div class="bloom-progress-label" id="morningProgressLabel">Loading...</div>
+          </div>
+          <div class="full-bloom-banner" id="morningBloomBanner">
+            <div style="font-size:32px">🌅✨🌸</div>
+            <h3>Morning Bloom!</h3>
+            <p>SubhanAllah — 5 sisters have completed their Morning Adhkar! May Allah accept it from all of you. 🤲</p>
+          </div>
+          <div class="bloom-roster">
+            <div class="bloom-roster-header"><span>Morning Sisters 🌅</span><span class="bloom-count" id="morningRosterCount">0/0</span></div>
+            <div id="morningRoster"><div style="padding:16px;text-align:center;color:#ccc;font-size:13px">🌱 Loading...</div></div>
+          </div>
+        </div>
+
+        <!-- Evening flower -->
+        <div class="bloom-flower-panel">
+          <div class="flower-stage" id="flowerStageEvening">
+            <svg id="flowerSVGEvening" viewBox="-150 -150 300 300" width="300" height="300" xmlns="http://www.w3.org/2000/svg">
+              <g id="petalsGroupEvening"></g>
+              <circle cx="0" cy="0" r="26" fill="#f0e8f8" stroke="#c4a0e8" stroke-width="2"/>
+              <circle cx="0" cy="0" r="16" fill="#d8b8f0" opacity="0.6"/>
+              <circle cx="0" cy="0" r="8" fill="#9060c0" opacity="0.8"/>
+            </svg>
+          </div>
+          <div class="bloom-progress-wrap">
+            <div class="bloom-progress-track"><div class="bloom-progress-fill" id="eveningProgressFill" style="width:0%;background:linear-gradient(90deg,#c4a0e8,#9060c0)"></div></div>
+            <div class="bloom-progress-label" id="eveningProgressLabel">Loading...</div>
+          </div>
+          <div class="full-bloom-banner" id="eveningBloomBanner" style="background:linear-gradient(135deg,#f0e8f8,#f8f0ff);border-color:#c4a0e8">
+            <div style="font-size:32px">🌙✨🪷</div>
+            <h3 style="color:#7040a0">Evening Bloom!</h3>
+            <p>MashaAllah — 5 sisters have completed their Evening Adhkar! Barakallahu feekum. 🤲</p>
+          </div>
+          <div class="bloom-roster">
+            <div class="bloom-roster-header" style="background:linear-gradient(135deg,#f0e8f8,#f8f0ff)"><span>Evening Sisters 🌙</span><span class="bloom-count" style="background:#f0e8f8;color:#7040a0" id="eveningRosterCount">0/0</span></div>
+            <div id="eveningRoster"><div style="padding:16px;text-align:center;color:#ccc;font-size:13px">🌱 Loading...</div></div>
+          </div>
+        </div>
       </div>
-      <div class="bloom-progress-label" id="bloomProgressLabel">Loading...</div>
     </div>
 
-    <!-- Full bloom banner -->
-    <div class="full-bloom-banner" id="fullBloomBanner">
-      <div class="bloom-icon">🌸✨🌸</div>
-      <h3>Full Bloom!</h3>
-      <p>SubhanAllah — every sister has completed her Morning Adhkar today! May Allah accept it from all of you. 🤲</p>
-    </div>
+    <button class="bloom-refresh-btn" style="margin-top:16px" onclick="loadBloom()">↺ Refresh</button>
+  </div>
+</div>
 
-    <!-- Sister roster -->
-    <div class="bloom-roster">
-      <div class="bloom-roster-header">
-        <span>Sisters' Petals 🌸</span>
-        <span class="bloom-count" id="bloomRosterCount">0/0</span>
-      </div>
-      <div id="bloomRoster">
-        <div style="padding:20px;text-align:center;color:#ccc;font-size:13px">🌱 Loading...</div>
-      </div>
-    </div>
-
-    <button class="bloom-refresh-btn" onclick="loadBloom()">↺ Refresh</button>
+<!-- DUA PAGE -->
+<div class="page" id="page-dua">
+  <div class="dua-wrap">
+    <iframe src="https://sistersquranclub.github.io/SistersQuranClub/dua-blueprint.html" title="The Dua Blueprint" allowfullscreen></iframe>
   </div>
 </div>
 
 <!-- TRACKER PAGE -->
 <div class="page" id="page-tracker">
   <div class="tracker-wrap">
-    <iframe src="https://tazcodez.github.io/sqcgardens/" title="SQC Ibadah Garden Tracker" allow="same-origin"></iframe>
+    <iframe src="https://tazcodez.github.io/sqcgardens/" title="SQC Ibadah Garden Tracker" id="trackerIframe"></iframe>
   </div>
 </div>
 
-<!-- DUA BLUEPRINT PAGE -->
-<div class="page" id="page-dua">
-  <div class="tracker-wrap">
-    <iframe src="https://sistersquranclub.github.io/SistersQuranClub/dua-blueprint.html" title="The Dua Blueprint" allowfullscreen></iframe>
+<!-- NOTIFY PAGE -->
+<div class="page" id="page-notify">
+  <div class="notify-wrap">
+    <div style="text-align:center;margin-bottom:32px">
+      <div class="section-label">Stay Connected</div>
+      <h2 class="section-title">Garden Reminders 🔔</h2>
+      <p style="font-size:14px;color:var(--text-soft);margin-top:10px;line-height:1.7">Set up personalised reminders to tend your garden 🌿</p>
+    </div>
+    <div class="notify-status">
+      <div class="notify-status-dot" id="notifyDot"></div>
+      <span style="font-size:13px;font-weight:600;color:var(--text-soft)" id="notifyStatusText">Notifications not enabled yet</span>
+    </div>
+    <div class="notify-card">
+      <div class="notify-card-title">📲 Enable Notifications</div>
+      <div class="notify-card-sub">Click below to allow SQC to send you reminders.</div>
+      <div class='onesignal-customlink-container'></div>
+    </div>
+    <div class="notify-card">
+      <div class="notify-card-title">🗓️ Reminder Schedule</div>
+      <div class="notify-card-sub">Choose when you'd like to receive garden reminders.</div>
+      <div class="toggle-row"><span class="toggle-label">Daily reminder</span><label class="toggle"><input type="checkbox" id="dailyToggle" onchange="updatePreview()"><span class="slider"></span></label></div>
+      <div class="toggle-row"><span class="toggle-label">Weekly reminder (Fridays)</span><label class="toggle"><input type="checkbox" id="weeklyToggle" onchange="updatePreview()"><span class="slider"></span></label></div>
+      <label style="font-size:12px;font-weight:700;color:var(--text-soft);display:block;margin-bottom:8px">Preferred time</label>
+      <input type="time" class="time-input" id="notifyTime" value="08:00" onchange="updatePreview()">
+    </div>
+    <div class="notify-card">
+      <div class="notify-card-title">✨ What to include</div>
+      <div class="notify-card-sub">Customise what your reminders contain.</div>
+      <div class="content-chips">
+        <div class="content-chip active" onclick="toggleChip(this)" data-type="garden">🌿 Garden update</div>
+        <div class="content-chip active" onclick="toggleChip(this)" data-type="hadith">📖 Hadith</div>
+        <div class="content-chip active" onclick="toggleChip(this)" data-type="verse">🤲 Quranic verse</div>
+        <div class="content-chip active" onclick="toggleChip(this)" data-type="dua">💫 Daily dua</div>
+      </div>
+    </div>
+    <div class="notify-card">
+      <div class="notify-card-title">👁️ Preview</div>
+      <div class="preview-box">
+        <div class="preview-label">Notification preview</div>
+        <div class="preview-notif">
+          <div style="font-size:24px;margin-top:2px">🌸</div>
+          <div>
+            <div class="preview-title" id="previewTitle">Sisters Quran Club 🌿</div>
+            <div class="preview-body" id="previewBody">Assalamu Alaikum! Time to tend your garden 🌱</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <button class="save-notify-btn" onclick="saveNotifyPrefs()">💾 Save My Preferences</button>
   </div>
+  <footer>
+    <div class="footer-logo">Sisters Quran Club 🌸</div>
+    <div class="footer-links">
+      <a class="footer-link" onclick="showPage('home')">Home</a>
+      <a class="footer-link" onclick="showPage('resources')">Resources</a>
+      <a class="footer-link" onclick="showPage('tracker')">My Garden</a>
+      <a class="footer-link" href="mailto:sqc.quranclub@gmail.com">Contact</a>
+    </div>
+    <div class="footer-copy">© 2025 Sisters Quran Club · sqc.quranclub@gmail.com</div>
+  </footer>
 </div>
+
+<div class="toast" id="toast"></div>
 
 <script>
-  // ── GLOBAL CONFIG ──
-  const API_URL = 'https://script.google.com/macros/s/AKfycbwNoIeJkygzl5DWAWKg1qKy2KuMynzPgoMW9SI9MYYFQkwyei-U0HLqRVxW4fdfTQX1/exec';
+  // ── GLOBAL ──
+  const API_URL  = 'https://script.google.com/macros/s/AKfycbwNoIeJkygzl5DWAWKg1qKy2KuMynzPgoMW9SI9MYYFQkwyei-U0HLqRVxW4fdfTQX1/exec';
+  const BLOOM_THRESHOLD = 5;
+  let gardenerName = localStorage.getItem('sqc_gardener') || '';
+  let currentBloomTab = 0;
 
+  // ── TOAST ──
+  function showToast(msg) {
+    const t = document.getElementById('toast');
+    t.textContent = msg; t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 3500);
+  }
+
+  // ── GARDENER NAME ──
+  function setGardenerName() {
+    const val = document.getElementById('gardenerInput').value.trim();
+    const err = document.getElementById('gardenerError');
+    if (!val) { err.style.display='block'; return; }
+    err.style.display = 'none';
+    const btn = document.querySelector('.gardener-btn');
+    btn.textContent = '🌱 Setting up your garden...';
+    btn.disabled = true;
+    // Register with Google Sheet
+    fetch(API_URL + '?action=register&name=' + encodeURIComponent(val))
+      .then(r => r.json())
+      .then(data => {
+        gardenerName = val;
+        localStorage.setItem('sqc_gardener', val);
+        document.getElementById('gardenerModal').classList.add('hidden');
+        updateNavGardener(val);
+        showToast(data.existing
+          ? '🌸 Welcome back, ' + val + '!'
+          : '🌱 Garden created! Welcome, ' + val + '!');
+        personaliseHome(val);
+        // Load tracker with name
+        loadTrackerWithName(val);
+      })
+      .catch(() => {
+        // Save locally even if offline
+        gardenerName = val;
+        localStorage.setItem('sqc_gardener', val);
+        document.getElementById('gardenerModal').classList.add('hidden');
+        updateNavGardener(val);
+        showToast('🌸 Welcome, ' + val + '! (Offline — will sync soon)');
+        personaliseHome(val);
+      });
+  }
+
+  document.getElementById('gardenerInput').addEventListener('keydown', e => {
+    if (e.key === 'Enter') setGardenerName();
+  });
+
+  function updateNavGardener(name) {
+    document.getElementById('navAvatar').textContent = name[0].toUpperCase();
+    document.getElementById('navName').textContent = name;
+    document.getElementById('navGardener').style.display = 'block';
+  }
+
+  function loadTrackerWithName(name) {
+    const iframe = document.getElementById('trackerIframe');
+    const base   = 'https://tazcodez.github.io/sqcgardens/';
+    iframe.src   = base + '?member=' + encodeURIComponent(name);
+  }
+
+  // ── PERSONALISE HOME ──
+  async function personaliseHome(name) {
+    const hour = new Date().getHours();
+    const salam = hour < 12 ? 'Sabah Al Khair' : hour < 17 ? 'As Salamu Alaikum' : 'Masa Al Khair';
+    document.getElementById('heroTitle').innerHTML = `${salam},<br>${name}! 🌸`;
+    document.getElementById('heroTagline').textContent = 'Welcome back to your Sisters Quran Club 🌿';
+    try {
+      const res   = await fetch(API_URL + '?name=' + encodeURIComponent(name));
+      const json  = await res.json();
+      const entries = json.entries || [];
+      const mCount = entries.filter(e => e.ibadahType === 'Morning Adhkar').length;
+      const eCount = entries.filter(e => e.ibadahType === 'Evening Adhkar').length;
+      document.getElementById('hpMorning').textContent = mCount;
+      document.getElementById('hpEvening').textContent = eCount;
+      document.getElementById('heroPersonal').classList.add('visible');
+    } catch(err) {
+      document.getElementById('heroPersonal').classList.add('visible');
+    }
+  }
+
+  // ── PAGE NAVIGATION ──
   function showPage(name) {
     document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
     document.querySelectorAll('.nav-link').forEach(b => b.classList.remove('active'));
     document.getElementById('page-' + name).classList.add('active');
     document.querySelectorAll('.nav-link').forEach(b => {
-      if (b.textContent.toLowerCase().includes(name) ||
-         (name === 'tracker' && b.textContent.includes('Garden')) ||
-         (name === 'dua' && b.textContent.includes('Duas')) ||
-         (name === 'home' && b.textContent === 'Home')) {
+      if ((name==='home'&&b.textContent==='Home')||
+          (name==='resources'&&b.textContent==='Resources')||
+          (name==='bloom'&&b.textContent.includes('Bloom'))||
+          (name==='dua'&&b.textContent.includes('Duas'))||
+          (name==='notify'&&b.textContent.includes('Reminders'))||
+          (name==='tracker'&&b.textContent.includes('Garden')))
         b.classList.add('active');
-      }
     });
-    window.scrollTo(0, 0);
+    if (name==='bloom')  loadBloom();
+    if (name==='notify') loadNotifyPrefs();
+    if (name==='tracker' && gardenerName) loadTrackerWithName(gardenerName);
+    window.scrollTo(0,0);
   }
 
-  const MEDIA = [
-    { title:'The Story of Adam (AS) Part 1', sub:'SQC Recording', id:'1HMpcBzshnxz-OGRsjkuW8qt3AOho-G_A', link:'https://drive.google.com/file/d/1HMpcBzshnxz-OGRsjkuW8qt3AOho-G_A/view' },
-    { title:'33 Ways of Developing Khushoo',  sub:'SQC Recording', id:'17OT7Fyn4Xe5ZcjVUzLIzDU_RqvyB_2Nl', link:'https://drive.google.com/file/d/17OT7Fyn4Xe5ZcjVUzLIzDU_RqvyB_2Nl/view' },
-  ];
-
-  // Build recordings panel
-  const panel = document.getElementById('recordingsPanel');
-  MEDIA.forEach((m, idx) => {
-    const card = document.createElement('div');
-    card.className = 'media-card';
-    card.id = 'media-' + idx;
-    card.innerHTML = `
-      <div class="media-info">
-        <div>
-          <div class="media-title">${m.title}</div>
-          <div class="media-sub">${m.sub}</div>
-        </div>
-        <a class="media-open" href="${m.link}" target="_blank">🔗 Drive</a>
-      </div>
-      <div class="video-wrap">
-        <div class="video-controls">
-          <button class="ctrl-btn" onclick="togglePlay(${idx})" id="playbtn-${idx}" title="Play / Pause">▶</button>
-          <button class="expand-btn" onclick="toggleExpand(${idx})" id="expbtn-${idx}">⤢ Expand</button>
-        </div>
-        <iframe id="iframe-${idx}" src="" allow="autoplay" allowfullscreen></iframe>
-      </div>`;
-    panel.appendChild(card);
-  });
-
-  const iframeSrc = (id) => `https://drive.google.com/file/d/${id}/preview`;
-  let playing = {};
-  let expanded = {};
-
-  function togglePlay(idx) {
-    const iframe = document.getElementById('iframe-' + idx);
-    const btn    = document.getElementById('playbtn-' + idx);
-    const expBtn = document.getElementById('expbtn-' + idx);
-
-    if (!playing[idx]) {
-      // Load and show
-      if (!iframe.src || iframe.src === window.location.href) {
-        iframe.src = iframeSrc(MEDIA[idx].id);
-      }
-      iframe.classList.add('expanded');
-      if (!expanded[idx]) iframe.style.height = '240px';
-      btn.textContent = '⏸';
-      playing[idx] = true;
-    } else {
-      // Collapse
-      iframe.style.height = '0';
-      iframe.classList.remove('expanded');
-      btn.textContent = '▶';
-      playing[idx] = false;
-      expanded[idx] = false;
-      expBtn.textContent = '⤢ Expand';
-    }
-  }
-
-  function toggleExpand(idx) {
-    const iframe = document.getElementById('iframe-' + idx);
-    const btn    = document.getElementById('expbtn-' + idx);
-    if (!playing[idx]) { togglePlay(idx); return; }
-    if (!expanded[idx]) {
-      iframe.style.height = '400px';
-      btn.textContent = '⤡ Collapse';
-      expanded[idx] = true;
-    } else {
-      iframe.style.height = '240px';
-      btn.textContent = '⤢ Expand';
-      expanded[idx] = false;
-    }
-  }
-
-  function toggleRecordings(btn) {
-    btn.classList.toggle('open');
-    document.getElementById('recordingsPanel').classList.toggle('open');
-  }
-
-  /* ══════════════════════════════════
-     COLLECTIVE BLOOM
-  ══════════════════════════════════ */
+  // ── BLOOM ──
   const FLOWERS = [
-    { name:'Orchid',        petals:5,  colors:['#c4748a','#d4889e','#b4607a','#e8a0b0','#9a4a62'], bg:'#fce8ee' },
-    { name:'Hibiscus',      petals:5,  colors:['#e05070','#f07090','#c04060','#f090a0','#d06080'], bg:'#fff0f4' },
-    { name:'Frangipani',    petals:5,  colors:['#f4d0a0','#f8e0b8','#e8c090','#fce8c8','#ddb878'], bg:'#fffaf0' },
-    { name:'Cherry Blossom',petals:5,  colors:['#f4b8c8','#fcd0dc','#e8a0b4','#fce0e8','#d890a8'], bg:'#fff5f8' },
-    { name:'Jasmine',       petals:5,  colors:['#f8f0e8','#fff8f0','#f0e8d8','#fff0e0','#e8d8c0'], bg:'#fffff8' },
-    { name:'Petunia',       petals:5,  colors:['#9060c0','#a870d0','#7848a8','#c090e0','#6038a0'], bg:'#f8f0ff' },
-    { name:'Rose',          petals:5,  colors:['#c03060','#d04070','#b02050','#e06080','#a01840'], bg:'#fff0f4' },
+    {name:'Rose',       colors:['#c03060','#d04070','#b02050','#e06080','#a01840'],centre:'#fff0f4'},
+    {name:'Orchid',     colors:['#c4748a','#d4889e','#b4607a','#e8a0b0','#9a4a62'],centre:'#fce8ee'},
+    {name:'Hibiscus',   colors:['#e05070','#f07090','#c04060','#f090a0','#d06080'],centre:'#fff0f4'},
+    {name:'Frangipani', colors:['#f4d0a0','#f8e0b8','#e8c090','#fce8c8','#ddb878'],centre:'#fffaf0'},
+    {name:'Cherry Blossom',colors:['#f4b8c8','#fcd0dc','#e8a0b4','#fce0e8','#d890a8'],centre:'#fff5f8'},
+    {name:'Jasmine',    colors:['#f8f0d8','#fff8e8','#f0e8c8','#fff0d8','#e8d8b0'],centre:'#fffff8'},
+    {name:'Petunia',    colors:['#9060c0','#a870d0','#7848a8','#c090e0','#6038a0'],centre:'#f8f0ff'},
   ];
+  const DAY_NAMES  = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
 
-  const DAY_NAMES = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
-  const DAY_EMOJIS = { Sunday:'🌹', Monday:'🌸', Tuesday:'🌺', Wednesday:'🌼', Thursday:'🌸', Friday:'✨', Saturday:'🪷' };
+  // Evening uses a shifted palette
+  const EVENING_COLORS = ['#7040a0','#9060c0','#5828a0','#b080d0','#6030a0'];
 
   function getTodayFlower() {
-    const day = new Date().getDay(); // 0=Sun
-    // Map Sun=Rose(6), Mon=Orchid(0), Tue=Hibiscus(1), Wed=Frangipani(2),
-    //     Thu=CherryBlossom(3), Fri=Jasmine(4), Sat=Petunia(5)
-    const map = [6,0,1,2,3,4,5];
-    return FLOWERS[map[day]];
+    const map = [0,1,2,3,4,5,6];
+    return FLOWERS[map[new Date().getDay()]];
   }
 
-  function buildPetalPath(index, total, rx, ry) {
-    // Each petal is an ellipse rotated around the centre
-    const angle = (index / total) * 2 * Math.PI - Math.PI / 2;
-    const cx    = Math.cos(angle) * (ry * 0.9);
-    const cy    = Math.sin(angle) * (ry * 0.9);
-    const rot   = (angle * 180) / Math.PI + 90;
-    return `<ellipse cx="${cx.toFixed(1)}" cy="${cy.toFixed(1)}"
-              rx="${rx}" ry="${ry}"
-              transform="rotate(${rot.toFixed(1)},${cx.toFixed(1)},${cy.toFixed(1)})"
-              class="petal-path" id="petal-${index}"/>`;
-  }
-
-  function renderFlower(flower, completed, members) {
-    const n      = members.length;
-    const group  = document.getElementById('petalsGroup');
-    const centre = document.getElementById('flowerCentre');
-    const stage  = document.getElementById('flowerStage');
+  function renderFlower(svgId, groupId, stageId, members, completed, colors, centre, isEvening) {
+    const group  = document.getElementById(groupId);
+    const stage  = document.getElementById(stageId);
     group.innerHTML = '';
-
-    // Petal sizing — nice and large
-    const ry = 80, rx = 34;
+    const n = members.length;
+    if (n === 0) return;
+    const ry = 75, rx = 30;
 
     members.forEach((name, i) => {
-      const color    = flower.colors[i % flower.colors.length];
-      const isDone   = completed[name] === true;
-      const petalSVG = document.createElementNS('http://www.w3.org/2000/svg','ellipse');
-      const angle    = (i / n) * 2 * Math.PI - Math.PI / 2;
-      const cx       = Math.cos(angle) * (ry * 0.85);
-      const cy       = Math.sin(angle) * (ry * 0.85);
-      const rot      = (angle * 180 / Math.PI) + 90;
-
-      petalSVG.setAttribute('cx', cx.toFixed(1));
-      petalSVG.setAttribute('cy', cy.toFixed(1));
-      petalSVG.setAttribute('rx', rx);
-      petalSVG.setAttribute('ry', ry);
-      petalSVG.setAttribute('transform', `rotate(${rot.toFixed(1)},${cx.toFixed(1)},${cy.toFixed(1)})`);
-      petalSVG.classList.add('petal-path');
-      if (isDone) petalSVG.classList.add('completed');
-      petalSVG.id = 'petal-' + i;
-
+      const color = isEvening ? EVENING_COLORS[i % EVENING_COLORS.length] : colors[i % colors.length];
+      const isDone = completed[name] === true;
+      const angle  = (i/n)*2*Math.PI - Math.PI/2;
+      const cx     = Math.cos(angle)*(ry*0.85);
+      const cy     = Math.sin(angle)*(ry*0.85);
+      const rot    = (angle*180/Math.PI)+90;
+      const petal  = document.createElementNS('http://www.w3.org/2000/svg','ellipse');
+      petal.setAttribute('cx', cx.toFixed(1));
+      petal.setAttribute('cy', cy.toFixed(1));
+      petal.setAttribute('rx', rx);
+      petal.setAttribute('ry', ry);
+      petal.setAttribute('transform', `rotate(${rot.toFixed(1)},${cx.toFixed(1)},${cy.toFixed(1)})`);
+      petal.classList.add('petal-path');
       if (isDone) {
-        petalSVG.setAttribute('fill', color);
-        petalSVG.setAttribute('opacity', '0.92');
-        petalSVG.setAttribute('stroke', '#fff');
-        petalSVG.setAttribute('stroke-width', '1.5');
-        // Glassmorphism highlight
-        const highlight = document.createElementNS('http://www.w3.org/2000/svg','ellipse');
-        highlight.setAttribute('cx', (cx + Math.cos(angle)*6).toFixed(1));
-        highlight.setAttribute('cy', (cy + Math.sin(angle)*6).toFixed(1));
-        highlight.setAttribute('rx', (rx * 0.35).toFixed(1));
-        highlight.setAttribute('ry', (ry * 0.22).toFixed(1));
-        highlight.setAttribute('transform', `rotate(${rot.toFixed(1)},${cx.toFixed(1)},${cy.toFixed(1)})`);
-        highlight.setAttribute('fill', 'rgba(255,255,255,0.35)');
-        group.appendChild(petalSVG);
-        group.appendChild(highlight);
+        petal.setAttribute('fill', color);
+        petal.setAttribute('opacity', '0.9');
+        petal.setAttribute('stroke', 'white');
+        petal.setAttribute('stroke-width', '1.5');
+        group.appendChild(petal);
+        // Highlight
+        const hl = document.createElementNS('http://www.w3.org/2000/svg','ellipse');
+        hl.setAttribute('cx', (cx+Math.cos(angle)*5).toFixed(1));
+        hl.setAttribute('cy', (cy+Math.sin(angle)*5).toFixed(1));
+        hl.setAttribute('rx', (rx*0.3).toFixed(1));
+        hl.setAttribute('ry', (ry*0.18).toFixed(1));
+        hl.setAttribute('transform', `rotate(${rot.toFixed(1)},${cx.toFixed(1)},${cy.toFixed(1)})`);
+        hl.setAttribute('fill', 'rgba(255,255,255,0.35)');
+        group.appendChild(hl);
       } else {
-        petalSVG.setAttribute('fill', 'none');
-        petalSVG.setAttribute('stroke', color);
-        petalSVG.setAttribute('stroke-width', '1.5');
-        petalSVG.setAttribute('opacity', '0.3');
-        petalSVG.setAttribute('stroke-dasharray', '4,3');
-        group.appendChild(petalSVG);
+        petal.setAttribute('fill', 'none');
+        petal.setAttribute('stroke', color);
+        petal.setAttribute('stroke-width', '1.5');
+        petal.setAttribute('opacity', '0.25');
+        petal.setAttribute('stroke-dasharray', '4,3');
+        group.appendChild(petal);
       }
     });
 
-    // Update centre colour
-    centre.setAttribute('fill', flower.bg);
-
     // Full bloom?
-    const allDone = members.every(m => completed[m]);
-    if (allDone && members.length > 0) {
+    const doneCount = Object.values(completed).filter(Boolean).length;
+    const bloomed   = doneCount >= BLOOM_THRESHOLD;
+    if (bloomed) {
       stage.classList.add('full-bloom');
-      document.getElementById('fullBloomBanner').classList.add('visible');
-      spawnParticles(flower);
+      spawnParticles(stage, colors);
     } else {
       stage.classList.remove('full-bloom');
-      document.getElementById('fullBloomBanner').classList.remove('visible');
+      stage.querySelectorAll('.particle').forEach(p=>p.remove());
     }
+    return bloomed;
   }
 
-  function spawnParticles(flower) {
-    const stage = document.getElementById('flowerStage');
-    // Remove old particles
-    stage.querySelectorAll('.particle').forEach(p => p.remove());
-    const colors = [...flower.colors, '#fce8ee', '#fff0f8'];
-    for (let i = 0; i < 18; i++) {
-      const p = document.createElement('div');
-      p.className = 'particle';
-      p.style.cssText = `
-        left:${30 + Math.random()*40}%;
-        top:${20 + Math.random()*30}%;
-        background:${colors[Math.floor(Math.random()*colors.length)]};
-        --dx:${(Math.random()-0.5)*60}px;
-        animation-delay:${Math.random()*2}s;
-        animation-duration:${2+Math.random()*2}s;
-        opacity:0;
-      `;
+  function spawnParticles(stage, colors) {
+    stage.querySelectorAll('.particle').forEach(p=>p.remove());
+    for (let i=0;i<16;i++) {
+      const p = document.createElement('div'); p.className='particle';
+      p.style.cssText=`left:${30+Math.random()*40}%;top:${20+Math.random()*30}%;background:${colors[Math.floor(Math.random()*colors.length)]};--dx:${(Math.random()-0.5)*60}px;animation-delay:${Math.random()*2}s;animation-duration:${2+Math.random()*2}s;opacity:0`;
       stage.appendChild(p);
     }
   }
 
-  function renderRoster(members, completed, flower) {
-    const roster = document.getElementById('bloomRoster');
-    const count  = members.filter(m => completed[m]).length;
-    document.getElementById('bloomRosterCount').textContent = `${count}/${members.length}`;
-    document.getElementById('bloomProgressFill').style.width =
-      members.length ? `${(count/members.length)*100}%` : '0%';
-    document.getElementById('bloomProgressLabel').textContent =
-      members.length
-        ? `${count} of ${members.length} sisters have bloomed today 🌸`
-        : 'No members found';
+  function renderRoster(rosterId, countId, progressId, labelId, bannerId, members, completed, colors, isEvening, label) {
+    const doneCount = Object.values(completed).filter(Boolean).length;
+    const total     = members.length;
+    document.getElementById(countId).textContent = `${doneCount}/${total}`;
+    document.getElementById(progressId).style.width = total ? `${(doneCount/total)*100}%` : '0%';
+    document.getElementById(labelId).textContent = total
+      ? `${doneCount} of ${total} sisters have completed ${label} today`
+      : 'No members found';
 
-    roster.innerHTML = members.map((name, i) => {
+    const bloomed = doneCount >= BLOOM_THRESHOLD;
+    document.getElementById(bannerId).classList.toggle('visible', bloomed);
+
+    document.getElementById(rosterId).innerHTML = members.map((name,i) => {
       const done  = completed[name];
-      const color = flower.colors[i % flower.colors.length];
+      const color = isEvening ? EVENING_COLORS[i%EVENING_COLORS.length] : colors[i%colors.length];
       return `<div class="bloom-sister">
-        <div class="petal-dot ${done?'done':'pending'}" style="${done?`background:${color}20;box-shadow:0 0 0 2px ${color}`:''}">
-          ${done ? '🌸' : '○'}
-        </div>
+        <div class="petal-dot" style="${done?`background:${color}20;box-shadow:0 0 0 2px ${color}`:'background:#f5f5f5;opacity:0.5'}">${done?'🌸':'○'}</div>
         <span class="sister-name">${name}</span>
-        <span class="sister-status ${done?'done':'pending'}">${done?'Completed ✓':'Pending'}</span>
+        <span class="sister-status ${done?'done':'pending'}">${done?'Done ✓':'Pending'}</span>
       </div>`;
     }).join('');
   }
 
   async function loadBloom() {
-    const day     = new Date().getDay();
     const flower  = getTodayFlower();
-    const dayName = DAY_NAMES[day];
-    const emoji   = DAY_EMOJIS[dayName] || '🌸';
+    const dayName = DAY_NAMES[new Date().getDay()];
+    document.getElementById('bloomDayName').textContent = dayName.toUpperCase() + ' — ' + flower.name;
 
-    document.getElementById('bloomDayName').textContent    = dayName.toUpperCase();
-    document.getElementById('bloomFlowerName').textContent = `Today's ${flower.name} ${emoji}`;
-    document.getElementById('bloomRoster').innerHTML =
-      '<div style="padding:20px;text-align:center;color:#ccc;font-size:13px">🌱 Loading...</div>';
-    document.getElementById('bloomProgressLabel').textContent = 'Loading...';
+    // Show loading
+    ['morningRoster','eveningRoster'].forEach(id => {
+      document.getElementById(id).innerHTML = '<div style="padding:16px;text-align:center;color:#ccc;font-size:13px">🌱 Loading...</div>';
+    });
 
     try {
-      const url = API_URL + '?action=todayAdhkar';
-      const res  = await fetch(url);
-      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      const res  = await fetch(API_URL + '?action=todayAdhkar');
+      if (!res.ok) throw new Error('HTTP ' + res.status);
       const data = await res.json();
-      if (!data.members || !data.completed) throw new Error('Invalid data: ' + JSON.stringify(data));
-      const { members, completed } = data;
-      renderFlower(flower, completed, members);
-      renderRoster(members, completed, flower);
+      if (data.error) throw new Error(data.error);
+      const { members, morning, evening } = data;
+
+      renderFlower('flowerSVGMorning','petalsGroupMorning','flowerStageMorning', members, morning, flower.colors, flower.centre, false);
+      renderFlower('flowerSVGEvening','petalsGroupEvening','flowerStageEvening', members, evening, EVENING_COLORS, '#f0e8f8', true);
+      renderRoster('morningRoster','morningRosterCount','morningProgressFill','morningProgressLabel','morningBloomBanner', members, morning, flower.colors, false, 'Morning Adhkar');
+      renderRoster('eveningRoster','eveningRosterCount','eveningProgressFill','eveningProgressLabel','eveningBloomBanner', members, evening, EVENING_COLORS, true, 'Evening Adhkar');
     } catch(err) {
-      document.getElementById('bloomRoster').innerHTML =
-        `<div style="padding:20px;text-align:center;color:#e57373;font-size:13px">
-          ⚠️ Could not load bloom data.<br>
-          <small style="color:#ccc">${err.message}</small><br><br>
-          <button onclick="loadBloom()" style="padding:8px 16px;background:#c4748a;color:white;border:none;border-radius:20px;font-size:12px;cursor:pointer">Try again</button>
-        </div>`;
-      document.getElementById('bloomProgressLabel').textContent = 'Error loading data';
-    }
-  }
-
-  /* ══ PAGE NAVIGATION ══ */
-  function showPage(name) {
-    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-    document.querySelectorAll('.nav-link').forEach(b => b.classList.remove('active'));
-    document.getElementById('page-' + name).classList.add('active');
-    document.querySelectorAll('.nav-link').forEach(b => {
-      if (b.textContent.toLowerCase().includes(name) ||
-         (name === 'tracker' && b.textContent.includes('Garden')) ||
-         (name === 'dua'     && b.textContent.includes('Duas')) ||
-         (name === 'notify'  && b.textContent.includes('Reminders')) ||
-         (name === 'bloom'   && b.textContent.includes('Bloom')) ||
-         (name === 'home'    && b.textContent === 'Home')) {
-        b.classList.add('active');
-      }
-    });
-    if (name === 'notify') loadNotifyPrefs();
-    if (name === 'bloom')  loadBloom();
-    if (name === 'tracker' && currentUser?.sqcName) {
-      const iframe = document.querySelector('#page-tracker iframe');
-      if (iframe && !iframe.src.includes('member=')) {
-        const sep = iframe.src.includes('?') ? '&' : '?';
-        iframe.src = iframe.src + sep + 'member=' + encodeURIComponent(currentUser.sqcName);
-      }
-    }
-    window.scrollTo(0, 0);
-  }
-
-  /* ── NOTIFICATION SYSTEM ── */
-  const HADITHS = [
-    '"The best deeds are those done regularly, even if they are small." — Prophet Muhammad ﷺ',
-    '"When a person dies, all their deeds end except three: a continuing charity, beneficial knowledge, or a righteous child who prays for them." — Prophet Muhammad ﷺ',
-    '"Take up good deeds only as much as you are able, for the best deeds are those done regularly even if they are few." — Prophet Muhammad ﷺ',
-    '"Allah loves that when one of you does something, they do it with excellence." — Prophet Muhammad ﷺ',
-    '"Make things easy, do not make them difficult." — Prophet Muhammad ﷺ',
-  ];
-  const VERSES = [
-    '"This is the Book about which there is no doubt, a guidance for those conscious of Allah." — Al-Quran 2:2',
-    '"So remember Me; I will remember you. And be grateful to Me and do not deny Me." — Al-Quran 2:152',
-    '"Indeed, prayer prohibits immorality and wrongdoing, and the remembrance of Allah is greater." — Al-Quran 29:45',
-    '"Whoever does righteousness, whether male or female, while being a believer — We will surely cause them to live a good life." — Al-Quran 16:97',
-    '"And your Lord says: Call upon Me; I will respond to you." — Al-Quran 40:60',
-  ];
-  const DUAS = [
-    'Rabbana atina fid-dunya hasanatan wa fil-akhirati hasanatan waqina adhaban-nar 🤲',
-    'Allahumma inni as\'aluka al-\'afwa wal-\'afiyah fid-dunya wal-akhirah 🤲',
-    'Subhanallahi wa bihamdihi, Subhanallahil-Azeem 🤲',
-    'La hawla wa la quwwata illa billah 🤲',
-    'Astaghfirullah al-\'azim alladhi la ilaha illa huwa al-Hayy al-Qayyum 🤲',
-  ];
-
-  let notifyChips = { garden:true, hadith:true, verse:true, dua:true };
-
-  function toggleChip(el) {
-    const type = el.dataset.type;
-    notifyChips[type] = !notifyChips[type];
-    el.classList.toggle('active', notifyChips[type]);
-    updatePreview();
-  }
-
-  function updatePreview() {
-    const parts = [];
-    if (notifyChips.garden) parts.push('🌱 Tend your garden today!');
-    if (notifyChips.hadith) parts.push(HADITHS[Math.floor(Math.random()*HADITHS.length)]);
-    if (notifyChips.verse)  parts.push(VERSES[Math.floor(Math.random()*VERSES.length)]);
-    if (notifyChips.dua)    parts.push(DUAS[Math.floor(Math.random()*DUAS.length)]);
-    const time   = document.getElementById('notifyTime')?.value || '08:00';
-    const daily  = document.getElementById('dailyToggle')?.checked;
-    const weekly = document.getElementById('weeklyToggle')?.checked;
-    const freq   = daily ? 'Daily at '+time : weekly ? 'Fridays at '+time : 'Schedule not set';
-    document.getElementById('previewTitle').textContent = 'Sisters Quran Club 🌿 — '+freq;
-    document.getElementById('previewBody').textContent  = parts.join(' • ') || 'Select at least one content type above.';
-  }
-
-  function saveNotifyPrefs() {
-    const prefs = {
-      daily:  document.getElementById('dailyToggle').checked,
-      weekly: document.getElementById('weeklyToggle').checked,
-      time:   document.getElementById('notifyTime').value,
-      chips:  notifyChips
-    };
-    localStorage.setItem('sqc_notify_prefs', JSON.stringify(prefs));
-    if (window.OneSignalDeferred) {
-      OneSignalDeferred.push(async function(OneSignal) {
-        await OneSignal.Slidedown.promptPush();
-      });
-    }
-    showToast('🌸 Preferences saved! You\'ll receive reminders as set.');
-  }
-
-  function loadNotifyPrefs() {
-    const saved = localStorage.getItem('sqc_notify_prefs');
-    if (saved) {
-      const prefs = JSON.parse(saved);
-      if (document.getElementById('dailyToggle'))  document.getElementById('dailyToggle').checked  = prefs.daily  || false;
-      if (document.getElementById('weeklyToggle')) document.getElementById('weeklyToggle').checked = prefs.weekly || false;
-      if (document.getElementById('notifyTime'))   document.getElementById('notifyTime').value     = prefs.time   || '08:00';
-      if (prefs.chips) {
-        notifyChips = prefs.chips;
-        document.querySelectorAll('.content-chip').forEach(chip => {
-          chip.classList.toggle('active', notifyChips[chip.dataset.type]);
-        });
-      }
-    }
-    updatePreview();
-    if (window.OneSignalDeferred) {
-      OneSignalDeferred.push(async function(OneSignal) {
-        const isSubscribed = await OneSignal.User.PushSubscription.optedIn;
-        const dot  = document.getElementById('notifyDot');
-        const text = document.getElementById('notifyStatusText');
-        if (dot && text) {
-          dot.className  = 'notify-status-dot ' + (isSubscribed ? 'on' : 'off');
-          text.textContent = isSubscribed
-            ? '✅ Notifications are enabled on this device'
-            : '❌ Notifications not enabled yet — click Allow above';
-        }
+      ['morningRoster','eveningRoster'].forEach(id => {
+        document.getElementById(id).innerHTML = `<div style="padding:16px;text-align:center;color:#e57373;font-size:12px">⚠️ Could not load. <small>${err.message}</small><br><button onclick="loadBloom()" style="margin-top:8px;padding:6px 14px;background:#c4748a;color:white;border:none;border-radius:20px;cursor:pointer;font-size:11px">Try again</button></div>`;
       });
     }
   }
 
-  // Show gentle reminder banner after 3 seconds if prefs not set
-  setTimeout(() => {
-    if (!localStorage.getItem('sqc_notify_prefs')) {
-      const banner = document.createElement('div');
-      banner.style.cssText = 'position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:#c4748a;color:white;padding:10px 20px;border-radius:30px;font-family:Nunito,sans-serif;font-size:13px;font-weight:700;cursor:pointer;z-index:50;box-shadow:0 4px 20px rgba(196,116,138,0.4);white-space:nowrap;animation:fadeUp 0.4s ease';
-      banner.textContent = '🔔 Set up garden reminders';
-      banner.onclick = () => { showPage('notify'); banner.remove(); };
-      document.body.appendChild(banner);
-      setTimeout(() => banner.style.opacity = '0', 7000);
-      setTimeout(() => banner.remove(), 7500);
-    }
-  }, 3000);
-
-  function handleNewNameInput() {
-    const val = document.getElementById('newNameInput').value.trim();
-    const btn = document.getElementById('addNameBtn');
-    if (val.length > 1) {
-      btn.style.opacity = '1';
-      btn.style.pointerEvents = 'all';
-    } else {
-      btn.style.opacity = '0.5';
-      btn.style.pointerEvents = 'none';
-    }
+  // Bloom tab switching (swipe effect)
+  function switchBloomTab(idx) {
+    currentBloomTab = idx;
+    document.getElementById('bloomSlide').style.transform = `translateX(-${idx*100}%)`;
+    document.querySelectorAll('.bloom-tab').forEach((t,i) => t.classList.toggle('active', i===idx));
   }
 
-  async function addNewName() {
-    const name = document.getElementById('newNameInput').value.trim();
-    if (!name) return;
-    const btn = document.getElementById('addNameBtn');
-    btn.textContent = '...';
-    try {
-      const res  = await fetch(API_URL + '?action=addMember&name=' + encodeURIComponent(name));
-      const json = await res.json();
-      if (json.success) {
-        // Add to the picker grid and select it
-        const grid = document.getElementById('namePickerGrid');
-        const newBtn = document.createElement('button');
-        newBtn.className = 'name-pick-btn';
-        newBtn.textContent = name;
-        newBtn.onclick = () => {
-          document.querySelectorAll('.name-pick-btn').forEach(b => b.classList.remove('active'));
-          newBtn.classList.add('active');
-          selectedSQCName = name;
-          document.getElementById('confirmNameBtn').classList.add('ready');
-        };
-        grid.appendChild(newBtn);
-        newBtn.click();
-        document.getElementById('newNameInput').value = '';
-        btn.textContent = '✓';
-        btn.style.background = '#4caf50';
-        setTimeout(() => { btn.textContent = 'Add'; btn.style.background = '#c4748a'; }, 2000);
-      }
-    } catch(err) {
-      btn.textContent = '✗';
-      setTimeout(() => { btn.textContent = 'Add'; }, 2000);
-    }
+  // Touch swipe for bloom
+  let touchStartX = 0;
+  document.getElementById('bloomFlowers')?.addEventListener('touchstart', e => { touchStartX = e.touches[0].clientX; });
+  document.getElementById('bloomFlowers')?.addEventListener('touchend', e => {
+    const diff = touchStartX - e.changedTouches[0].clientX;
+    if (Math.abs(diff) > 50) switchBloomTab(diff > 0 ? 1 : 0);
+  });
+
+  // ── RECORDINGS ──
+  const MEDIA = [
+    {title:'The Story of Adam (AS) Part 1',sub:'SQC Recording',id:'1HMpcBzshnxz-OGRsjkuW8qt3AOho-G_A',link:'https://drive.google.com/file/d/1HMpcBzshnxz-OGRsjkuW8qt3AOho-G_A/view'},
+    {title:'33 Ways of Developing Khushoo',sub:'SQC Recording',id:'17OT7Fyn4Xe5ZcjVUzLIzDU_RqvyB_2Nl',link:'https://drive.google.com/file/d/17OT7Fyn4Xe5ZcjVUzLIzDU_RqvyB_2Nl/view'},
+  ];
+  const panel = document.getElementById('recordingsPanel');
+  let playing={},expanded={};
+  MEDIA.forEach((m,idx) => {
+    const card = document.createElement('div'); card.className='media-card'; card.id='media-'+idx;
+    card.innerHTML=`<div class="media-info"><div><div class="media-title">${m.title}</div><div class="media-sub">${m.sub}</div></div><a class="media-open" href="${m.link}" target="_blank">🔗 Drive</a></div><div class="video-wrap"><div class="video-controls"><button class="ctrl-btn" onclick="togglePlay(${idx})" id="playbtn-${idx}">▶</button><button class="expand-btn" onclick="toggleExpand(${idx})" id="expbtn-${idx}">⤢ Expand</button></div><iframe id="iframe-${idx}" src="" allow="autoplay" allowfullscreen></iframe></div>`;
+    panel.appendChild(card);
+  });
+  function togglePlay(idx){
+    const iframe=document.getElementById('iframe-'+idx),btn=document.getElementById('playbtn-'+idx);
+    if(!playing[idx]){if(!iframe.src)iframe.src=`https://drive.google.com/file/d/${MEDIA[idx].id}/preview`;iframe.style.height='240px';btn.textContent='⏸';playing[idx]=true;}
+    else{iframe.style.height='0';btn.textContent='▶';playing[idx]=false;expanded[idx]=false;document.getElementById('expbtn-'+idx).textContent='⤢ Expand';}
+  }
+  function toggleExpand(idx){
+    if(!playing[idx]){togglePlay(idx);return;}
+    const iframe=document.getElementById('iframe-'+idx),btn=document.getElementById('expbtn-'+idx);
+    if(!expanded[idx]){iframe.style.height='400px';btn.textContent='⤡ Collapse';expanded[idx]=true;}
+    else{iframe.style.height='240px';btn.textContent='⤢ Expand';expanded[idx]=false;}
+  }
+  function toggleRecordings(btn){btn.classList.toggle('open');document.getElementById('recordingsPanel').classList.toggle('open');}
+
+  // ── NOTIFICATIONS ──
+  const HADITHS=['"The best deeds are those done regularly, even if they are small." — Prophet Muhammad ﷺ','"Allah loves that when one of you does something, they do it with excellence." — Prophet Muhammad ﷺ','"Make things easy, do not make them difficult." — Prophet Muhammad ﷺ'];
+  const VERSES=['"So remember Me; I will remember you." — Al-Quran 2:152','"And your Lord says: Call upon Me; I will respond to you." — Al-Quran 40:60','"Verily, with hardship comes ease." — Al-Quran 94:5'];
+  const DUAS=["Rabbana atina fid-dunya hasanatan wa fil-akhirati hasanatan waqina adhaban-nar 🤲","Allahumma inni as'aluka al-'afwa wal-'afiyah 🤲","La hawla wa la quwwata illa billah 🤲"];
+  let notifyChips={garden:true,hadith:true,verse:true,dua:true};
+
+  function toggleChip(el){const t=el.dataset.type;notifyChips[t]=!notifyChips[t];el.classList.toggle('active',notifyChips[t]);updatePreview();}
+  function updatePreview(){
+    const parts=[];
+    if(notifyChips.garden)parts.push('🌱 Tend your garden today!');
+    if(notifyChips.hadith)parts.push(HADITHS[Math.floor(Math.random()*HADITHS.length)]);
+    if(notifyChips.verse) parts.push(VERSES[Math.floor(Math.random()*VERSES.length)]);
+    if(notifyChips.dua)   parts.push(DUAS[Math.floor(Math.random()*DUAS.length)]);
+    const time=document.getElementById('notifyTime')?.value||'08:00';
+    const daily=document.getElementById('dailyToggle')?.checked;
+    const weekly=document.getElementById('weeklyToggle')?.checked;
+    const freq=daily?'Daily at '+time:weekly?'Fridays at '+time:'Schedule not set';
+    document.getElementById('previewTitle').textContent='Sisters Quran Club 🌿 — '+freq;
+    document.getElementById('previewBody').textContent=parts.join(' • ')||'Select content above.';
+  }
+  function saveNotifyPrefs(){
+    const prefs={daily:document.getElementById('dailyToggle').checked,weekly:document.getElementById('weeklyToggle').checked,time:document.getElementById('notifyTime').value,chips:notifyChips};
+    localStorage.setItem('sqc_notify_prefs',JSON.stringify(prefs));
+    if(window.OneSignalDeferred)OneSignalDeferred.push(async o=>await o.Slidedown.promptPush());
+    showToast('🌸 Preferences saved!');
+  }
+  function loadNotifyPrefs(){
+    const saved=localStorage.getItem('sqc_notify_prefs');
+    if(saved){const p=JSON.parse(saved);if(document.getElementById('dailyToggle'))document.getElementById('dailyToggle').checked=p.daily||false;if(document.getElementById('weeklyToggle'))document.getElementById('weeklyToggle').checked=p.weekly||false;if(document.getElementById('notifyTime'))document.getElementById('notifyTime').value=p.time||'08:00';if(p.chips){notifyChips=p.chips;document.querySelectorAll('.content-chip').forEach(c=>c.classList.toggle('active',notifyChips[c.dataset.type]));}}
+    updatePreview();
+    if(window.OneSignalDeferred)OneSignalDeferred.push(async o=>{const s=await o.User.PushSubscription.optedIn;const dot=document.getElementById('notifyDot'),txt=document.getElementById('notifyStatusText');if(dot&&txt){dot.className='notify-status-dot '+(s?'on':'off');txt.textContent=s?'✅ Notifications enabled':'❌ Not enabled yet — click Allow above';}});
   }
 
-  async function personaliseHome(user) {
-    if (!user?.sqcName) return;
-    // Update greeting
-    const hour = new Date().getHours();
-    const greeting = hour < 12 ? 'Good morning' : hour < 17 ? 'Good afternoon' : 'Good evening';
-    document.getElementById('heroTitle').innerHTML = `${greeting},<br>${user.sqcName}! 🌸`;
-    document.getElementById('heroTagline').textContent = 'Welcome back to your Sisters Quran Club 🌿';
-    // Show stats card
-    document.getElementById('personalStats').style.display = 'block';
-    // Fetch their garden data
-    try {
-      const res   = await fetch(API_URL + '?name=' + encodeURIComponent(user.sqcName));
-      const json  = await res.json();
-      const entries = json.entries || [];
-      const quranE   = entries.filter(e => e.ibadahType === 'Quran' || (!e.ibadahType && e.seedling));
-      const morningE = entries.filter(e => e.ibadahType === 'Morning Adhkar');
-      const eveningE = entries.filter(e => e.ibadahType === 'Evening Adhkar');
-      const hifzE    = entries.filter(e => e.ibadahType === 'Hifz');
-      const tahajE   = entries.filter(e => e.ibadahType === 'Tahajjud');
-      const totalPlants = entries.length;
-      document.getElementById('statPlants').textContent  = totalPlants;
-      document.getElementById('statQuran').textContent   = quranE.length;
-      document.getElementById('statAdhkar').textContent  = morningE.length + eveningE.length;
-      // Next badge hint
-      const badges = [
-        { emoji:'⭐', label:'Quran Streak', target:5, current:quranE.length },
-        { emoji:'🌅', label:'Morning Devotee', target:5, current:morningE.length },
-        { emoji:'📿', label:'Memoriser', target:3, current:hifzE.length },
-        { emoji:'✨', label:'Night Worshipper', target:3, current:tahajE.length },
-        { emoji:'🌸', label:'Full Bloom', target:10, current:totalPlants },
-      ];
-      const next = badges.filter(b => b.current < b.target).sort((a,b) => (b.current/b.target) - (a.current/a.target))[0];
-      if (next) {
-        document.getElementById('nextBadge').textContent =
-          `${next.emoji} ${next.label}: ${next.current}/${next.target} — keep going!`;
-      }
-    } catch(err) {
-      document.getElementById('statPlants').textContent = '—';
-    }
-  }
-
-  /* ── GOOGLE SIGN IN ── */
-  const CLIENT_ID = '847784187984-s9vii931ro5jod4cr2240vmnqlko4suv.apps.googleusercontent.com';
-
-  let currentUser = null;
-  let selectedSQCName = null;
-
-  // Load Google Identity Services
+  // ── INIT ──
   window.addEventListener('load', () => {
-    // Check if already signed in
-    const saved = localStorage.getItem('sqc_user');
-    if (saved) {
-      currentUser = JSON.parse(saved);
-      updateNavProfile(currentUser);
-      personaliseHome(currentUser);
-    }
-
-    // Initialize Google Sign-In
-    if (window.google) {
-      initGoogle();
+    if (gardenerName) {
+      updateNavGardener(gardenerName);
+      personaliseHome(gardenerName);
     } else {
-      // Wait for script to load
-      document.querySelector('script[src*="accounts.google.com"]')
-        ?.addEventListener('load', initGoogle);
+      // Show gardener modal after 1 second
+      setTimeout(() => {
+        document.getElementById('gardenerModal').classList.remove('hidden');
+      }, 1000);
     }
-  });
 
-  function initGoogle() {
-    google.accounts.id.initialize({
-      client_id: CLIENT_ID,
-      callback: handleGoogleSignIn,
-      auto_select: false,
-    });
-    google.accounts.id.renderButton(
-      document.getElementById('googleSignInBtn'), {
-        theme: 'outline',
-        size: 'large',
-        shape: 'pill',
-        text: 'signin_with',
-        logo_alignment: 'center',
-      }
-    );
-  }
-
-  async function handleGoogleSignIn(response) {
-    // Decode JWT token
-    const payload = JSON.parse(atob(response.credential.split('.')[1]));
-    const user = {
-      googleId: payload.sub,
-      name:     payload.name,
-      email:    payload.email,
-      picture:  payload.picture,
-      sqcName:  null
-    };
-
-    // Check if we already have their SQC name saved
-    const existing = localStorage.getItem('sqc_user_' + payload.sub);
-    if (existing) {
-      const saved = JSON.parse(existing);
-      user.sqcName = saved.sqcName;
-      currentUser = user;
-      localStorage.setItem('sqc_user', JSON.stringify(user));
-      updateNavProfile(user);
-      closeSignIn();
-      showToast('🌸 Welcome back, ' + (user.sqcName || user.name) + '!');
-      personaliseHome(user);
-      if (user.sqcName) showPage('tracker');
-    } else {
-      // New user — show name picker
-      currentUser = user;
-      showNamePicker();
-    }
-  }
-
-  async function showNamePicker() {
-    document.getElementById('signinStep1').style.display = 'none';
-    document.getElementById('signinStep2').classList.add('visible');
-    // Load names from sheet
-    const grid = document.getElementById('namePickerGrid');
-    grid.innerHTML = '<div style="color:#ccc;font-size:13px">Loading members...</div>';
-    try {
-      const res   = await fetch(API_URL + '?action=members');
-      const json  = await res.json();
-      grid.innerHTML = '';
-      json.names.forEach(name => {
-        const btn = document.createElement('button');
-        btn.className = 'name-pick-btn';
-        btn.textContent = name;
-        btn.onclick = () => {
-          document.querySelectorAll('.name-pick-btn').forEach(b => b.classList.remove('active'));
-          btn.classList.add('active');
-          selectedSQCName = name;
-          document.getElementById('confirmNameBtn').classList.add('ready');
-        };
-        grid.appendChild(btn);
-      });
-    } catch(err) {
-      grid.innerHTML = '<div style="color:#e57373;font-size:12px">Could not load names. Please check your connection.</div>';
-    }
-  }
-
-  function confirmName() {
-    if (!selectedSQCName || !currentUser) return;
-    currentUser.sqcName = selectedSQCName;
-    localStorage.setItem('sqc_user', JSON.stringify(currentUser));
-    localStorage.setItem('sqc_user_' + currentUser.googleId, JSON.stringify(currentUser));
-    updateNavProfile(currentUser);
-    closeSignIn();
-    showToast('🌸 Welcome to SQC, ' + selectedSQCName + '!');
-    personaliseHome(currentUser);
-    showPage('tracker');
-  }
-
-  function updateNavProfile(user) {
-    const navAuth = document.getElementById('navAuth');
-    navAuth.innerHTML = `
-      <div class="nav-profile" onclick="toggleDropdown()">
-        <img src="${user.picture}" alt="${user.name}" onerror="this.src='logo.png'">
-        <span>${user.sqcName || user.name.split(' ')[0]}</span>
-      </div>`;
-    document.getElementById('dropdownAvatar').src   = user.picture;
-    document.getElementById('dropdownName').textContent  = user.sqcName || user.name;
-    document.getElementById('dropdownEmail').textContent = user.email;
-  }
-
-  function toggleDropdown() {
-    document.getElementById('profileDropdown').classList.toggle('open');
-  }
-
-  function closeDropdown() {
-    document.getElementById('profileDropdown').classList.remove('open');
-  }
-
-  function openSignIn() {
-    document.getElementById('signinModal').classList.remove('hidden');
-    document.getElementById('signinStep1').style.display = 'block';
-    document.getElementById('signinStep2').classList.remove('visible');
-    selectedSQCName = null;
-    setTimeout(() => {
-      if (window.google) initGoogle();
-    }, 100);
-  }
-
-  function closeSignIn() {
-    document.getElementById('signinModal').classList.add('hidden');
-  }
-
-  function signOut() {
-    localStorage.removeItem('sqc_user');
-    currentUser = null;
-    document.getElementById('navAuth').innerHTML =
-      `<button class="nav-signin-btn" onclick="openSignIn()">Sign in 🌸</button>`;
-    document.getElementById('heroTitle').innerHTML = `Sisters<br>Quran Club`;
-    document.getElementById('heroTagline').textContent = 'Sisters coming together to talk about the wonderful words of Allah ✨';
-    document.getElementById('personalStats').style.display = 'none';
-    closeDropdown();
-    showPage('home');
-    showToast('👋 Signed out successfully');
-    if (window.google) google.accounts.id.disableAutoSelect();
-  }
-
-  // Close dropdown when clicking outside
-  document.addEventListener('click', e => {
-    const dropdown = document.getElementById('profileDropdown');
-    if (dropdown?.classList.contains('open') &&
-        !e.target.closest('.nav-profile') &&
-        !e.target.closest('.profile-dropdown')) {
-      closeDropdown();
-    }
-  });
-
-  // Show sign-in modal for first-time visitors after 2 seconds
-  setTimeout(() => {
-    if (!localStorage.getItem('sqc_user')) {
-      openSignIn();
-    }
-  }, 2000);
-  if ('serviceWorker' in navigator) {
-    window.addEventListener('load', async () => {
-      // Unregister any old service workers first
-      const registrations = await navigator.serviceWorker.getRegistrations();
-      for (const reg of registrations) {
-        if (!reg.active?.scriptURL?.includes('OneSignalSDKWorker')) {
-          await reg.unregister();
-        }
-      }
-      // Register the combined OneSignal + cache worker
-      navigator.serviceWorker.register('/SistersQuranClub/OneSignalSDKWorker.js', { scope: '/SistersQuranClub/' })
+    // Service worker
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('/SistersQuranClub/OneSignalSDKWorker.js', {scope:'/SistersQuranClub/'})
         .then(reg => {
           reg.addEventListener('updatefound', () => {
-            const newWorker = reg.installing;
-            newWorker.addEventListener('statechange', () => {
-              if (newWorker.state === 'activated') {
-                window.location.reload();
-              }
+            const w = reg.installing;
+            w.addEventListener('statechange', () => {
+              if (w.state==='activated') window.location.reload();
             });
           });
-        })
-        .catch(err => console.log('SW skipped:', err.message));
-    });
-  }
+        }).catch(err => console.log('SW skipped:', err.message));
+    }
+
+    // Reminder banner for first time visitors
+    setTimeout(() => {
+      if (!localStorage.getItem('sqc_notify_prefs') && gardenerName) {
+        const banner = document.createElement('div');
+        banner.style.cssText='position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:#c4748a;color:white;padding:10px 20px;border-radius:30px;font-family:Nunito,sans-serif;font-size:13px;font-weight:700;cursor:pointer;z-index:50;box-shadow:0 4px 20px rgba(196,116,138,0.4);white-space:nowrap';
+        banner.textContent='🔔 Set up garden reminders';
+        banner.onclick=()=>{showPage('notify');banner.remove();};
+        document.body.appendChild(banner);
+        setTimeout(()=>banner.remove(),7000);
+      }
+    },4000);
+  });
 </script>
 </body>
 </html>
