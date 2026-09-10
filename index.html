@@ -78,12 +78,62 @@
     .gardener-box img{width:90px;height:90px;border-radius:50%;object-fit:cover;margin:0 auto 16px;display:block}
     .gardener-box h2{font-family:'Cormorant Garamond',serif;font-size:28px;color:var(--rose-deep);margin-bottom:8px}
     .gardener-box p{font-size:13px;color:var(--text-soft);line-height:1.7;margin-bottom:24px}
+    /* Choice buttons */
+    .choice-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:8px}
+    .choice-btn{padding:16px 10px;border:2px solid var(--rose-pale);border-radius:16px;background:white;cursor:pointer;transition:all 0.2s;font-family:'Nunito',sans-serif}
+    .choice-btn:hover{border-color:var(--rose);background:var(--rose-pale)}
+    .choice-btn .choice-icon{font-size:28px;margin-bottom:6px}
+    .choice-btn .choice-label{font-size:13px;font-weight:700;color:var(--rose-deep);display:block}
+    .choice-btn .choice-sub{font-size:11px;color:var(--text-soft);margin-top:2px;display:block}
+    /* Steps */
+    .modal-step{display:none}
+    .modal-step.active{display:block}
+    .modal-back{background:none;border:none;color:var(--rose-light);font-size:13px;font-weight:600;cursor:pointer;margin-bottom:16px;font-family:'Nunito',sans-serif;padding:0;display:flex;align-items:center;gap:4px}
     .gardener-input{width:100%;padding:13px 16px;border:1.5px solid var(--rose-pale);border-radius:12px;font-family:'Nunito',sans-serif;font-size:15px;color:var(--text);background:var(--cream);outline:none;margin-bottom:12px;text-align:center}
     .gardener-input:focus{border-color:var(--rose-light)}
     .gardener-btn{width:100%;padding:13px;background:var(--rose);color:white;border:none;border-radius:12px;font-family:'Nunito',sans-serif;font-size:15px;font-weight:700;cursor:pointer;transition:background 0.2s}
     .gardener-btn:hover{background:var(--rose-deep)}
     .gardener-hint{font-size:11px;color:#ccc;margin-top:10px}
     .gardener-error{font-size:12px;color:#e57373;margin-bottom:8px;display:none}
+    /* Continue list */
+    .continue-list{max-height:220px;overflow-y:auto;border:1px solid var(--rose-pale);border-radius:12px;margin-bottom:14px}
+    .continue-item{display:flex;align-items:center;gap:10px;padding:11px 14px;border-bottom:0.5px solid #fdf0f4;cursor:pointer;transition:background 0.15s;text-align:left}
+    .continue-item:last-child{border-bottom:none}
+    .continue-item:hover{background:var(--rose-pale)}
+    .continue-avatar{width:32px;height:32px;border-radius:50%;background:var(--rose);display:flex;align-items:center;justify-content:center;color:white;font-size:14px;font-weight:700;flex-shrink:0}
+    .continue-name{font-size:14px;font-weight:700;color:var(--rose-deep)}
+    .continue-sub{font-size:11px;color:var(--text-soft)}
+
+    /* ── PROFILE SETTINGS PANEL ── */
+    .settings-overlay{position:fixed;inset:0;background:rgba(60,20,30,0.3);z-index:150;display:none}
+    .settings-overlay.open{display:block}
+    .settings-panel{position:fixed;top:0;right:0;bottom:0;width:min(360px,100vw);background:white;z-index:160;box-shadow:-8px 0 40px rgba(196,116,138,0.15);transform:translateX(100%);transition:transform 0.35s cubic-bezier(0.34,1.1,0.64,1);overflow-y:auto;padding-bottom:40px}
+    .settings-panel.open{transform:translateX(0)}
+    .settings-header{padding:20px 20px 16px;border-bottom:1px solid var(--rose-pale);display:flex;align-items:center;gap:12px}
+    .settings-avatar{width:48px;height:48px;border-radius:50%;background:var(--rose);display:flex;align-items:center;justify-content:center;color:white;font-size:22px;font-weight:700;flex-shrink:0}
+    .settings-name{font-family:'Cormorant Garamond',serif;font-size:22px;color:var(--rose-deep)}
+    .settings-sub{font-size:12px;color:var(--text-soft);margin-top:2px}
+    .settings-close{margin-left:auto;background:none;border:none;font-size:22px;color:var(--rose-light);cursor:pointer;padding:4px}
+    .settings-section{padding:16px 20px 4px;font-size:10px;font-weight:700;letter-spacing:1.5px;color:var(--rose-light);text-transform:uppercase}
+    .settings-item{display:flex;align-items:center;gap:12px;padding:12px 20px;transition:background 0.15s;cursor:pointer}
+    .settings-item:hover{background:var(--rose-pale)}
+    .settings-item-icon{font-size:18px;width:28px;text-align:center}
+    .settings-item-label{font-size:14px;font-weight:600;color:var(--text);flex:1}
+    .settings-item-sub{font-size:11px;color:var(--text-soft);margin-top:1px}
+    .settings-divider{height:1px;background:var(--rose-pale);margin:8px 0}
+    /* Notify inside settings */
+    .settings-notify{padding:0 20px 20px}
+    .sn-card{background:var(--cream);border-radius:12px;padding:14px;margin-bottom:10px}
+    .sn-title{font-size:13px;font-weight:700;color:var(--rose-deep);margin-bottom:10px}
+    .sn-toggle-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
+    .sn-toggle-label{font-size:13px;color:var(--text-soft)}
+    .sn-time{width:100%;padding:9px 12px;border:1.5px solid var(--rose-pale);border-radius:10px;font-family:'Nunito',sans-serif;font-size:13px;background:white;outline:none;margin-bottom:10px}
+    .sn-chips{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px}
+    .sn-chip{padding:5px 12px;border-radius:20px;border:1.5px solid var(--rose-pale);background:white;font-size:11px;font-weight:600;color:var(--text-soft);cursor:pointer;transition:all 0.15s}
+    .sn-chip.active{border-color:var(--rose);background:var(--rose-pale);color:var(--rose-deep)}
+    .sn-save{width:100%;padding:11px;background:var(--rose);color:white;border:none;border-radius:10px;font-family:'Nunito',sans-serif;font-size:13px;font-weight:700;cursor:pointer}
+    .change-name-btn{width:100%;padding:11px;background:white;color:var(--rose);border:1.5px solid var(--rose-pale);border-radius:10px;font-family:'Nunito',sans-serif;font-size:13px;font-weight:700;cursor:pointer;margin-bottom:8px}
+    .signout-red{width:100%;padding:11px;background:white;color:#e57373;border:1.5px solid #ffcdd2;border-radius:10px;font-family:'Nunito',sans-serif;font-size:13px;font-weight:700;cursor:pointer}
 
     /* ── HOME ── */
     .hero{min-height:calc(100vh - 70px);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:40px 24px;text-align:center}
@@ -231,7 +281,7 @@
     .dua-wrap{width:100%;height:calc(100vh - 70px)}
     .dua-wrap iframe{width:100%;height:100%;border:none}
 
-    /* ── NOTIFY & PROFILE ── */
+    /* ── NOTIFY ── */
     .notify-wrap{max-width:600px;margin:0 auto;padding:40px 24px 60px}
     .notify-status{display:flex;align-items:center;gap:10px;background:white;border:1px solid var(--rose-pale);border-radius:14px;padding:14px 18px;margin-bottom:24px}
     .notify-status-dot{width:10px;height:10px;border-radius:50%;background:#ccc;flex-shrink:0}
@@ -290,18 +340,11 @@
   <div class="gardener-box">
     <img src="logo.png" alt="SQC">
     <h2>As Salamu Alaikum 🌸</h2>
-    <p>Welcome to the Sisters Quran Club! Choose a garden to continue, or start a new one.</p>
-    
-    <!-- Previous Users List -->
-    <div id="savedGardenersContainer" style="display:none; margin: 20px 0;">
-      <p style="font-size: 12px; font-weight: 700; color: var(--rose-deep); margin-bottom: 10px;">CONTINUE A GARDEN:</p>
-      <div id="savedGardenersList" style="display:flex; flex-wrap:wrap; gap:8px; justify-content:center;"></div>
-      <div style="margin-top: 15px; font-size: 11px; color: #ccc;">— OR —</div>
-    </div>
-
+    <p>Welcome to the Sisters Quran Club! Choose your <strong>Gardener Name</strong> — this is how you'll appear in the community garden. You can use your real name or a flower name!</p>
     <div class="gardener-error" id="gardenerError">Please enter a name to continue</div>
-    <input type="text" class="gardener-input" id="gardenerInput" placeholder="Start a new garden: e.g. Taz 🌸" maxlength="30">
-    <button class="gardener-btn" onclick="startNewGarden()">🌱 Enter My Garden</button>
+    <input type="text" class="gardener-input" id="gardenerInput" placeholder="e.g. Taz, or Jasmine 🌸" maxlength="30">
+    <button class="gardener-btn" onclick="setGardenerName()">🌱 Enter My Garden</button>
+    <div class="gardener-hint">Your name is saved on this device only</div>
   </div>
 </div>
 
@@ -316,11 +359,10 @@
     <button class="nav-link" onclick="showPage('resources')">Resources</button>
     <button class="nav-link" onclick="showPage('bloom')">🌸 Bloom</button>
     <button class="nav-link" onclick="showPage('dua')">🤲 Duas</button>
+    <button class="nav-link" onclick="showPage('notify')">🔔 Reminders</button>
     <button class="nav-link cta" onclick="showPage('tracker')">🌿 My Garden</button>
-    
-    <!-- Profile Button (Replaces Notifications Tab) -->
     <div id="navGardener" style="display:none">
-      <div class="nav-gardener" onclick="showPage('profile')">
+      <div class="nav-gardener" onclick="showPage('tracker')">
         <div class="nav-gardener-avatar" id="navAvatar">T</div>
         <span class="nav-gardener-name" id="navName">Gardener</span>
       </div>
@@ -451,178 +493,547 @@
         <div class="resource-info"><div class="resource-title">Quran (Digital)</div><div class="resource-sub">Digital Quran resources and references</div></div>
         <div class="resource-arrow">→</div>
       </a>
+      <a class="resource-card" href="https://drive.google.com/drive/folders/1CyB6pOWe8z3KFrHKs43MTlAhEhyv9NVQ" target="_blank">
+        <div class="resource-icon pink">🎧</div>
+        <div class="resource-info"><div class="resource-title">Podcasts</div><div class="resource-sub">Islamic podcasts and audio content</div></div>
+        <div class="resource-arrow">→</div>
+      </a>
+    </div>
+    <div class="resource-category">
+      <div class="category-title">🤲 Duas & Support</div>
+      <a class="resource-card" href="https://docs.google.com/document/d/1QFWAlRZqpc_6DVTvVJbl6F3zhtMr9sVX59WOUoESt2w/edit" target="_blank">
+        <div class="resource-icon green">🌿</div>
+        <div class="resource-info"><div class="resource-title">Dua Collection</div><div class="resource-sub">A curated collection of duas for all occasions</div></div>
+        <div class="resource-arrow">→</div>
+      </a>
+      <a class="resource-card" href="https://docs.google.com/forms/d/e/1FAIpQLSfiuL9c9qgydAtQcCbnzCdXCj-GcMAI6sMJozXkkkUTCqjYBw/viewform" target="_blank">
+        <div class="resource-icon blue">💬</div>
+        <div class="resource-info"><div class="resource-title">Help Center / Queries</div><div class="resource-sub">Have a question? Submit it here</div></div>
+        <div class="resource-arrow">→</div>
+      </a>
     </div>
   </div>
+  <footer>
+    <div class="footer-logo">Sisters Quran Club 🌸</div>
+    <div class="footer-verse">"This is the Book about which there is no doubt" — Al-Quran 2:2</div>
+    <div class="footer-links">
+      <a class="footer-link" onclick="showPage('home')">Home</a>
+      <a class="footer-link" onclick="showPage('resources')">Resources</a>
+      <a class="footer-link" onclick="showPage('tracker')">My Garden</a>
+      <a class="footer-link" href="mailto:sqc.quranclub@gmail.com">Contact Us</a>
+    </div>
+    <div class="footer-copy">© 2025 Sisters Quran Club · sqc.quranclub@gmail.com</div>
+  </footer>
 </div>
 
-<!-- BLOOM PAGE (Placeholder structure) -->
+<!-- BLOOM PAGE -->
 <div class="page" id="page-bloom">
   <div class="bloom-wrap">
     <div class="bloom-hero">
-      <div class="bloom-day">Daily Bloom</div>
-      <h2 class="bloom-title">Grow Your Garden</h2>
+      <div class="bloom-day" id="bloomDayName">MONDAY</div>
+      <h2 class="bloom-title">Today's Collective Bloom 🌸</h2>
+      <p class="bloom-sub">Each sister who completes her adhkar fills one petal. Swipe between Morning and Evening!</p>
+      <div class="bloom-threshold">🌸 Blooms when 5 sisters complete</div>
     </div>
-    <!-- Add your bloom interactive elements here -->
+
+    <!-- Tabs -->
+    <div class="bloom-tabs">
+      <button class="bloom-tab active" onclick="switchBloomTab(0)">🌅 Morning Adhkar</button>
+      <button class="bloom-tab" onclick="switchBloomTab(1)">🌙 Evening Adhkar</button>
+    </div>
+
+    <!-- Swipeable flowers -->
+    <div class="bloom-flowers" id="bloomFlowers">
+      <div class="bloom-flower-slide" id="bloomSlide">
+        <!-- Morning flower -->
+        <div class="bloom-flower-panel">
+          <div class="flower-stage" id="flowerStageMorning">
+            <svg id="flowerSVGMorning" viewBox="-150 -150 300 300" width="300" height="300" xmlns="http://www.w3.org/2000/svg">
+              <g id="petalsGroupMorning"></g>
+              <circle cx="0" cy="0" r="26" fill="#fce8ee" stroke="#e8a0b0" stroke-width="2"/>
+              <circle cx="0" cy="0" r="16" fill="#f4b8c8" opacity="0.6"/>
+              <circle cx="0" cy="0" r="8" fill="#c4748a" opacity="0.8"/>
+            </svg>
+          </div>
+          <div class="bloom-progress-wrap">
+            <div class="bloom-progress-track"><div class="bloom-progress-fill" id="morningProgressFill" style="width:0%"></div></div>
+            <div class="bloom-progress-label" id="morningProgressLabel">Loading...</div>
+          </div>
+          <div class="full-bloom-banner" id="morningBloomBanner">
+            <div style="font-size:32px">🌅✨🌸</div>
+            <h3>Morning Bloom!</h3>
+            <p>SubhanAllah — 5 sisters have completed their Morning Adhkar! May Allah accept it from all of you. 🤲</p>
+          </div>
+          <div class="bloom-roster">
+            <div class="bloom-roster-header"><span>Morning Sisters 🌅</span><span class="bloom-count" id="morningRosterCount">0/0</span></div>
+            <div id="morningRoster"><div style="padding:16px;text-align:center;color:#ccc;font-size:13px">🌱 Loading...</div></div>
+          </div>
+        </div>
+
+        <!-- Evening flower -->
+        <div class="bloom-flower-panel">
+          <div class="flower-stage" id="flowerStageEvening">
+            <svg id="flowerSVGEvening" viewBox="-150 -150 300 300" width="300" height="300" xmlns="http://www.w3.org/2000/svg">
+              <g id="petalsGroupEvening"></g>
+              <circle cx="0" cy="0" r="26" fill="#f0e8f8" stroke="#c4a0e8" stroke-width="2"/>
+              <circle cx="0" cy="0" r="16" fill="#d8b8f0" opacity="0.6"/>
+              <circle cx="0" cy="0" r="8" fill="#9060c0" opacity="0.8"/>
+            </svg>
+          </div>
+          <div class="bloom-progress-wrap">
+            <div class="bloom-progress-track"><div class="bloom-progress-fill" id="eveningProgressFill" style="width:0%;background:linear-gradient(90deg,#c4a0e8,#9060c0)"></div></div>
+            <div class="bloom-progress-label" id="eveningProgressLabel">Loading...</div>
+          </div>
+          <div class="full-bloom-banner" id="eveningBloomBanner" style="background:linear-gradient(135deg,#f0e8f8,#f8f0ff);border-color:#c4a0e8">
+            <div style="font-size:32px">🌙✨🪷</div>
+            <h3 style="color:#7040a0">Evening Bloom!</h3>
+            <p>MashaAllah — 5 sisters have completed their Evening Adhkar! Barakallahu feekum. 🤲</p>
+          </div>
+          <div class="bloom-roster">
+            <div class="bloom-roster-header" style="background:linear-gradient(135deg,#f0e8f8,#f8f0ff)"><span>Evening Sisters 🌙</span><span class="bloom-count" style="background:#f0e8f8;color:#7040a0" id="eveningRosterCount">0/0</span></div>
+            <div id="eveningRoster"><div style="padding:16px;text-align:center;color:#ccc;font-size:13px">🌱 Loading...</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <button class="bloom-refresh-btn" style="margin-top:16px" onclick="loadBloom()">↺ Refresh</button>
   </div>
 </div>
 
-<!-- TRACKER PAGE (Placeholder structure) -->
-<div class="page" id="page-tracker">
-  <div class="tracker-wrap">
-    <!-- Add your tracker iframe or content here -->
-  </div>
-</div>
-
-<!-- DUA PAGE (Placeholder structure) -->
+<!-- DUA PAGE -->
 <div class="page" id="page-dua">
   <div class="dua-wrap">
-    <!-- Add your dua iframe or content here -->
+    <iframe src="https://sistersquranclub.github.io/SistersQuranClub/dua-blueprint.html" title="The Dua Blueprint" allowfullscreen></iframe>
   </div>
 </div>
 
-<!-- PROFILE & SETTINGS PAGE -->
-<div class="page" id="page-profile">
+<!-- TRACKER PAGE -->
+<div class="page" id="page-tracker">
+  <div class="tracker-wrap">
+    <iframe src="https://tazcodez.github.io/sqcgardens/" title="SQC Ibadah Garden Tracker" id="trackerIframe"></iframe>
+  </div>
+</div>
+
+<!-- NOTIFY PAGE -->
+<div class="page" id="page-notify">
   <div class="notify-wrap">
-    <div class="resources-hero">
-      <div class="section-label">Your Garden Profile</div>
-      <h2 class="section-title">Settings & Reminders</h2>
+    <div style="text-align:center;margin-bottom:32px">
+      <div class="section-label">Stay Connected</div>
+      <h2 class="section-title">Garden Reminders 🔔</h2>
+      <p style="font-size:14px;color:var(--text-soft);margin-top:10px;line-height:1.7">Set up personalised reminders to tend your garden 🌿</p>
     </div>
-
-    <!-- User Profile Header -->
-    <div class="notify-card" style="text-align: center; display: flex; flex-direction: column; align-items: center;">
-      <div class="nav-gardener-avatar" id="profileAvatar" style="width: 64px; height: 64px; font-size: 24px; margin-bottom: 12px;">T</div>
-      <h3 class="notify-card-title" id="profileName">Gardener</h3>
-      <p style="font-size: 12px; color: var(--text-soft); margin-bottom: 16px;">Currently tending to this garden</p>
-      <button class="btn-secondary" onclick="logoutGardener()" style="padding: 8px 20px;">Switch Gardener</button>
-    </div>
-
-    <!-- Notification Settings -->
     <div class="notify-status">
-      <div class="notify-status-dot on"></div>
-      <div style="flex:1">
-        <div style="font-size:14px;font-weight:700;color:var(--text)">Push Notifications Enabled</div>
-        <div style="font-size:12px;color:var(--text-soft)">You will receive garden reminders</div>
-      </div>
+      <div class="notify-status-dot" id="notifyDot"></div>
+      <span style="font-size:13px;font-weight:600;color:var(--text-soft)" id="notifyStatusText">Notifications not enabled yet</span>
     </div>
-
     <div class="notify-card">
-      <h3 class="notify-card-title">Daily Adhkar</h3>
-      <p class="notify-card-sub">Receive gentle reminders for your morning and evening remembrances.</p>
-      
-      <div class="toggle-row">
-        <span class="toggle-label">Morning Adhkar</span>
-        <label class="toggle">
-          <input type="checkbox" checked>
-          <span class="slider"></span>
-        </label>
-      </div>
-      <input type="time" class="time-input" value="06:00">
-
-      <div class="toggle-row" style="margin-top: 20px;">
-        <span class="toggle-label">Evening Adhkar</span>
-        <label class="toggle">
-          <input type="checkbox" checked>
-          <span class="slider"></span>
-        </label>
-      </div>
-      <input type="time" class="time-input" value="18:00">
-      
-      <button class="save-notify-btn">Save Times</button>
+      <div class="notify-card-title">📲 Enable Notifications</div>
+      <div class="notify-card-sub">Click below to allow SQC to send you reminders.</div>
+      <div class='onesignal-customlink-container'></div>
     </div>
+    <div class="notify-card">
+      <div class="notify-card-title">🗓️ Reminder Schedule</div>
+      <div class="notify-card-sub">Choose when you'd like to receive garden reminders.</div>
+      <div class="toggle-row"><span class="toggle-label">Daily reminder</span><label class="toggle"><input type="checkbox" id="dailyToggle" onchange="updatePreview()"><span class="slider"></span></label></div>
+      <div class="toggle-row"><span class="toggle-label">Weekly reminder (Fridays)</span><label class="toggle"><input type="checkbox" id="weeklyToggle" onchange="updatePreview()"><span class="slider"></span></label></div>
+      <label style="font-size:12px;font-weight:700;color:var(--text-soft);display:block;margin-bottom:8px">Preferred time</label>
+      <input type="time" class="time-input" id="notifyTime" value="08:00" onchange="updatePreview()">
+    </div>
+    <div class="notify-card">
+      <div class="notify-card-title">✨ What to include</div>
+      <div class="notify-card-sub">Customise what your reminders contain.</div>
+      <div class="content-chips">
+        <div class="content-chip active" onclick="toggleChip(this)" data-type="garden">🌿 Garden update</div>
+        <div class="content-chip active" onclick="toggleChip(this)" data-type="hadith">📖 Hadith</div>
+        <div class="content-chip active" onclick="toggleChip(this)" data-type="verse">🤲 Quranic verse</div>
+        <div class="content-chip active" onclick="toggleChip(this)" data-type="dua">💫 Daily dua</div>
+      </div>
+    </div>
+    <div class="notify-card">
+      <div class="notify-card-title">👁️ Preview</div>
+      <div class="preview-box">
+        <div class="preview-label">Notification preview</div>
+        <div class="preview-notif">
+          <div style="font-size:24px;margin-top:2px">🌸</div>
+          <div>
+            <div class="preview-title" id="previewTitle">Sisters Quran Club 🌿</div>
+            <div class="preview-body" id="previewBody">Assalamu Alaikum! Time to tend your garden 🌱</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <button class="save-notify-btn" onclick="saveNotifyPrefs()">💾 Save My Preferences</button>
   </div>
+  <footer>
+    <div class="footer-logo">Sisters Quran Club 🌸</div>
+    <div class="footer-links">
+      <a class="footer-link" onclick="showPage('home')">Home</a>
+      <a class="footer-link" onclick="showPage('resources')">Resources</a>
+      <a class="footer-link" onclick="showPage('tracker')">My Garden</a>
+      <a class="footer-link" href="mailto:sqc.quranclub@gmail.com">Contact</a>
+    </div>
+    <div class="footer-copy">© 2025 Sisters Quran Club · sqc.quranclub@gmail.com</div>
+  </footer>
 </div>
+
+<div class="toast" id="toast"></div>
 
 <script>
-  let currentGardener = localStorage.getItem('currentGardener');
-  let savedGardeners = JSON.parse(localStorage.getItem('savedGardeners') || '[]');
+  // ── GLOBAL ──
+  const API_URL  = 'https://script.google.com/macros/s/AKfycbwNoIeJkygzl5DWAWKg1qKy2KuMynzPgoMW9SI9MYYFQkwyei-U0HLqRVxW4fdfTQX1/exec';
+  const BLOOM_THRESHOLD = 5;
+  let gardenerName = localStorage.getItem('sqc_gardener') || '';
+  let currentBloomTab = 0;
 
-  document.addEventListener("DOMContentLoaded", () => {
-    if (!currentGardener) {
-      openGardenerModal();
-    } else {
-      document.getElementById('gardenerModal').classList.add('hidden');
-      updateGardenerUI(currentGardener);
-    }
+  // ── TOAST ──
+  function showToast(msg) {
+    const t = document.getElementById('toast');
+    t.textContent = msg; t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 3500);
+  }
+
+  // ── GARDENER NAME ──
+  function setGardenerName() {
+    const val = document.getElementById('gardenerInput').value.trim();
+    const err = document.getElementById('gardenerError');
+    if (!val) { err.style.display='block'; return; }
+    err.style.display = 'none';
+    const btn = document.querySelector('.gardener-btn');
+    btn.textContent = '🌱 Setting up your garden...';
+    btn.disabled = true;
+    // Register with Google Sheet
+    fetch(API_URL + '?action=register&name=' + encodeURIComponent(val))
+      .then(r => r.json())
+      .then(data => {
+        gardenerName = val;
+        localStorage.setItem('sqc_gardener', val);
+        document.getElementById('gardenerModal').classList.add('hidden');
+        updateNavGardener(val);
+        showToast(data.existing
+          ? '🌸 Welcome back, ' + val + '!'
+          : '🌱 Garden created! Welcome, ' + val + '!');
+        personaliseHome(val);
+        // Load tracker with name
+        loadTrackerWithName(val);
+      })
+      .catch(() => {
+        // Save locally even if offline
+        gardenerName = val;
+        localStorage.setItem('sqc_gardener', val);
+        document.getElementById('gardenerModal').classList.add('hidden');
+        updateNavGardener(val);
+        showToast('🌸 Welcome, ' + val + '! (Offline — will sync soon)');
+        personaliseHome(val);
+      });
+  }
+
+  document.getElementById('gardenerInput').addEventListener('keydown', e => {
+    if (e.key === 'Enter') setGardenerName();
   });
 
-  function openGardenerModal() {
-    document.getElementById('gardenerModal').classList.remove('hidden');
-    const container = document.getElementById('savedGardenersContainer');
-    const list = document.getElementById('savedGardenersList');
-    
-    // Check if there are saved names to continue
-    if (savedGardeners.length > 0) {
-      container.style.display = 'block';
-      list.innerHTML = '';
-      savedGardeners.forEach(name => {
-        const btn = document.createElement('button');
-        btn.className = 'content-chip'; 
-        btn.innerText = name;
-        btn.onclick = () => setGardenerName(name);
-        list.appendChild(btn);
-      });
-    } else {
-      container.style.display = 'none';
+  function updateNavGardener(name) {
+    document.getElementById('navAvatar').textContent = name[0].toUpperCase();
+    document.getElementById('navName').textContent = name;
+    document.getElementById('navGardener').style.display = 'block';
+  }
+
+  function loadTrackerWithName(name) {
+    const iframe = document.getElementById('trackerIframe');
+    const base   = 'https://tazcodez.github.io/sqcgardens/';
+    iframe.src   = base + '?member=' + encodeURIComponent(name);
+  }
+
+  // ── PERSONALISE HOME ──
+  async function personaliseHome(name) {
+    const hour = new Date().getHours();
+    const salam = hour < 12 ? 'Sabah Al Khair' : hour < 17 ? 'As Salamu Alaikum' : 'Masa Al Khair';
+    document.getElementById('heroTitle').innerHTML = `${salam},<br>${name}! 🌸`;
+    document.getElementById('heroTagline').textContent = 'Welcome back to your Sisters Quran Club 🌿';
+    try {
+      const res   = await fetch(API_URL + '?name=' + encodeURIComponent(name));
+      const json  = await res.json();
+      const entries = json.entries || [];
+      const mCount = entries.filter(e => e.ibadahType === 'Morning Adhkar').length;
+      const eCount = entries.filter(e => e.ibadahType === 'Evening Adhkar').length;
+      document.getElementById('hpMorning').textContent = mCount;
+      document.getElementById('hpEvening').textContent = eCount;
+      document.getElementById('heroPersonal').classList.add('visible');
+    } catch(err) {
+      document.getElementById('heroPersonal').classList.add('visible');
     }
   }
 
-  function startNewGarden() {
-    const input = document.getElementById('gardenerInput');
-    const name = input.value.trim();
-    if (!name) {
-      document.getElementById('gardenerError').style.display = 'block';
-      return;
-    }
-    // Add to saved gardeners array if not already present
-    if (!savedGardeners.includes(name)) {
-      savedGardeners.push(name);
-      localStorage.setItem('savedGardeners', JSON.stringify(savedGardeners));
-    }
-    setGardenerName(name);
-  }
-
-  function setGardenerName(name) {
-    currentGardener = name;
-    localStorage.setItem('currentGardener', name);
-    document.getElementById('gardenerModal').classList.add('hidden');
-    document.getElementById('gardenerError').style.display = 'none';
-    updateGardenerUI(name);
-    showPage('home');
-  }
-
-  function updateGardenerUI(name) {
-    document.getElementById('navGardener').style.display = 'flex';
-    document.getElementById('navName').innerText = name;
-    document.getElementById('navAvatar').innerText = name.charAt(0).toUpperCase();
-    
-    // Update Profile Page details
-    const profileName = document.getElementById('profileName');
-    if (profileName) {
-      profileName.innerText = name;
-      document.getElementById('profileAvatar').innerText = name.charAt(0).toUpperCase();
-    }
-    
-    document.getElementById('heroPersonal').classList.add('visible');
-  }
-
-  function logoutGardener() {
-    localStorage.removeItem('currentGardener');
-    currentGardener = null;
-    document.getElementById('navGardener').style.display = 'none';
-    document.getElementById('heroPersonal').classList.remove('visible');
-    openGardenerModal();
-  }
-
-  function showPage(pageId) {
+  // ── PAGE NAVIGATION ──
+  function showPage(name) {
     document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-    document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
-    
-    const targetPage = document.getElementById('page-' + pageId);
-    if (targetPage) targetPage.classList.add('active');
-    
-    const activeLink = document.querySelector(`.nav-link[onclick="showPage('${pageId}')"]`);
-    if (activeLink) activeLink.classList.add('active');
+    document.querySelectorAll('.nav-link').forEach(b => b.classList.remove('active'));
+    document.getElementById('page-' + name).classList.add('active');
+    document.querySelectorAll('.nav-link').forEach(b => {
+      if ((name==='home'&&b.textContent==='Home')||
+          (name==='resources'&&b.textContent==='Resources')||
+          (name==='bloom'&&b.textContent.includes('Bloom'))||
+          (name==='dua'&&b.textContent.includes('Duas'))||
+          (name==='notify'&&b.textContent.includes('Reminders'))||
+          (name==='tracker'&&b.textContent.includes('Garden')))
+        b.classList.add('active');
+    });
+    if (name==='bloom')  loadBloom();
+    if (name==='notify') loadNotifyPrefs();
+    if (name==='tracker' && gardenerName) loadTrackerWithName(gardenerName);
+    window.scrollTo(0,0);
   }
+
+  // ── BLOOM ──
+  const FLOWERS = [
+    {name:'Rose',       colors:['#c03060','#d04070','#b02050','#e06080','#a01840'],centre:'#fff0f4'},
+    {name:'Orchid',     colors:['#c4748a','#d4889e','#b4607a','#e8a0b0','#9a4a62'],centre:'#fce8ee'},
+    {name:'Hibiscus',   colors:['#e05070','#f07090','#c04060','#f090a0','#d06080'],centre:'#fff0f4'},
+    {name:'Frangipani', colors:['#f4d0a0','#f8e0b8','#e8c090','#fce8c8','#ddb878'],centre:'#fffaf0'},
+    {name:'Cherry Blossom',colors:['#f4b8c8','#fcd0dc','#e8a0b4','#fce0e8','#d890a8'],centre:'#fff5f8'},
+    {name:'Jasmine',    colors:['#f8f0d8','#fff8e8','#f0e8c8','#fff0d8','#e8d8b0'],centre:'#fffff8'},
+    {name:'Petunia',    colors:['#9060c0','#a870d0','#7848a8','#c090e0','#6038a0'],centre:'#f8f0ff'},
+  ];
+  const DAY_NAMES  = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+
+  // Evening uses a shifted palette
+  const EVENING_COLORS = ['#7040a0','#9060c0','#5828a0','#b080d0','#6030a0'];
+
+  function getTodayFlower() {
+    const map = [0,1,2,3,4,5,6];
+    return FLOWERS[map[new Date().getDay()]];
+  }
+
+  function renderFlower(svgId, groupId, stageId, members, completed, colors, centre, isEvening) {
+    const group  = document.getElementById(groupId);
+    const stage  = document.getElementById(stageId);
+    group.innerHTML = '';
+    const n = members.length;
+    if (n === 0) return;
+    const ry = 75, rx = 30;
+
+    members.forEach((name, i) => {
+      const color = isEvening ? EVENING_COLORS[i % EVENING_COLORS.length] : colors[i % colors.length];
+      const isDone = completed[name] === true;
+      const angle  = (i/n)*2*Math.PI - Math.PI/2;
+      const cx     = Math.cos(angle)*(ry*0.85);
+      const cy     = Math.sin(angle)*(ry*0.85);
+      const rot    = (angle*180/Math.PI)+90;
+      const petal  = document.createElementNS('http://www.w3.org/2000/svg','ellipse');
+      petal.setAttribute('cx', cx.toFixed(1));
+      petal.setAttribute('cy', cy.toFixed(1));
+      petal.setAttribute('rx', rx);
+      petal.setAttribute('ry', ry);
+      petal.setAttribute('transform', `rotate(${rot.toFixed(1)},${cx.toFixed(1)},${cy.toFixed(1)})`);
+      petal.classList.add('petal-path');
+      if (isDone) {
+        petal.setAttribute('fill', color);
+        petal.setAttribute('opacity', '0.9');
+        petal.setAttribute('stroke', 'white');
+        petal.setAttribute('stroke-width', '1.5');
+        group.appendChild(petal);
+        // Highlight
+        const hl = document.createElementNS('http://www.w3.org/2000/svg','ellipse');
+        hl.setAttribute('cx', (cx+Math.cos(angle)*5).toFixed(1));
+        hl.setAttribute('cy', (cy+Math.sin(angle)*5).toFixed(1));
+        hl.setAttribute('rx', (rx*0.3).toFixed(1));
+        hl.setAttribute('ry', (ry*0.18).toFixed(1));
+        hl.setAttribute('transform', `rotate(${rot.toFixed(1)},${cx.toFixed(1)},${cy.toFixed(1)})`);
+        hl.setAttribute('fill', 'rgba(255,255,255,0.35)');
+        group.appendChild(hl);
+      } else {
+        petal.setAttribute('fill', 'none');
+        petal.setAttribute('stroke', color);
+        petal.setAttribute('stroke-width', '1.5');
+        petal.setAttribute('opacity', '0.25');
+        petal.setAttribute('stroke-dasharray', '4,3');
+        group.appendChild(petal);
+      }
+    });
+
+    // Full bloom?
+    const doneCount = Object.values(completed).filter(Boolean).length;
+    const bloomed   = doneCount >= BLOOM_THRESHOLD;
+    if (bloomed) {
+      stage.classList.add('full-bloom');
+      spawnParticles(stage, colors);
+    } else {
+      stage.classList.remove('full-bloom');
+      stage.querySelectorAll('.particle').forEach(p=>p.remove());
+    }
+    return bloomed;
+  }
+
+  function spawnParticles(stage, colors) {
+    stage.querySelectorAll('.particle').forEach(p=>p.remove());
+    for (let i=0;i<16;i++) {
+      const p = document.createElement('div'); p.className='particle';
+      p.style.cssText=`left:${30+Math.random()*40}%;top:${20+Math.random()*30}%;background:${colors[Math.floor(Math.random()*colors.length)]};--dx:${(Math.random()-0.5)*60}px;animation-delay:${Math.random()*2}s;animation-duration:${2+Math.random()*2}s;opacity:0`;
+      stage.appendChild(p);
+    }
+  }
+
+  function renderRoster(rosterId, countId, progressId, labelId, bannerId, members, completed, colors, isEvening, label) {
+    const doneCount = Object.values(completed).filter(Boolean).length;
+    const total     = members.length;
+    document.getElementById(countId).textContent = `${doneCount}/${total}`;
+    document.getElementById(progressId).style.width = total ? `${(doneCount/total)*100}%` : '0%';
+    document.getElementById(labelId).textContent = total
+      ? `${doneCount} of ${total} sisters have completed ${label} today`
+      : 'No members found';
+
+    const bloomed = doneCount >= BLOOM_THRESHOLD;
+    document.getElementById(bannerId).classList.toggle('visible', bloomed);
+
+    document.getElementById(rosterId).innerHTML = members.map((name,i) => {
+      const done  = completed[name];
+      const color = isEvening ? EVENING_COLORS[i%EVENING_COLORS.length] : colors[i%colors.length];
+      return `<div class="bloom-sister">
+        <div class="petal-dot" style="${done?`background:${color}20;box-shadow:0 0 0 2px ${color}`:'background:#f5f5f5;opacity:0.5'}">${done?'🌸':'○'}</div>
+        <span class="sister-name">${name}</span>
+        <span class="sister-status ${done?'done':'pending'}">${done?'Done ✓':'Pending'}</span>
+      </div>`;
+    }).join('');
+  }
+
+  async function loadBloom() {
+    const flower  = getTodayFlower();
+    const dayName = DAY_NAMES[new Date().getDay()];
+    document.getElementById('bloomDayName').textContent = dayName.toUpperCase() + ' — ' + flower.name;
+
+    // Show loading
+    ['morningRoster','eveningRoster'].forEach(id => {
+      document.getElementById(id).innerHTML = '<div style="padding:16px;text-align:center;color:#ccc;font-size:13px">🌱 Loading...</div>';
+    });
+
+    try {
+      const res  = await fetch(API_URL + '?action=todayAdhkar');
+      if (!res.ok) throw new Error('HTTP ' + res.status);
+      const data = await res.json();
+      if (data.error) throw new Error(data.error);
+      const { members, morning, evening } = data;
+
+      renderFlower('flowerSVGMorning','petalsGroupMorning','flowerStageMorning', members, morning, flower.colors, flower.centre, false);
+      renderFlower('flowerSVGEvening','petalsGroupEvening','flowerStageEvening', members, evening, EVENING_COLORS, '#f0e8f8', true);
+      renderRoster('morningRoster','morningRosterCount','morningProgressFill','morningProgressLabel','morningBloomBanner', members, morning, flower.colors, false, 'Morning Adhkar');
+      renderRoster('eveningRoster','eveningRosterCount','eveningProgressFill','eveningProgressLabel','eveningBloomBanner', members, evening, EVENING_COLORS, true, 'Evening Adhkar');
+    } catch(err) {
+      ['morningRoster','eveningRoster'].forEach(id => {
+        document.getElementById(id).innerHTML = `<div style="padding:16px;text-align:center;color:#e57373;font-size:12px">⚠️ Could not load. <small>${err.message}</small><br><button onclick="loadBloom()" style="margin-top:8px;padding:6px 14px;background:#c4748a;color:white;border:none;border-radius:20px;cursor:pointer;font-size:11px">Try again</button></div>`;
+      });
+    }
+  }
+
+  // Bloom tab switching (swipe effect)
+  function switchBloomTab(idx) {
+    currentBloomTab = idx;
+    document.getElementById('bloomSlide').style.transform = `translateX(-${idx*100}%)`;
+    document.querySelectorAll('.bloom-tab').forEach((t,i) => t.classList.toggle('active', i===idx));
+  }
+
+  // Touch swipe for bloom
+  let touchStartX = 0;
+  document.getElementById('bloomFlowers')?.addEventListener('touchstart', e => { touchStartX = e.touches[0].clientX; });
+  document.getElementById('bloomFlowers')?.addEventListener('touchend', e => {
+    const diff = touchStartX - e.changedTouches[0].clientX;
+    if (Math.abs(diff) > 50) switchBloomTab(diff > 0 ? 1 : 0);
+  });
+
+  // ── RECORDINGS ──
+  const MEDIA = [
+    {title:'The Story of Adam (AS) Part 1',sub:'SQC Recording',id:'1HMpcBzshnxz-OGRsjkuW8qt3AOho-G_A',link:'https://drive.google.com/file/d/1HMpcBzshnxz-OGRsjkuW8qt3AOho-G_A/view'},
+    {title:'33 Ways of Developing Khushoo',sub:'SQC Recording',id:'17OT7Fyn4Xe5ZcjVUzLIzDU_RqvyB_2Nl',link:'https://drive.google.com/file/d/17OT7Fyn4Xe5ZcjVUzLIzDU_RqvyB_2Nl/view'},
+  ];
+  const panel = document.getElementById('recordingsPanel');
+  let playing={},expanded={};
+  MEDIA.forEach((m,idx) => {
+    const card = document.createElement('div'); card.className='media-card'; card.id='media-'+idx;
+    card.innerHTML=`<div class="media-info"><div><div class="media-title">${m.title}</div><div class="media-sub">${m.sub}</div></div><a class="media-open" href="${m.link}" target="_blank">🔗 Drive</a></div><div class="video-wrap"><div class="video-controls"><button class="ctrl-btn" onclick="togglePlay(${idx})" id="playbtn-${idx}">▶</button><button class="expand-btn" onclick="toggleExpand(${idx})" id="expbtn-${idx}">⤢ Expand</button></div><iframe id="iframe-${idx}" src="" allow="autoplay" allowfullscreen></iframe></div>`;
+    panel.appendChild(card);
+  });
+  function togglePlay(idx){
+    const iframe=document.getElementById('iframe-'+idx),btn=document.getElementById('playbtn-'+idx);
+    if(!playing[idx]){if(!iframe.src)iframe.src=`https://drive.google.com/file/d/${MEDIA[idx].id}/preview`;iframe.style.height='240px';btn.textContent='⏸';playing[idx]=true;}
+    else{iframe.style.height='0';btn.textContent='▶';playing[idx]=false;expanded[idx]=false;document.getElementById('expbtn-'+idx).textContent='⤢ Expand';}
+  }
+  function toggleExpand(idx){
+    if(!playing[idx]){togglePlay(idx);return;}
+    const iframe=document.getElementById('iframe-'+idx),btn=document.getElementById('expbtn-'+idx);
+    if(!expanded[idx]){iframe.style.height='400px';btn.textContent='⤡ Collapse';expanded[idx]=true;}
+    else{iframe.style.height='240px';btn.textContent='⤢ Expand';expanded[idx]=false;}
+  }
+  function toggleRecordings(btn){btn.classList.toggle('open');document.getElementById('recordingsPanel').classList.toggle('open');}
+
+  // ── NOTIFICATIONS ──
+  const HADITHS=['"The best deeds are those done regularly, even if they are small." — Prophet Muhammad ﷺ','"Allah loves that when one of you does something, they do it with excellence." — Prophet Muhammad ﷺ','"Make things easy, do not make them difficult." — Prophet Muhammad ﷺ'];
+  const VERSES=['"So remember Me; I will remember you." — Al-Quran 2:152','"And your Lord says: Call upon Me; I will respond to you." — Al-Quran 40:60','"Verily, with hardship comes ease." — Al-Quran 94:5'];
+  const DUAS=["Rabbana atina fid-dunya hasanatan wa fil-akhirati hasanatan waqina adhaban-nar 🤲","Allahumma inni as'aluka al-'afwa wal-'afiyah 🤲","La hawla wa la quwwata illa billah 🤲"];
+  let notifyChips={garden:true,hadith:true,verse:true,dua:true};
+
+  function toggleChip(el){const t=el.dataset.type;notifyChips[t]=!notifyChips[t];el.classList.toggle('active',notifyChips[t]);updatePreview();}
+  function updatePreview(){
+    const parts=[];
+    if(notifyChips.garden)parts.push('🌱 Tend your garden today!');
+    if(notifyChips.hadith)parts.push(HADITHS[Math.floor(Math.random()*HADITHS.length)]);
+    if(notifyChips.verse) parts.push(VERSES[Math.floor(Math.random()*VERSES.length)]);
+    if(notifyChips.dua)   parts.push(DUAS[Math.floor(Math.random()*DUAS.length)]);
+    const time=document.getElementById('notifyTime')?.value||'08:00';
+    const daily=document.getElementById('dailyToggle')?.checked;
+    const weekly=document.getElementById('weeklyToggle')?.checked;
+    const freq=daily?'Daily at '+time:weekly?'Fridays at '+time:'Schedule not set';
+    document.getElementById('previewTitle').textContent='Sisters Quran Club 🌿 — '+freq;
+    document.getElementById('previewBody').textContent=parts.join(' • ')||'Select content above.';
+  }
+  function saveNotifyPrefs(){
+    const prefs={daily:document.getElementById('dailyToggle').checked,weekly:document.getElementById('weeklyToggle').checked,time:document.getElementById('notifyTime').value,chips:notifyChips};
+    localStorage.setItem('sqc_notify_prefs',JSON.stringify(prefs));
+    if(window.OneSignalDeferred)OneSignalDeferred.push(async o=>await o.Slidedown.promptPush());
+    showToast('🌸 Preferences saved!');
+  }
+  function loadNotifyPrefs(){
+    const saved=localStorage.getItem('sqc_notify_prefs');
+    if(saved){const p=JSON.parse(saved);if(document.getElementById('dailyToggle'))document.getElementById('dailyToggle').checked=p.daily||false;if(document.getElementById('weeklyToggle'))document.getElementById('weeklyToggle').checked=p.weekly||false;if(document.getElementById('notifyTime'))document.getElementById('notifyTime').value=p.time||'08:00';if(p.chips){notifyChips=p.chips;document.querySelectorAll('.content-chip').forEach(c=>c.classList.toggle('active',notifyChips[c.dataset.type]));}}
+    updatePreview();
+    if(window.OneSignalDeferred)OneSignalDeferred.push(async o=>{const s=await o.User.PushSubscription.optedIn;const dot=document.getElementById('notifyDot'),txt=document.getElementById('notifyStatusText');if(dot&&txt){dot.className='notify-status-dot '+(s?'on':'off');txt.textContent=s?'✅ Notifications enabled':'❌ Not enabled yet — click Allow above';}});
+  }
+
+  // ── INIT ──
+  window.addEventListener('load', () => {
+    if (gardenerName) {
+      updateNavGardener(gardenerName);
+      personaliseHome(gardenerName);
+    } else {
+      // Show gardener modal after 1 second
+      setTimeout(() => {
+        document.getElementById('gardenerModal').classList.remove('hidden');
+      }, 1000);
+    }
+
+    // Service worker
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('/SistersQuranClub/OneSignalSDKWorker.js', {scope:'/SistersQuranClub/'})
+        .then(reg => {
+          reg.addEventListener('updatefound', () => {
+            const w = reg.installing;
+            w.addEventListener('statechange', () => {
+              if (w.state==='activated') window.location.reload();
+            });
+          });
+        }).catch(err => console.log('SW skipped:', err.message));
+    }
+
+    // Reminder banner for first time visitors
+    setTimeout(() => {
+      if (!localStorage.getItem('sqc_notify_prefs') && gardenerName) {
+        const banner = document.createElement('div');
+        banner.style.cssText='position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:#c4748a;color:white;padding:10px 20px;border-radius:30px;font-family:Nunito,sans-serif;font-size:13px;font-weight:700;cursor:pointer;z-index:50;box-shadow:0 4px 20px rgba(196,116,138,0.4);white-space:nowrap';
+        banner.textContent='🔔 Set up garden reminders';
+        banner.onclick=()=>{showPage('notify');banner.remove();};
+        document.body.appendChild(banner);
+        setTimeout(()=>banner.remove(),7000);
+      }
+    },4000);
+  });
 </script>
 </body>
 </html>
