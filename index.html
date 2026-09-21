@@ -274,8 +274,11 @@
     .bloom-refresh-btn:hover{background:var(--rose-pale)}
 
     /* ── TRACKER ── */
-    .tracker-wrap{width:100%;height:calc(100vh - 70px)}
-    .tracker-wrap iframe{width:100%;height:100%;border:none}
+    .tracker-wrap{width:100%;height:calc(100vh - 70px);display:flex;flex-direction:column}
+    .tracker-wrap iframe{width:100%;flex:1;border:none}
+    .tracker-toggle-bar{display:flex;gap:8px;padding:10px 16px;background:white;border-bottom:1px solid var(--rose-pale)}
+    .tracker-toggle-btn{padding:7px 16px;border-radius:20px;border:1.5px solid var(--rose-pale);background:white;font-family:'Nunito',sans-serif;font-size:12px;font-weight:700;color:var(--text-soft);cursor:pointer;transition:all 0.2s}
+    .tracker-toggle-btn.active{background:var(--rose);color:white;border-color:var(--rose)}
 
     /* ── DUA ── */
     .dua-wrap{width:100%;height:calc(100vh - 70px)}
@@ -686,6 +689,10 @@
 <!-- TRACKER PAGE -->
 <div class="page" id="page-tracker">
   <div class="tracker-wrap">
+    <div class="tracker-toggle-bar">
+      <button class="tracker-toggle-btn active" id="trackerMyBtn" onclick="setTrackerView('mine')">🌿 My Garden</button>
+      <button class="tracker-toggle-btn" id="trackerAllBtn" onclick="setTrackerView('all')">🌍 All Gardens</button>
+    </div>
     <iframe src="https://tazcodez.github.io/sqcgardens/" title="SQC Ibadah Garden Tracker" id="trackerIframe"></iframe>
   </div>
 </div>
@@ -722,30 +729,47 @@
   }
 
   // ── CONTINUE EXISTING GARDEN ──
+  // Known gardeners already tending gardens (deduped, case/emoji variants merged).
+  // Kept as a fallback + always-merged baseline because the live "Members" sheet
+  // this Apps Script reads from doesn't yet contain everyone who already has a
+  // garden going in the tracker.
+  const KNOWN_GARDENERS = ['Aisha','Amria','Aqeelah','Dinah','Fatima','Fatma','Nahya','Nasra','Sabreen','Safiyyah','Sitty','Taz'];
+
   async function loadContinueList() {
     const list = document.getElementById('continueList');
     list.innerHTML = '<div style="padding:16px;text-align:center;color:#ccc;font-size:13px">🌱 Loading gardeners...</div>';
+
+    let apiMembers = [];
     try {
-      const res  = await fetch(API_URL + '?action=todayAdhkar');
-      if (!res.ok) throw new Error('HTTP ' + res.status);
-      const data = await res.json();
-      const members = (data.members || []).slice().sort((a,b) => a.localeCompare(b));
-      if (!members.length) {
-        list.innerHTML = '<div style="padding:16px;text-align:center;color:#ccc;font-size:13px">No gardens yet — be the first! 🌱</div>';
-        return;
+      const res = await fetch(API_URL + '?action=todayAdhkar');
+      if (res.ok) {
+        const data = await res.json();
+        apiMembers = data.members || [];
       }
-      list.innerHTML = members.map(name => `
-        <button class="continue-item" style="width:100%;border:none;background:none;text-align:left;font-family:inherit;cursor:pointer" onclick="continueAsGardener('${name.replace(/'/g, "\\'")}')">
-          <div class="continue-avatar">${name[0].toUpperCase()}</div>
-          <div>
-            <div class="continue-name">${name}</div>
-            <div class="continue-sub">Tap to continue your garden</div>
-          </div>
-        </button>
-      `).join('');
     } catch (err) {
-      list.innerHTML = `<div style="padding:16px;text-align:center;color:#e57373;font-size:12px">⚠️ Could not load gardeners.<br><button onclick="loadContinueList()" style="margin-top:8px;padding:6px 14px;background:#c4748a;color:white;border:none;border-radius:20px;cursor:pointer;font-size:11px">Try again</button></div>`;
+      // Offline or API unreachable — fall through to the known list below.
     }
+
+    // Merge known gardeners with whatever the sheet returns, deduping case-
+    // insensitively (e.g. "Dinah" / "dinah💕", "Taz" / "Taz 🌸" collapse to one).
+    const seen = new Map();
+    KNOWN_GARDENERS.forEach(n => seen.set(n.toLowerCase(), n));
+    apiMembers.forEach(n => { const k = n.toLowerCase(); if (!seen.has(k)) seen.set(k, n); });
+    const members = Array.from(seen.values()).sort((a,b) => a.localeCompare(b));
+
+    if (!members.length) {
+      list.innerHTML = '<div style="padding:16px;text-align:center;color:#ccc;font-size:13px">No gardens yet — be the first! 🌱</div>';
+      return;
+    }
+    list.innerHTML = members.map(name => `
+      <button class="continue-item" style="width:100%;border:none;background:none;text-align:left;font-family:inherit;cursor:pointer" onclick="continueAsGardener('${name.replace(/'/g, "\\'")}')">
+        <div class="continue-avatar">${name[0].toUpperCase()}</div>
+        <div>
+          <div class="continue-name">${name}</div>
+          <div class="continue-sub">Tap to continue your garden</div>
+        </div>
+      </button>
+    `).join('');
   }
 
   function continueAsGardener(name) {
@@ -807,10 +831,23 @@
     document.getElementById('navGardener').style.display = 'block';
   }
 
+  let trackerView = 'mine'; // 'mine' | 'all'
+
   function loadTrackerWithName(name) {
+    setTrackerView(trackerView);
+  }
+
+  function setTrackerView(view) {
+    trackerView = view;
+    const myBtn  = document.getElementById('trackerMyBtn');
+    const allBtn = document.getElementById('trackerAllBtn');
+    if (myBtn)  myBtn.classList.toggle('active', view === 'mine');
+    if (allBtn) allBtn.classList.toggle('active', view === 'all');
     const iframe = document.getElementById('trackerIframe');
     const base   = 'https://tazcodez.github.io/sqcgardens/';
-    iframe.src   = base + '?member=' + encodeURIComponent(name);
+    iframe.src = (view === 'mine' && gardenerName)
+      ? base + '?member=' + encodeURIComponent(gardenerName)
+      : base;
   }
 
   function signOutGardener() {
