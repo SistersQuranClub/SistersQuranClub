@@ -82,7 +82,7 @@
     .choice-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:8px}
     .choice-btn{padding:16px 10px;border:2px solid var(--rose-pale);border-radius:16px;background:white;cursor:pointer;transition:all 0.2s;font-family:'Nunito',sans-serif}
     .choice-btn:hover{border-color:var(--rose);background:var(--rose-pale)}
-    .choice-btn .choice-icon{font-size:28px;margin-bottom:6px}
+    .choice-btn .choice-icon{font-size:28px;margin-bottom:6px;display:block}
     .choice-btn .choice-label{font-size:13px;font-weight:700;color:var(--rose-deep);display:block}
     .choice-btn .choice-sub{font-size:11px;color:var(--text-soft);margin-top:2px;display:block}
     /* Steps */
@@ -281,34 +281,6 @@
     .dua-wrap{width:100%;height:calc(100vh - 70px)}
     .dua-wrap iframe{width:100%;height:100%;border:none}
 
-    /* ── NOTIFY ── */
-    .notify-wrap{max-width:600px;margin:0 auto;padding:40px 24px 60px}
-    .notify-status{display:flex;align-items:center;gap:10px;background:white;border:1px solid var(--rose-pale);border-radius:14px;padding:14px 18px;margin-bottom:24px}
-    .notify-status-dot{width:10px;height:10px;border-radius:50%;background:#ccc;flex-shrink:0}
-    .notify-status-dot.on{background:#4caf50;box-shadow:0 0 0 3px #e8f5e9}
-    .notify-card{background:white;border-radius:16px;border:1px solid var(--rose-pale);padding:20px;margin-bottom:16px}
-    .notify-card-title{font-family:'Cormorant Garamond',serif;font-size:18px;color:var(--rose-deep);margin-bottom:4px}
-    .notify-card-sub{font-size:12px;color:var(--text-soft);margin-bottom:16px;line-height:1.5}
-    .toggle-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
-    .toggle-label{font-size:13px;font-weight:600;color:var(--text)}
-    .toggle{position:relative;width:44px;height:24px;cursor:pointer}
-    .toggle input{opacity:0;width:0;height:0}
-    .slider{position:absolute;inset:0;background:#ddd;border-radius:24px;transition:0.3s}
-    .slider:before{content:'';position:absolute;width:18px;height:18px;left:3px;top:3px;background:white;border-radius:50%;transition:0.3s}
-    input:checked+.slider{background:var(--rose)}
-    input:checked+.slider:before{transform:translateX(20px)}
-    .time-input{width:100%;padding:10px 12px;border:1.5px solid var(--rose-pale);border-radius:10px;font-family:'Nunito',sans-serif;font-size:13px;color:var(--text);background:var(--cream);outline:none;margin-bottom:14px}
-    .content-chips{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:4px}
-    .content-chip{padding:7px 14px;border-radius:20px;border:1.5px solid var(--rose-pale);background:white;font-size:12px;font-weight:600;color:var(--text-soft);cursor:pointer;transition:all 0.2s}
-    .content-chip.active{border-color:var(--rose);background:var(--rose-pale);color:var(--rose-deep)}
-    .preview-box{background:linear-gradient(135deg,var(--rose-pale),#fff0f8);border-radius:12px;padding:14px;margin-top:14px;border:1px solid var(--rose-pale)}
-    .preview-notif{display:flex;align-items:flex-start;gap:10px}
-    .preview-title{font-size:13px;font-weight:700;color:var(--text);margin-bottom:3px}
-    .preview-body{font-size:12px;color:var(--text-soft);line-height:1.5}
-    .preview-label{font-size:10px;color:var(--rose-light);font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-bottom:8px}
-    .save-notify-btn{width:100%;padding:13px;background:var(--rose);color:white;border:none;border-radius:14px;font-family:'Nunito',sans-serif;font-size:14px;font-weight:700;cursor:pointer;margin-top:8px}
-    .onesignal-customlink-container{margin-bottom:16px}
-
     /* ── FOOTER ── */
     footer{background:var(--rose-deep);color:white;text-align:center;padding:32px 24px;position:relative;z-index:1}
     footer .footer-logo{font-family:'Cormorant Garamond',serif;font-size:22px;margin-bottom:8px;opacity:0.9}
@@ -335,16 +307,120 @@
   <div class="petal">🌸</div><div class="petal">🌹</div><div class="petal">🌸</div>
 </div>
 
-<!-- GARDENER NAME MODAL -->
+<!-- GARDENER NAME MODAL (multi-step: choice → new / continue) -->
 <div class="gardener-modal" id="gardenerModal">
   <div class="gardener-box">
     <img src="logo.png" alt="SQC">
-    <h2>As Salamu Alaikum 🌸</h2>
-    <p>Welcome to the Sisters Quran Club! Choose your <strong>Gardener Name</strong> — this is how you'll appear in the community garden. You can use your real name or a flower name!</p>
-    <div class="gardener-error" id="gardenerError">Please enter a name to continue</div>
-    <input type="text" class="gardener-input" id="gardenerInput" placeholder="e.g. Taz, or Jasmine 🌸" maxlength="30">
-    <button class="gardener-btn" onclick="setGardenerName()">🌱 Enter My Garden</button>
-    <div class="gardener-hint">Your name is saved on this device only</div>
+
+    <!-- Step 1: choose new vs continue -->
+    <div class="modal-step active" id="step-choice">
+      <h2>As Salamu Alaikum 🌸</h2>
+      <p>Welcome to the Sisters Quran Club! Let's get you into the garden.</p>
+      <div class="choice-grid">
+        <button class="choice-btn" onclick="goToStep('new')">
+          <span class="choice-icon">🌱</span>
+          <span class="choice-label">New Garden</span>
+          <span class="choice-sub">First time here</span>
+        </button>
+        <button class="choice-btn" onclick="goToStep('continue')">
+          <span class="choice-icon">🌿</span>
+          <span class="choice-label">Continue</span>
+          <span class="choice-sub">I've planted before</span>
+        </button>
+      </div>
+      <div class="gardener-hint">Your garden is saved on this device</div>
+    </div>
+
+    <!-- Step 2a: create a new gardener name -->
+    <div class="modal-step" id="step-new">
+      <button class="modal-back" onclick="goToStep('choice')">‹ Back</button>
+      <h2>Plant Your Garden 🌱</h2>
+      <p>Choose your Gardener Name — this is how you'll appear in the community garden. You can use your real name or a flower name!</p>
+      <div class="gardener-error" id="gardenerError">Please enter a name to continue</div>
+      <input type="text" class="gardener-input" id="gardenerInput" placeholder="e.g. Taz, or Jasmine 🌸" maxlength="30">
+      <button class="gardener-btn" onclick="setGardenerName()">🌱 Enter My Garden</button>
+      <div class="gardener-hint">Your name is saved on this device only</div>
+    </div>
+
+    <!-- Step 2b: continue an existing garden -->
+    <div class="modal-step" id="step-continue">
+      <button class="modal-back" onclick="goToStep('choice')">‹ Back</button>
+      <h2>Welcome Back 🌿</h2>
+      <p>Tap your name to keep tending the garden you already started.</p>
+      <div class="continue-list" id="continueList">
+        <div style="padding:16px;text-align:center;color:#ccc;font-size:13px">🌱 Loading gardeners...</div>
+      </div>
+      <div class="gardener-hint">Don't see your name? <span style="color:var(--rose);cursor:pointer;font-weight:700" onclick="goToStep('new')">Start a new garden instead</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- PROFILE SETTINGS PANEL -->
+<div class="settings-overlay" id="settingsOverlay" onclick="closeSettings()"></div>
+<div class="settings-panel" id="settingsPanel">
+  <div class="settings-header">
+    <div class="settings-avatar" id="settingsAvatar">T</div>
+    <div>
+      <div class="settings-name" id="settingsName">Gardener</div>
+      <div class="settings-sub">Sisters Quran Club member</div>
+    </div>
+    <button class="settings-close" onclick="closeSettings()">✕</button>
+  </div>
+
+  <div class="settings-section">My Garden</div>
+  <div class="settings-item" onclick="closeSettings();showPage('tracker')">
+    <span class="settings-item-icon">🌿</span>
+    <div><div class="settings-item-label">View My Garden</div></div>
+  </div>
+  <div class="settings-item" onclick="closeSettings();showPage('bloom')">
+    <span class="settings-item-icon">🌸</span>
+    <div><div class="settings-item-label">Today's Bloom</div></div>
+  </div>
+
+  <div class="settings-divider"></div>
+  <div class="settings-section">Reminders</div>
+  <div class="settings-notify">
+    <div class="sn-card">
+      <div class="sn-title">📲 Push Notifications</div>
+      <div class='onesignal-customlink-container'></div>
+      <div style="display:flex;align-items:center;gap:8px;margin-top:10px">
+        <div class="notify-status-dot" id="settingsNotifyDot"></div>
+        <span style="font-size:12px;color:var(--text-soft)" id="settingsNotifyStatus">Not enabled yet</span>
+      </div>
+    </div>
+    <div class="sn-card">
+      <div class="sn-title">🗓️ Schedule</div>
+      <div class="sn-toggle-row"><span class="sn-toggle-label">Daily reminder</span><label class="toggle"><input type="checkbox" id="settingsDailyToggle" onchange="updateSettingsPreview()"><span class="slider"></span></label></div>
+      <div class="sn-toggle-row"><span class="sn-toggle-label">Weekly reminder (Fridays)</span><label class="toggle"><input type="checkbox" id="settingsWeeklyToggle" onchange="updateSettingsPreview()"><span class="slider"></span></label></div>
+      <input type="time" class="sn-time" id="settingsNotifyTime" value="08:00" onchange="updateSettingsPreview()">
+    </div>
+    <div class="sn-card">
+      <div class="sn-title">✨ What to include</div>
+      <div class="sn-chips">
+        <div class="sn-chip active" onclick="toggleSettingsChip(this)" data-type="garden">🌿 Garden update</div>
+        <div class="sn-chip active" onclick="toggleSettingsChip(this)" data-type="hadith">📖 Hadith</div>
+        <div class="sn-chip active" onclick="toggleSettingsChip(this)" data-type="verse">🤲 Verse</div>
+        <div class="sn-chip active" onclick="toggleSettingsChip(this)" data-type="dua">💫 Dua</div>
+      </div>
+      <div class="preview-box">
+        <div class="preview-label">Preview</div>
+        <div class="preview-notif">
+          <div style="font-size:20px">🌸</div>
+          <div>
+            <div class="preview-title" id="settingsPreviewTitle">Sisters Quran Club 🌿</div>
+            <div class="preview-body" id="settingsPreviewBody">Assalamu Alaikum! Time to tend your garden 🌱</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <button class="sn-save" onclick="saveSettingsNotifyPrefs()">💾 Save Reminder Preferences</button>
+  </div>
+
+  <div class="settings-divider"></div>
+  <div class="settings-section">Account</div>
+  <div style="padding:0 20px">
+    <button class="change-name-btn" onclick="closeSettings();reopenGardenerModal()">🔄 Switch Gardener</button>
+    <button class="signout-red" onclick="signOutGardener()">🚪 Sign Out</button>
   </div>
 </div>
 
@@ -359,10 +435,9 @@
     <button class="nav-link" onclick="showPage('resources')">Resources</button>
     <button class="nav-link" onclick="showPage('bloom')">🌸 Bloom</button>
     <button class="nav-link" onclick="showPage('dua')">🤲 Duas</button>
-    <button class="nav-link" onclick="showPage('notify')">🔔 Reminders</button>
     <button class="nav-link cta" onclick="showPage('tracker')">🌿 My Garden</button>
     <div id="navGardener" style="display:none">
-      <div class="nav-gardener" onclick="showPage('tracker')">
+      <div class="nav-gardener" onclick="openSettings()">
         <div class="nav-gardener-avatar" id="navAvatar">T</div>
         <span class="nav-gardener-name" id="navName">Gardener</span>
       </div>
@@ -615,68 +690,6 @@
   </div>
 </div>
 
-<!-- NOTIFY PAGE -->
-<div class="page" id="page-notify">
-  <div class="notify-wrap">
-    <div style="text-align:center;margin-bottom:32px">
-      <div class="section-label">Stay Connected</div>
-      <h2 class="section-title">Garden Reminders 🔔</h2>
-      <p style="font-size:14px;color:var(--text-soft);margin-top:10px;line-height:1.7">Set up personalised reminders to tend your garden 🌿</p>
-    </div>
-    <div class="notify-status">
-      <div class="notify-status-dot" id="notifyDot"></div>
-      <span style="font-size:13px;font-weight:600;color:var(--text-soft)" id="notifyStatusText">Notifications not enabled yet</span>
-    </div>
-    <div class="notify-card">
-      <div class="notify-card-title">📲 Enable Notifications</div>
-      <div class="notify-card-sub">Click below to allow SQC to send you reminders.</div>
-      <div class='onesignal-customlink-container'></div>
-    </div>
-    <div class="notify-card">
-      <div class="notify-card-title">🗓️ Reminder Schedule</div>
-      <div class="notify-card-sub">Choose when you'd like to receive garden reminders.</div>
-      <div class="toggle-row"><span class="toggle-label">Daily reminder</span><label class="toggle"><input type="checkbox" id="dailyToggle" onchange="updatePreview()"><span class="slider"></span></label></div>
-      <div class="toggle-row"><span class="toggle-label">Weekly reminder (Fridays)</span><label class="toggle"><input type="checkbox" id="weeklyToggle" onchange="updatePreview()"><span class="slider"></span></label></div>
-      <label style="font-size:12px;font-weight:700;color:var(--text-soft);display:block;margin-bottom:8px">Preferred time</label>
-      <input type="time" class="time-input" id="notifyTime" value="08:00" onchange="updatePreview()">
-    </div>
-    <div class="notify-card">
-      <div class="notify-card-title">✨ What to include</div>
-      <div class="notify-card-sub">Customise what your reminders contain.</div>
-      <div class="content-chips">
-        <div class="content-chip active" onclick="toggleChip(this)" data-type="garden">🌿 Garden update</div>
-        <div class="content-chip active" onclick="toggleChip(this)" data-type="hadith">📖 Hadith</div>
-        <div class="content-chip active" onclick="toggleChip(this)" data-type="verse">🤲 Quranic verse</div>
-        <div class="content-chip active" onclick="toggleChip(this)" data-type="dua">💫 Daily dua</div>
-      </div>
-    </div>
-    <div class="notify-card">
-      <div class="notify-card-title">👁️ Preview</div>
-      <div class="preview-box">
-        <div class="preview-label">Notification preview</div>
-        <div class="preview-notif">
-          <div style="font-size:24px;margin-top:2px">🌸</div>
-          <div>
-            <div class="preview-title" id="previewTitle">Sisters Quran Club 🌿</div>
-            <div class="preview-body" id="previewBody">Assalamu Alaikum! Time to tend your garden 🌱</div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <button class="save-notify-btn" onclick="saveNotifyPrefs()">💾 Save My Preferences</button>
-  </div>
-  <footer>
-    <div class="footer-logo">Sisters Quran Club 🌸</div>
-    <div class="footer-links">
-      <a class="footer-link" onclick="showPage('home')">Home</a>
-      <a class="footer-link" onclick="showPage('resources')">Resources</a>
-      <a class="footer-link" onclick="showPage('tracker')">My Garden</a>
-      <a class="footer-link" href="mailto:sqc.quranclub@gmail.com">Contact</a>
-    </div>
-    <div class="footer-copy">© 2025 Sisters Quran Club · sqc.quranclub@gmail.com</div>
-  </footer>
-</div>
-
 <div class="toast" id="toast"></div>
 
 <script>
@@ -693,13 +706,65 @@
     setTimeout(() => t.classList.remove('show'), 3500);
   }
 
-  // ── GARDENER NAME ──
+  // ── GARDENER MODAL: STEP NAVIGATION ──
+  function goToStep(step) {
+    document.querySelectorAll('.modal-step').forEach(s => s.classList.remove('active'));
+    document.getElementById('step-' + step).classList.add('active');
+    const err = document.getElementById('gardenerError');
+    if (err) err.style.display = 'none';
+    if (step === 'continue') loadContinueList();
+    if (step === 'new') setTimeout(() => document.getElementById('gardenerInput')?.focus(), 100);
+  }
+
+  function reopenGardenerModal() {
+    document.getElementById('gardenerModal').classList.remove('hidden');
+    goToStep('choice');
+  }
+
+  // ── CONTINUE EXISTING GARDEN ──
+  async function loadContinueList() {
+    const list = document.getElementById('continueList');
+    list.innerHTML = '<div style="padding:16px;text-align:center;color:#ccc;font-size:13px">🌱 Loading gardeners...</div>';
+    try {
+      const res  = await fetch(API_URL + '?action=todayAdhkar');
+      if (!res.ok) throw new Error('HTTP ' + res.status);
+      const data = await res.json();
+      const members = (data.members || []).slice().sort((a,b) => a.localeCompare(b));
+      if (!members.length) {
+        list.innerHTML = '<div style="padding:16px;text-align:center;color:#ccc;font-size:13px">No gardens yet — be the first! 🌱</div>';
+        return;
+      }
+      list.innerHTML = members.map(name => `
+        <button class="continue-item" style="width:100%;border:none;background:none;text-align:left;font-family:inherit;cursor:pointer" onclick="continueAsGardener('${name.replace(/'/g, "\\'")}')">
+          <div class="continue-avatar">${name[0].toUpperCase()}</div>
+          <div>
+            <div class="continue-name">${name}</div>
+            <div class="continue-sub">Tap to continue your garden</div>
+          </div>
+        </button>
+      `).join('');
+    } catch (err) {
+      list.innerHTML = `<div style="padding:16px;text-align:center;color:#e57373;font-size:12px">⚠️ Could not load gardeners.<br><button onclick="loadContinueList()" style="margin-top:8px;padding:6px 14px;background:#c4748a;color:white;border:none;border-radius:20px;cursor:pointer;font-size:11px">Try again</button></div>`;
+    }
+  }
+
+  function continueAsGardener(name) {
+    gardenerName = name;
+    localStorage.setItem('sqc_gardener', name);
+    document.getElementById('gardenerModal').classList.add('hidden');
+    updateNavGardener(name);
+    showToast('🌸 Welcome back, ' + name + '!');
+    personaliseHome(name);
+    loadTrackerWithName(name);
+  }
+
+  // ── NEW GARDEN ──
   function setGardenerName() {
     const val = document.getElementById('gardenerInput').value.trim();
     const err = document.getElementById('gardenerError');
     if (!val) { err.style.display='block'; return; }
     err.style.display = 'none';
-    const btn = document.querySelector('.gardener-btn');
+    const btn = document.querySelector('#step-new .gardener-btn');
     btn.textContent = '🌱 Setting up your garden...';
     btn.disabled = true;
     // Register with Google Sheet
@@ -725,6 +790,10 @@
         updateNavGardener(val);
         showToast('🌸 Welcome, ' + val + '! (Offline — will sync soon)');
         personaliseHome(val);
+      })
+      .finally(() => {
+        btn.textContent = '🌱 Enter My Garden';
+        btn.disabled = false;
       });
   }
 
@@ -742,6 +811,17 @@
     const iframe = document.getElementById('trackerIframe');
     const base   = 'https://tazcodez.github.io/sqcgardens/';
     iframe.src   = base + '?member=' + encodeURIComponent(name);
+  }
+
+  function signOutGardener() {
+    localStorage.removeItem('sqc_gardener');
+    gardenerName = '';
+    document.getElementById('navGardener').style.display = 'none';
+    document.getElementById('heroPersonal').classList.remove('visible');
+    document.getElementById('heroTitle').innerHTML = 'Sisters<br>Quran Club';
+    document.getElementById('heroTagline').textContent = 'Sisters coming together to talk about the wonderful words of Allah ✨';
+    showToast('🌿 Signed out. See you soon!');
+    reopenGardenerModal();
   }
 
   // ── PERSONALISE HOME ──
@@ -764,6 +844,19 @@
     }
   }
 
+  // ── PROFILE SETTINGS PANEL ──
+  function openSettings() {
+    document.getElementById('settingsAvatar').textContent = gardenerName ? gardenerName[0].toUpperCase() : '?';
+    document.getElementById('settingsName').textContent = gardenerName || 'Gardener';
+    document.getElementById('settingsOverlay').classList.add('open');
+    document.getElementById('settingsPanel').classList.add('open');
+    loadSettingsNotifyPrefs();
+  }
+  function closeSettings() {
+    document.getElementById('settingsOverlay').classList.remove('open');
+    document.getElementById('settingsPanel').classList.remove('open');
+  }
+
   // ── PAGE NAVIGATION ──
   function showPage(name) {
     document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
@@ -774,12 +867,10 @@
           (name==='resources'&&b.textContent==='Resources')||
           (name==='bloom'&&b.textContent.includes('Bloom'))||
           (name==='dua'&&b.textContent.includes('Duas'))||
-          (name==='notify'&&b.textContent.includes('Reminders'))||
           (name==='tracker'&&b.textContent.includes('Garden')))
         b.classList.add('active');
     });
     if (name==='bloom')  loadBloom();
-    if (name==='notify') loadNotifyPrefs();
     if (name==='tracker' && gardenerName) loadTrackerWithName(gardenerName);
     window.scrollTo(0,0);
   }
@@ -964,37 +1055,58 @@
   }
   function toggleRecordings(btn){btn.classList.toggle('open');document.getElementById('recordingsPanel').classList.toggle('open');}
 
-  // ── NOTIFICATIONS ──
+  // ── NOTIFICATIONS (now lives in the profile Settings panel) ──
   const HADITHS=['"The best deeds are those done regularly, even if they are small." — Prophet Muhammad ﷺ','"Allah loves that when one of you does something, they do it with excellence." — Prophet Muhammad ﷺ','"Make things easy, do not make them difficult." — Prophet Muhammad ﷺ'];
   const VERSES=['"So remember Me; I will remember you." — Al-Quran 2:152','"And your Lord says: Call upon Me; I will respond to you." — Al-Quran 40:60','"Verily, with hardship comes ease." — Al-Quran 94:5'];
   const DUAS=["Rabbana atina fid-dunya hasanatan wa fil-akhirati hasanatan waqina adhaban-nar 🤲","Allahumma inni as'aluka al-'afwa wal-'afiyah 🤲","La hawla wa la quwwata illa billah 🤲"];
   let notifyChips={garden:true,hadith:true,verse:true,dua:true};
 
-  function toggleChip(el){const t=el.dataset.type;notifyChips[t]=!notifyChips[t];el.classList.toggle('active',notifyChips[t]);updatePreview();}
-  function updatePreview(){
+  function toggleSettingsChip(el){
+    const t=el.dataset.type;
+    notifyChips[t]=!notifyChips[t];
+    el.classList.toggle('active',notifyChips[t]);
+    updateSettingsPreview();
+  }
+  function updateSettingsPreview(){
     const parts=[];
     if(notifyChips.garden)parts.push('🌱 Tend your garden today!');
     if(notifyChips.hadith)parts.push(HADITHS[Math.floor(Math.random()*HADITHS.length)]);
     if(notifyChips.verse) parts.push(VERSES[Math.floor(Math.random()*VERSES.length)]);
     if(notifyChips.dua)   parts.push(DUAS[Math.floor(Math.random()*DUAS.length)]);
-    const time=document.getElementById('notifyTime')?.value||'08:00';
-    const daily=document.getElementById('dailyToggle')?.checked;
-    const weekly=document.getElementById('weeklyToggle')?.checked;
+    const time=document.getElementById('settingsNotifyTime')?.value||'08:00';
+    const daily=document.getElementById('settingsDailyToggle')?.checked;
+    const weekly=document.getElementById('settingsWeeklyToggle')?.checked;
     const freq=daily?'Daily at '+time:weekly?'Fridays at '+time:'Schedule not set';
-    document.getElementById('previewTitle').textContent='Sisters Quran Club 🌿 — '+freq;
-    document.getElementById('previewBody').textContent=parts.join(' • ')||'Select content above.';
+    document.getElementById('settingsPreviewTitle').textContent='Sisters Quran Club 🌿 — '+freq;
+    document.getElementById('settingsPreviewBody').textContent=parts.join(' • ')||'Select content above.';
   }
-  function saveNotifyPrefs(){
-    const prefs={daily:document.getElementById('dailyToggle').checked,weekly:document.getElementById('weeklyToggle').checked,time:document.getElementById('notifyTime').value,chips:notifyChips};
+  function updateSettingsNotifyStatus(){
+    if(window.OneSignalDeferred){
+      OneSignalDeferred.push(async o=>{
+        const s=await o.User.PushSubscription.optedIn;
+        const dot=document.getElementById('settingsNotifyDot'),txt=document.getElementById('settingsNotifyStatus');
+        if(dot&&txt){dot.classList.toggle('on',!!s);txt.textContent=s?'✅ Notifications enabled':'❌ Not enabled — tap Allow above';}
+      });
+    }
+  }
+  function saveSettingsNotifyPrefs(){
+    const prefs={daily:document.getElementById('settingsDailyToggle').checked,weekly:document.getElementById('settingsWeeklyToggle').checked,time:document.getElementById('settingsNotifyTime').value,chips:notifyChips};
     localStorage.setItem('sqc_notify_prefs',JSON.stringify(prefs));
     if(window.OneSignalDeferred)OneSignalDeferred.push(async o=>await o.Slidedown.promptPush());
-    showToast('🌸 Preferences saved!');
+    showToast('🌸 Reminder preferences saved!');
+    updateSettingsNotifyStatus();
   }
-  function loadNotifyPrefs(){
+  function loadSettingsNotifyPrefs(){
     const saved=localStorage.getItem('sqc_notify_prefs');
-    if(saved){const p=JSON.parse(saved);if(document.getElementById('dailyToggle'))document.getElementById('dailyToggle').checked=p.daily||false;if(document.getElementById('weeklyToggle'))document.getElementById('weeklyToggle').checked=p.weekly||false;if(document.getElementById('notifyTime'))document.getElementById('notifyTime').value=p.time||'08:00';if(p.chips){notifyChips=p.chips;document.querySelectorAll('.content-chip').forEach(c=>c.classList.toggle('active',notifyChips[c.dataset.type]));}}
-    updatePreview();
-    if(window.OneSignalDeferred)OneSignalDeferred.push(async o=>{const s=await o.User.PushSubscription.optedIn;const dot=document.getElementById('notifyDot'),txt=document.getElementById('notifyStatusText');if(dot&&txt){dot.className='notify-status-dot '+(s?'on':'off');txt.textContent=s?'✅ Notifications enabled':'❌ Not enabled yet — click Allow above';}});
+    if(saved){
+      const p=JSON.parse(saved);
+      if(document.getElementById('settingsDailyToggle'))document.getElementById('settingsDailyToggle').checked=p.daily||false;
+      if(document.getElementById('settingsWeeklyToggle'))document.getElementById('settingsWeeklyToggle').checked=p.weekly||false;
+      if(document.getElementById('settingsNotifyTime'))document.getElementById('settingsNotifyTime').value=p.time||'08:00';
+      if(p.chips){notifyChips=p.chips;document.querySelectorAll('.sn-chip').forEach(c=>c.classList.toggle('active',notifyChips[c.dataset.type]));}
+    }
+    updateSettingsPreview();
+    updateSettingsNotifyStatus();
   }
 
   // ── INIT ──
@@ -1005,6 +1117,7 @@
     } else {
       // Show gardener modal after 1 second
       setTimeout(() => {
+        goToStep('choice');
         document.getElementById('gardenerModal').classList.remove('hidden');
       }, 1000);
     }
@@ -1022,13 +1135,13 @@
         }).catch(err => console.log('SW skipped:', err.message));
     }
 
-    // Reminder banner for first time visitors
+    // Reminder banner for first time visitors — opens the settings panel now
     setTimeout(() => {
       if (!localStorage.getItem('sqc_notify_prefs') && gardenerName) {
         const banner = document.createElement('div');
         banner.style.cssText='position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:#c4748a;color:white;padding:10px 20px;border-radius:30px;font-family:Nunito,sans-serif;font-size:13px;font-weight:700;cursor:pointer;z-index:50;box-shadow:0 4px 20px rgba(196,116,138,0.4);white-space:nowrap';
         banner.textContent='🔔 Set up garden reminders';
-        banner.onclick=()=>{showPage('notify');banner.remove();};
+        banner.onclick=()=>{openSettings();banner.remove();};
         document.body.appendChild(banner);
         setTimeout(()=>banner.remove(),7000);
       }
