@@ -729,17 +729,19 @@
   }
 
   // ── CONTINUE EXISTING GARDEN ──
-  // Known gardeners already tending gardens (deduped, case/emoji variants merged).
-  // Kept as a fallback + always-merged baseline because the live "Members" sheet
-  // this Apps Script reads from doesn't yet contain everyone who already has a
-  // garden going in the tracker.
-  const KNOWN_GARDENERS = ['Aisha','Amria','Aqeelah','Dinah','Fatima','Fatma','Nahya','Nasra','Sabreen','Safiyyah','Sitty','Taz'];
+  // Offline-only fallback if the API can't be reached at all.
+  const KNOWN_GARDENERS_FALLBACK = ['Aisha','Amria','Aqeelah','Dinah','Fatima','Fatma','Nahya','Nasra','Sabreen','Safiyyah','Sitty','Taz'];
+
+  // Collapse case/emoji variants of the same name (e.g. "Taz" / "Taz 🌸",
+  // "Dinah" / "dinah💞") down to one entry, preferring the plain-letters version.
+  function normalizeName(n) { return n.toLowerCase().replace(/[^a-z]/g, '').trim(); }
+  function isPlainName(n) { return /^[A-Za-z ]+$/.test(n); }
 
   async function loadContinueList() {
     const list = document.getElementById('continueList');
     list.innerHTML = '<div style="padding:16px;text-align:center;color:#ccc;font-size:13px">🌱 Loading gardeners...</div>';
 
-    let apiMembers = [];
+    let apiMembers = null;
     try {
       const res = await fetch(API_URL + '?action=todayAdhkar');
       if (res.ok) {
@@ -750,12 +752,19 @@
       // Offline or API unreachable — fall through to the known list below.
     }
 
-    // Merge known gardeners with whatever the sheet returns, deduping case-
-    // insensitively (e.g. "Dinah" / "dinah💕", "Taz" / "Taz 🌸" collapse to one).
-    const seen = new Map();
-    KNOWN_GARDENERS.forEach(n => seen.set(n.toLowerCase(), n));
-    apiMembers.forEach(n => { const k = n.toLowerCase(); if (!seen.has(k)) seen.set(k, n); });
-    const members = Array.from(seen.values()).sort((a,b) => a.localeCompare(b));
+    const source = (apiMembers && apiMembers.length) ? apiMembers : KNOWN_GARDENERS_FALLBACK;
+
+    const merged = new Map(); // normalized key -> display name
+    source.forEach(raw => {
+      const name = (raw || '').toString().trim();
+      const key  = normalizeName(name);
+      if (!key) return;
+      const existing = merged.get(key);
+      if (!existing) { merged.set(key, name); return; }
+      // If we now have a cleaner (no emoji/symbols) version, prefer it for display.
+      if (isPlainName(name) && !isPlainName(existing)) merged.set(key, name);
+    });
+    const members = Array.from(merged.values()).sort((a,b) => a.localeCompare(b));
 
     if (!members.length) {
       list.innerHTML = '<div style="padding:16px;text-align:center;color:#ccc;font-size:13px">No gardens yet — be the first! 🌱</div>';
