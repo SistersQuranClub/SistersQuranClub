@@ -744,7 +744,7 @@
       const res = await fetch(API_URL + '?action=todayAdhkar');
       if (res.ok) {
         const data = await res.json();
-        apiMembers = data.members || [];
+        if (Array.isArray(data.members)) apiMembers = data.members;
       }
     } catch (err) {
       // Offline or API unreachable — fall through to the known list below.
@@ -1039,7 +1039,8 @@
       if (!res.ok) throw new Error('HTTP ' + res.status);
       const data = await res.json();
       if (data.error) throw new Error(data.error);
-      const { members, morning, evening } = data;
+      if (!Array.isArray(data.members)) throw new Error('API response is missing "members" — check that the Apps Script deployment is up to date');
+      const { members, morning = {}, evening = {} } = data;
 
       renderFlower('flowerSVGMorning','petalsGroupMorning','flowerStageMorning', members, morning, flower.colors, flower.centre, false);
       renderFlower('flowerSVGEvening','petalsGroupEvening','flowerStageEvening', members, evening, EVENING_COLORS, '#f0e8f8', true);
