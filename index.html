@@ -245,6 +245,10 @@
     .particle{position:absolute;width:6px;height:6px;border-radius:50%;pointer-events:none;animation:particleFall 3s ease-in infinite}
     @keyframes particleFall{0%{opacity:0;transform:translateY(-20px) scale(0)}20%{opacity:1}100%{opacity:0;transform:translateY(120px) translateX(var(--dx)) scale(0.5)}}
     .petal-path{transition:all 0.6s cubic-bezier(0.34,1.56,0.64,1)}
+    .petal-pop{transform-box:fill-box;transform-origin:center;animation:petalPop 0.55s cubic-bezier(0.34,1.56,0.64,1) both}
+    @keyframes petalPop{from{opacity:0;transform:scale(0.3)}to{opacity:1;transform:scale(1)}}
+    .full-bloom-spin{transform-box:fill-box;transform-origin:center;animation:slowSpin 24s linear infinite}
+    @keyframes slowSpin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
 
     /* Progress */
     .bloom-progress-wrap{width:100%;max-width:340px;margin-bottom:12px}
@@ -628,9 +632,12 @@
           <div class="flower-stage" id="flowerStageMorning">
             <svg id="flowerSVGMorning" viewBox="-150 -150 300 300" width="300" height="300" xmlns="http://www.w3.org/2000/svg">
               <g id="petalsGroupMorning"></g>
-              <circle cx="0" cy="0" r="26" fill="#fce8ee" stroke="#e8a0b0" stroke-width="2"/>
-              <circle cx="0" cy="0" r="16" fill="#f4b8c8" opacity="0.6"/>
-              <circle cx="0" cy="0" r="8" fill="#c4748a" opacity="0.8"/>
+              <g id="centerGroupMorning">
+                <circle cx="0" cy="0" r="26" fill="#fce8ee" stroke="#e8a0b0" stroke-width="2"/>
+                <circle cx="0" cy="0" r="16" fill="#f4b8c8" opacity="0.6"/>
+                <circle cx="0" cy="0" r="8" fill="#c4748a" opacity="0.8"/>
+              </g>
+              <image id="fullImageMorning" x="-135" y="-135" width="270" height="270" preserveAspectRatio="xMidYMid meet" style="display:none"/>
             </svg>
           </div>
           <div class="bloom-progress-wrap">
@@ -653,9 +660,12 @@
           <div class="flower-stage" id="flowerStageEvening">
             <svg id="flowerSVGEvening" viewBox="-150 -150 300 300" width="300" height="300" xmlns="http://www.w3.org/2000/svg">
               <g id="petalsGroupEvening"></g>
-              <circle cx="0" cy="0" r="26" fill="#f0e8f8" stroke="#c4a0e8" stroke-width="2"/>
-              <circle cx="0" cy="0" r="16" fill="#d8b8f0" opacity="0.6"/>
-              <circle cx="0" cy="0" r="8" fill="#9060c0" opacity="0.8"/>
+              <g id="centerGroupEvening">
+                <circle cx="0" cy="0" r="26" fill="#f0e8f8" stroke="#c4a0e8" stroke-width="2"/>
+                <circle cx="0" cy="0" r="16" fill="#d8b8f0" opacity="0.6"/>
+                <circle cx="0" cy="0" r="8" fill="#9060c0" opacity="0.8"/>
+              </g>
+              <image id="fullImageEvening" x="-135" y="-135" width="270" height="270" preserveAspectRatio="xMidYMid meet" style="display:none"/>
             </svg>
           </div>
           <div class="bloom-progress-wrap">
@@ -925,7 +935,7 @@
   const FLOWERS = [
     {name:'Rose',       colors:['#c03060','#d04070','#b02050','#e06080','#a01840'],centre:'#fff0f4'},
     {name:'Orchid',     colors:['#c4748a','#d4889e','#b4607a','#e8a0b0','#9a4a62'],centre:'#fce8ee'},
-    {name:'Hibiscus',   colors:['#e05070','#f07090','#c04060','#f090a0','#d06080'],centre:'#fff0f4'},
+    {name:'Hibiscus',   colors:['#e05070','#f07090','#c04060','#f090a0','#d06080'],centre:'#fff0f4',petalImg:'images/hibiscus-petal.png',fullImg:'images/hibiscus-full.png'},
     {name:'Frangipani', colors:['#f4d0a0','#f8e0b8','#e8c090','#fce8c8','#ddb878'],centre:'#fffaf0'},
     {name:'Cherry Blossom',colors:['#f4b8c8','#fcd0dc','#e8a0b4','#fce0e8','#d890a8'],centre:'#fff5f8'},
     {name:'Jasmine',    colors:['#f8f0d8','#fff8e8','#f0e8c8','#fff0d8','#e8d8b0'],centre:'#fffff8'},
@@ -941,9 +951,13 @@
     return FLOWERS[map[new Date().getDay()]];
   }
 
-  function renderFlower(svgId, groupId, stageId, members, completed, colors, centre, isEvening) {
+  function renderFlower(svgId, groupId, stageId, members, completed, colors, centre, isEvening, petalImgUrl, fullImgUrl) {
     const group  = document.getElementById(groupId);
     const stage  = document.getElementById(stageId);
+    const centerGroup = document.getElementById(groupId.replace('petalsGroup','centerGroup'));
+    const fullImgEl    = document.getElementById(groupId.replace('petalsGroup','fullImage'));
+    const svgNS   = 'http://www.w3.org/2000/svg';
+    const xlinkNS = 'http://www.w3.org/1999/xlink';
     group.innerHTML = '';
     const n = members.length;
     if (n === 0) return;
@@ -956,7 +970,26 @@
       const cx     = Math.cos(angle)*(ry*0.85);
       const cy     = Math.sin(angle)*(ry*0.85);
       const rot    = (angle*180/Math.PI)+90;
-      const petal  = document.createElementNS('http://www.w3.org/2000/svg','ellipse');
+
+      if (isDone && petalImgUrl) {
+        // Real petal photo for this sister's completed adhkar
+        const g = document.createElementNS(svgNS,'g');
+        g.setAttribute('transform', `rotate(${rot.toFixed(1)},${cx.toFixed(1)},${cy.toFixed(1)})`);
+        const img = document.createElementNS(svgNS,'image');
+        img.setAttributeNS(xlinkNS,'href', petalImgUrl);
+        img.setAttribute('href', petalImgUrl);
+        img.setAttribute('x', (cx-rx).toFixed(1));
+        img.setAttribute('y', (cy-ry).toFixed(1));
+        img.setAttribute('width', rx*2);
+        img.setAttribute('height', ry*2);
+        img.setAttribute('preserveAspectRatio','xMidYMid meet');
+        img.classList.add('petal-pop');
+        g.appendChild(img);
+        group.appendChild(g);
+        return;
+      }
+
+      const petal  = document.createElementNS(svgNS,'ellipse');
       petal.setAttribute('cx', cx.toFixed(1));
       petal.setAttribute('cy', cy.toFixed(1));
       petal.setAttribute('rx', rx);
@@ -970,7 +1003,7 @@
         petal.setAttribute('stroke-width', '1.5');
         group.appendChild(petal);
         // Highlight
-        const hl = document.createElementNS('http://www.w3.org/2000/svg','ellipse');
+        const hl = document.createElementNS(svgNS,'ellipse');
         hl.setAttribute('cx', (cx+Math.cos(angle)*5).toFixed(1));
         hl.setAttribute('cy', (cy+Math.sin(angle)*5).toFixed(1));
         hl.setAttribute('rx', (rx*0.3).toFixed(1));
@@ -991,12 +1024,31 @@
     // Full bloom?
     const doneCount = Object.values(completed).filter(Boolean).length;
     const bloomed   = doneCount >= BLOOM_THRESHOLD;
-    if (bloomed) {
+
+    if (bloomed && fullImgUrl && fullImgEl) {
+      // Swap the individual petals + center for the real full flower photo, spinning slowly.
+      group.style.display = 'none';
+      if (centerGroup) centerGroup.style.display = 'none';
+      fullImgEl.setAttributeNS(xlinkNS,'href', fullImgUrl);
+      fullImgEl.setAttribute('href', fullImgUrl);
+      fullImgEl.style.display = 'block';
+      fullImgEl.classList.add('full-bloom-spin');
       stage.classList.add('full-bloom');
       spawnParticles(stage, colors);
     } else {
-      stage.classList.remove('full-bloom');
-      stage.querySelectorAll('.particle').forEach(p=>p.remove());
+      group.style.display = '';
+      if (centerGroup) centerGroup.style.display = '';
+      if (fullImgEl) {
+        fullImgEl.style.display = 'none';
+        fullImgEl.classList.remove('full-bloom-spin');
+      }
+      if (bloomed) {
+        stage.classList.add('full-bloom');
+        spawnParticles(stage, colors);
+      } else {
+        stage.classList.remove('full-bloom');
+        stage.querySelectorAll('.particle').forEach(p=>p.remove());
+      }
     }
     return bloomed;
   }
@@ -1051,8 +1103,8 @@
       if (!Array.isArray(data.members)) throw new Error('API response is missing "members" — check that the Apps Script deployment is up to date');
       const { members, morning = {}, evening = {} } = data;
 
-      renderFlower('flowerSVGMorning','petalsGroupMorning','flowerStageMorning', members, morning, flower.colors, flower.centre, false);
-      renderFlower('flowerSVGEvening','petalsGroupEvening','flowerStageEvening', members, evening, EVENING_COLORS, '#f0e8f8', true);
+      renderFlower('flowerSVGMorning','petalsGroupMorning','flowerStageMorning', members, morning, flower.colors, flower.centre, false, flower.petalImg, flower.fullImg);
+      renderFlower('flowerSVGEvening','petalsGroupEvening','flowerStageEvening', members, evening, EVENING_COLORS, '#f0e8f8', true, flower.petalImg, flower.fullImg);
       renderRoster('morningRoster','morningRosterCount','morningProgressFill','morningProgressLabel','morningBloomBanner', members, morning, flower.colors, false, 'Morning Adhkar');
       renderRoster('eveningRoster','eveningRosterCount','eveningProgressFill','eveningProgressLabel','eveningBloomBanner', members, evening, EVENING_COLORS, true, 'Evening Adhkar');
     } catch(err) {
