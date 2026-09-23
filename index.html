@@ -932,26 +932,53 @@
   }
 
   // ── BLOOM ──
-  const FLOWERS = [
-    {name:'Rose',       colors:['#c03060','#d04070','#b02050','#e06080','#a01840'],centre:'#fff0f4'},
-    {name:'Orchid',     colors:['#c4748a','#d4889e','#b4607a','#e8a0b0','#9a4a62'],centre:'#fce8ee'},
-    {name:'Hibiscus',   colors:['#e05070','#f07090','#c04060','#f090a0','#d06080'],centre:'#fff0f4',petalImg:'images/hibiscus-petal.png',fullImg:'images/hibiscus-full.png'},
-    {name:'Frangipani', colors:['#f4d0a0','#f8e0b8','#e8c090','#fce8c8','#ddb878'],centre:'#fffaf0'},
-    {name:'Cherry Blossom',colors:['#f4b8c8','#fcd0dc','#e8a0b4','#fce0e8','#d890a8'],centre:'#fff5f8'},
-    {name:'Jasmine',    colors:['#f8f0d8','#fff8e8','#f0e8c8','#fff0d8','#e8d8b0'],centre:'#fffff8'},
-    {name:'Petunia',    colors:['#9060c0','#a870d0','#7848a8','#c090e0','#6038a0'],centre:'#f8f0ff'},
-  ];
   const DAY_NAMES  = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
 
-  // Evening uses a shifted palette
+  // Default palette used for days that don't have real petal photos yet.
   const EVENING_COLORS = ['#7040a0','#9060c0','#5828a0','#b080d0','#6030a0'];
 
-  function getTodayFlower() {
-    const map = [0,1,2,3,4,5,6];
-    return FLOWERS[map[new Date().getDay()]];
+  // Each day now has its own Morning AND Evening flower (previously one flower covered both).
+  // Days without real petal/full photos fall back to the drawn-SVG petal look.
+  const FLOWERS = [
+    { // Sunday
+      morning: {name:'Rose', colors:['#c03060','#d04070','#b02050','#e06080','#a01840'], centre:'#fff0f4'},
+      evening: {name:'Rose (Evening)', colors:EVENING_COLORS, centre:'#f0e8f8'},
+    },
+    { // Monday
+      morning: {name:'Orchid', colors:['#c4748a','#d4889e','#b4607a','#e8a0b0','#9a4a62'], centre:'#fce8ee'},
+      evening: {name:'Orchid (Evening)', colors:EVENING_COLORS, centre:'#f0e8f8'},
+    },
+    { // Tuesday
+      morning: {name:'Hibiscus', colors:['#e05070','#f07090','#c04060','#f090a0','#d06080'], centre:'#fff0f4',
+        petalImg:'images/hibiscus-petal.png', fullImg:'images/hibiscus-full.png', petalSize:{rx:42,ry:78}},
+      evening: {name:'Purple Hibiscus', colors:['#7040a0','#9060c0','#5828a0','#b080d0','#6030a0'], centre:'#f4ecfb',
+        petalImg:'images/hibiscus-purple-petal.png', fullImg:'images/hibiscus-purple-full.png', petalSize:{rx:42,ry:78}},
+    },
+    { // Wednesday
+      morning: {name:'Pink Frangipani', colors:['#f4a8c8','#f8c0d8','#e888b0','#fcd0e0','#d878a0'], centre:'#fff5f8',
+        petalImg:'images/frangipani-pink-petal.png', fullImg:'images/frangipani-pink-full.png', petalSize:{rx:28,ry:88}},
+      evening: {name:'White Frangipani', colors:['#fdf8e8','#fffdf0','#f5ecc8','#fffaf0','#ecdba0'], centre:'#fffdf5',
+        petalImg:'images/frangipani-white-petal.png', fullImg:'images/frangipani-white-full.png', petalSize:{rx:28,ry:88}},
+    },
+    { // Thursday
+      morning: {name:'Cherry Blossom', colors:['#f4b8c8','#fcd0dc','#e8a0b4','#fce0e8','#d890a8'], centre:'#fff5f8'},
+      evening: {name:'Cherry Blossom (Evening)', colors:EVENING_COLORS, centre:'#f0e8f8'},
+    },
+    { // Friday
+      morning: {name:'Jasmine', colors:['#f8f0d8','#fff8e8','#f0e8c8','#fff0d8','#e8d8b0'], centre:'#fffff8'},
+      evening: {name:'Jasmine (Evening)', colors:EVENING_COLORS, centre:'#f0e8f8'},
+    },
+    { // Saturday
+      morning: {name:'Petunia', colors:['#9060c0','#a870d0','#7848a8','#c090e0','#6038a0'], centre:'#f8f0ff'},
+      evening: {name:'Petunia (Evening)', colors:EVENING_COLORS, centre:'#f0e8f8'},
+    },
+  ];
+
+  function getTodayFlowerSet() {
+    return FLOWERS[new Date().getDay()];
   }
 
-  function renderFlower(svgId, groupId, stageId, members, completed, colors, centre, isEvening, petalImgUrl, fullImgUrl) {
+  function renderFlower(svgId, groupId, stageId, members, completed, colors, centre, isEvening, petalImgUrl, fullImgUrl, petalSize) {
     const group  = document.getElementById(groupId);
     const stage  = document.getElementById(stageId);
     const centerGroup = document.getElementById(groupId.replace('petalsGroup','centerGroup'));
@@ -961,17 +988,20 @@
     group.innerHTML = '';
     const n = members.length;
     if (n === 0) return;
-    const ry = 75, rx = 30;
+    const rx = (petalSize && petalSize.rx) || 30;
+    const ry = (petalSize && petalSize.ry) || 75;
 
     members.forEach((name, i) => {
-      const color = isEvening ? EVENING_COLORS[i % EVENING_COLORS.length] : colors[i % colors.length];
       const isDone = completed[name] === true;
+      if (!isDone) return; // no trace-line placeholders — only completed petals are drawn
+
+      const color = colors[i % colors.length];
       const angle  = (i/n)*2*Math.PI - Math.PI/2;
       const cx     = Math.cos(angle)*(ry*0.85);
       const cy     = Math.sin(angle)*(ry*0.85);
       const rot    = (angle*180/Math.PI)+90;
 
-      if (isDone && petalImgUrl) {
+      if (petalImgUrl) {
         // Real petal photo for this sister's completed adhkar
         const g = document.createElementNS(svgNS,'g');
         g.setAttribute('transform', `rotate(${rot.toFixed(1)},${cx.toFixed(1)},${cy.toFixed(1)})`);
@@ -996,29 +1026,20 @@
       petal.setAttribute('ry', ry);
       petal.setAttribute('transform', `rotate(${rot.toFixed(1)},${cx.toFixed(1)},${cy.toFixed(1)})`);
       petal.classList.add('petal-path');
-      if (isDone) {
-        petal.setAttribute('fill', color);
-        petal.setAttribute('opacity', '0.9');
-        petal.setAttribute('stroke', 'white');
-        petal.setAttribute('stroke-width', '1.5');
-        group.appendChild(petal);
-        // Highlight
-        const hl = document.createElementNS(svgNS,'ellipse');
-        hl.setAttribute('cx', (cx+Math.cos(angle)*5).toFixed(1));
-        hl.setAttribute('cy', (cy+Math.sin(angle)*5).toFixed(1));
-        hl.setAttribute('rx', (rx*0.3).toFixed(1));
-        hl.setAttribute('ry', (ry*0.18).toFixed(1));
-        hl.setAttribute('transform', `rotate(${rot.toFixed(1)},${cx.toFixed(1)},${cy.toFixed(1)})`);
-        hl.setAttribute('fill', 'rgba(255,255,255,0.35)');
-        group.appendChild(hl);
-      } else {
-        petal.setAttribute('fill', 'none');
-        petal.setAttribute('stroke', color);
-        petal.setAttribute('stroke-width', '1.5');
-        petal.setAttribute('opacity', '0.25');
-        petal.setAttribute('stroke-dasharray', '4,3');
-        group.appendChild(petal);
-      }
+      petal.setAttribute('fill', color);
+      petal.setAttribute('opacity', '0.9');
+      petal.setAttribute('stroke', 'white');
+      petal.setAttribute('stroke-width', '1.5');
+      group.appendChild(petal);
+      // Highlight
+      const hl = document.createElementNS(svgNS,'ellipse');
+      hl.setAttribute('cx', (cx+Math.cos(angle)*5).toFixed(1));
+      hl.setAttribute('cy', (cy+Math.sin(angle)*5).toFixed(1));
+      hl.setAttribute('rx', (rx*0.3).toFixed(1));
+      hl.setAttribute('ry', (ry*0.18).toFixed(1));
+      hl.setAttribute('transform', `rotate(${rot.toFixed(1)},${cx.toFixed(1)},${cy.toFixed(1)})`);
+      hl.setAttribute('fill', 'rgba(255,255,255,0.35)');
+      group.appendChild(hl);
     });
 
     // Full bloom?
@@ -1085,10 +1106,20 @@
     }).join('');
   }
 
+  let currentFlowerSet = null;
+  let currentDayLabel  = '';
+
+  function updateBloomHeader() {
+    if (!currentFlowerSet) return;
+    const f = currentBloomTab === 0 ? currentFlowerSet.morning : currentFlowerSet.evening;
+    document.getElementById('bloomDayName').textContent = currentDayLabel + ' — ' + f.name;
+  }
+
   async function loadBloom() {
-    const flower  = getTodayFlower();
-    const dayName = DAY_NAMES[new Date().getDay()];
-    document.getElementById('bloomDayName').textContent = dayName.toUpperCase() + ' — ' + flower.name;
+    currentFlowerSet = getTodayFlowerSet();
+    currentDayLabel  = DAY_NAMES[new Date().getDay()].toUpperCase();
+    updateBloomHeader();
+    const { morning: morningFlower, evening: eveningFlower } = currentFlowerSet;
 
     // Show loading
     ['morningRoster','eveningRoster'].forEach(id => {
@@ -1103,10 +1134,10 @@
       if (!Array.isArray(data.members)) throw new Error('API response is missing "members" — check that the Apps Script deployment is up to date');
       const { members, morning = {}, evening = {} } = data;
 
-      renderFlower('flowerSVGMorning','petalsGroupMorning','flowerStageMorning', members, morning, flower.colors, flower.centre, false, flower.petalImg, flower.fullImg);
-      renderFlower('flowerSVGEvening','petalsGroupEvening','flowerStageEvening', members, evening, EVENING_COLORS, '#f0e8f8', true, flower.petalImg, flower.fullImg);
-      renderRoster('morningRoster','morningRosterCount','morningProgressFill','morningProgressLabel','morningBloomBanner', members, morning, flower.colors, false, 'Morning Adhkar');
-      renderRoster('eveningRoster','eveningRosterCount','eveningProgressFill','eveningProgressLabel','eveningBloomBanner', members, evening, EVENING_COLORS, true, 'Evening Adhkar');
+      renderFlower('flowerSVGMorning','petalsGroupMorning','flowerStageMorning', members, morning, morningFlower.colors, morningFlower.centre, false, morningFlower.petalImg, morningFlower.fullImg, morningFlower.petalSize);
+      renderFlower('flowerSVGEvening','petalsGroupEvening','flowerStageEvening', members, evening, eveningFlower.colors, eveningFlower.centre, true, eveningFlower.petalImg, eveningFlower.fullImg, eveningFlower.petalSize);
+      renderRoster('morningRoster','morningRosterCount','morningProgressFill','morningProgressLabel','morningBloomBanner', members, morning, morningFlower.colors, false, 'Morning Adhkar');
+      renderRoster('eveningRoster','eveningRosterCount','eveningProgressFill','eveningProgressLabel','eveningBloomBanner', members, evening, eveningFlower.colors, true, 'Evening Adhkar');
     } catch(err) {
       ['morningRoster','eveningRoster'].forEach(id => {
         document.getElementById(id).innerHTML = `<div style="padding:16px;text-align:center;color:#e57373;font-size:12px">⚠️ Could not load. <small>${err.message}</small><br><button onclick="loadBloom()" style="margin-top:8px;padding:6px 14px;background:#c4748a;color:white;border:none;border-radius:20px;cursor:pointer;font-size:11px">Try again</button></div>`;
@@ -1119,6 +1150,7 @@
     currentBloomTab = idx;
     document.getElementById('bloomSlide').style.transform = `translateX(-${idx*100}%)`;
     document.querySelectorAll('.bloom-tab').forEach((t,i) => t.classList.toggle('active', i===idx));
+    updateBloomHeader();
   }
 
   // Touch swipe for bloom
